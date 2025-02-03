@@ -13,15 +13,15 @@ const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTyp
 app.get("/assets/:asset", (req, res, next) => {
     const asset = req.params.asset;
     const slide_deck = (new URL(req.headers.referer || '').pathname || '/').substring(1);
-        const asset_path = path.join(__dirname, "slides", slide_deck, "assets", asset);
+    const asset_path = path.join(__dirname, "slides", slide_deck, "assets", asset);
     if (!slide_decks.includes(slide_deck) || !fs.existsSync(asset_path)) {
         return next(`Asset ${asset} does not exist`);
     }
-            res.send(fs.readFileSync(asset_path));
+    res.send(fs.readFileSync(asset_path));
 });
-        }
-    };
-    return next(`Asset ${asset} does not exist`);
+
+app.get('/favicon.ico', (req, res, next) => {
+    res.send(fs.readFileSync(path.join(__dirname, "slides/session_1/assets/iso_cpp_logo.svg")));
 });
 
 app.get('/:slide_deck', (req, res, next) => {
