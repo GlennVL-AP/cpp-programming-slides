@@ -1,0 +1,57 @@
+const ejs = require("ejs")
+const express = require("express")
+const fs = require("fs")
+const path = require("path")
+
+const port = 8000
+const app = express()
+
+const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
+
+app.get("/assets/:asset", (req, res, next) => {
+    const asset = req.params.asset;
+    for (const slide_deck of slide_decks) {
+        const asset_path = path.join(__dirname, "slides", slide_deck, "assets", asset);
+        if (fs.existsSync(asset_path)) {
+            res.send(fs.readFileSync(asset_path));
+            return;
+        }
+    };
+    return next(`Asset ${asset} does not exist`);
+});
+
+app.get('/:slide_deck', (req, res, next) => {
+    const slide_deck = req.params.slide_deck;
+    if (!slide_decks.includes(slide_deck)) {
+        return next(`Slide deck ${slide_deck} does not exist`);
+    }
+    const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
+    const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
+    ejs.renderFile(
+        "slide_deck.ejs",
+        { slidedeck_title: slide_deck, slidedeck_content_markdown: markdown_content },
+        (err, str) => {
+            if (err) return next(err);
+            res.send(str);
+        }
+    );
+});
+
+app.get('/', (_, res, next) => {
+    ejs.renderFile(
+        "index.ejs",
+        { slide_decks: slide_decks },
+        (err, str) => {
+            if (err) return next(err);
+            res.send(str);
+        }
+    );
+})
+
+app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")))
+
+app.listen(port, () => {
+    console.log(`Listening on http://localhost:${port}/`);
+});

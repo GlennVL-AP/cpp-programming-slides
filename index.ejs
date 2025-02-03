@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cpp Programming Slides</title>
+</head>
+<body>
+    <h1>Cpp Programming Slides</h1>
+    <ul>
+        <% slide_decks.forEach(function(slide_deck) { %>
+            <li><a href="/<%= slide_deck %>"><%= slide_deck %></a></li>
+        <% }); %>
+    </ul>
+</body>
+</html>

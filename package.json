@@ -1,0 +1,15 @@
+{
+    "name": "cpp-programming-slides",
+    "description": "Cpp Programming Slides",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "echo \"Naugthy dev didn't write tests...\" && exit 1"
+    },
+    "dependencies": {
+        "reveal.js": "^5.1.0",
+        "ejs": "^3.1.10",
+        "express": "^4.21.2"
+    }
+}
