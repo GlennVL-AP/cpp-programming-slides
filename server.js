@@ -10,24 +10,31 @@ const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTyp
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 
-app.get("/assets/:asset", (req, res, next) => {
+app.get("/slides/assets/:asset", (req, res, next) => {
     const asset = req.params.asset;
-    const slide_deck = (new URL(req.headers.referer || '').pathname || '/').substring(1);
-    const asset_path = path.join(__dirname, "slides", slide_deck, "assets", asset);
-    if (!slide_decks.includes(slide_deck) || !fs.existsSync(asset_path)) {
-        return next(`Asset ${asset} does not exist`);
+    const referer = req.headers.referer;
+    if (referer == undefined) {
+        res.status(404).send(`Asset "${asset}" not found`);
+        return;
     }
-    res.send(fs.readFileSync(asset_path));
+    const slide_deck = new URL(referer).pathname;
+    const asset_path = path.join(__dirname, slide_deck, "assets", asset);
+    if (slide_decks.map((slide_deck => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
+        res.sendFile(asset_path);
+    } else {
+        res.status(404).send(`Asset "${asset}" not found`);
+    }
 });
 
 app.get('/favicon.ico', (req, res, next) => {
-    res.send(fs.readFileSync(path.join(__dirname, "slides/session_1/assets/iso_cpp_logo.svg")));
+    res.sendFile(path.join(__dirname, "slides/session_1/assets/iso_cpp_logo.svg"));
 });
 
-app.get('/:slide_deck', (req, res, next) => {
+app.get('/slides/:slide_deck', (req, res, next) => {
     const slide_deck = req.params.slide_deck;
     if (!slide_decks.includes(slide_deck)) {
-        return next(`Slide deck ${slide_deck} does not exist`);
+        res.status(404).send(`Slide deck "${slide_deck}" does not exist`);
+        return;
     }
     const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
     const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
