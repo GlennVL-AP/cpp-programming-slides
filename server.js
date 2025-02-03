@@ -12,11 +12,13 @@ const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTyp
 
 app.get("/assets/:asset", (req, res, next) => {
     const asset = req.params.asset;
-    for (const slide_deck of slide_decks) {
+    const slide_deck = (new URL(req.headers.referer || '').pathname || '/').substring(1);
         const asset_path = path.join(__dirname, "slides", slide_deck, "assets", asset);
-        if (fs.existsSync(asset_path)) {
+    if (!slide_decks.includes(slide_deck) || !fs.existsSync(asset_path)) {
+        return next(`Asset ${asset} does not exist`);
+    }
             res.send(fs.readFileSync(asset_path));
-            return;
+});
         }
     };
     return next(`Asset ${asset} does not exist`);
@@ -39,7 +41,7 @@ app.get('/:slide_deck', (req, res, next) => {
     );
 });
 
-app.get('/', (_, res, next) => {
+app.get('/', (req, res, next) => {
     ejs.renderFile(
         "index.ejs",
         { slide_decks: slide_decks },
@@ -48,9 +50,9 @@ app.get('/', (_, res, next) => {
             res.send(str);
         }
     );
-})
+});
 
-app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")))
+app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")));
 
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}/`);
