@@ -14,9 +14,6 @@ int main()
 ---
 ## Why C++?
 ---
-![Ingenuity Mars helicopter](./assets/ingenuity_mars_helicopter.jpg)
-<https://github.com/nasa/fprime>
----
 ![Gaming Engines](./assets/gaming_engines.png)
 ---
 ![Medical Equipment](./assets/siemens_healthineers.png)
@@ -24,10 +21,21 @@ int main()
 ---
 ![AI Engines](./assets/ai_engines.png)
 ---
-### Robotics
+![Boston Dynamics](./assets/boston_dynamics.jpg)
 ---
+![High-frequency trading](./assets/high_frequencty_trading.png)
 ### High-frequency trading
 ---
+![Ingenuity Mars helicopter](./assets/ingenuity_mars_helicopter.jpg)
+<https://github.com/nasa/fprime>
+---
+### Why learn C++ in 2025?
+* Performance and Efficiency
+* Modern high-level language
+* Directly access hardware
+* Backwards compatibility
+---
+### You are not alone
 ![Tiobe Index 2025](./assets/tiobe_index.png)
 <https://www.tiobe.com/tiobe-index/>
 ---
@@ -64,8 +72,8 @@ Minor fixes
 ### ISO WG21 - Standard C++ Foundation
 ![ISO WG21](./assets/foundation_directors.png)
 ---
-### New release cycle
-* Release every 3 years
+### New release model
+* Release cycle of 3 years
 * Backwards compatible!
 ---
 * ISO C++14
@@ -76,8 +84,8 @@ Minor fixes
 ---
 ## Compilation Model
 ---
-### C++23
-```c++
+### From source code to binary
+```c++ []
 import std;
 
 int main()
@@ -85,24 +93,40 @@ int main()
     std::println("Hello, world!");
 }
 ```
-```bash
-clang++ -std=c++23 -stdlib=libc++ \
-  -Wno-reserved-identifier -Wno-reserved-module-identifier \
-  --precompile -o std.pcm /usr/lib/llvm-19/share/libc++/v1/std.cppm
-
-clang++ -std=c++23 -stdlib=libc++ \
-  -fmodule-file=std=std.pcm -o helloworld std.pcm main.cpp
-```
 ---
-### C++03
-```c++
-#include <iostream>
+```c++ []
+// helloworld.cpp
+
+export module helloworld;
+
+import std;
+
+export void hello()
+{
+    std::println("Hello, world!");
+}
+```
+```c++ []
+// main.cpp
+
+import helloworld;
 
 int main()
 {
-    std::cout << "Hello, world!\n";
+    hello();
 }
 ```
-```bash
-clang++ -std=c++23 -stdlib=libc++ -o helloworld main.cpp
-```
+---
+### Compilation steps
+1. Parse files?
+1. Compile each file?
+1. Combine files into executable?
+---
+### Source code + 9 Compilation phases = Binary (exe, lib, ...)
+---
+| Phase | |
+|:--|:--|
+| 1-4 | Preprocessing |
+| 5-7 | Deal with lexical, grammatical, static semantics rules |
+| 8 | Template instantiation |
+| 9 | Linking |
