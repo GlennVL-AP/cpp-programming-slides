@@ -12,7 +12,8 @@ The slides can be rendered in the browser using the `reveal.js` node package.
    ```
 
 1. Open the `cpp-programming-slides` directory with vscode
-1. When vscode asks to launch the project in a devcontainer, accept
+1. If vscode asks to install the `Dev Containers` plugin, accept
+1. When vscode asks to launch the project in a dev container, accept
 1. Open a new terminal in vscode `` ctrl+shift+` ``
 1. In the vscode terminal execute the following command
 
