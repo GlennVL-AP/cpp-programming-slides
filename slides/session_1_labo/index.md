@@ -4,7 +4,7 @@
 ## Compiling with Clang
 <https://clang.llvm.org/>
 ---
-### C++03
+### Before C++20
 ```c++ []
 // main.cpp
 

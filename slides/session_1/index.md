@@ -11,6 +11,10 @@ int main()
     std::println("Hello, world!");
 }
 ```
+
+Note:
+* What stands out?
+* Return at end of main is optional: defaults to `return 0`
 ---
 ## Why C++?
 ---
@@ -33,7 +37,6 @@ int main()
 * Performance and Efficiency
 * Modern high-level language
 * Directly access hardware
-* Backwards compatibility
 ---
 ### You are not alone
 ![Tiobe Index 2025](./assets/tiobe_index.png)
@@ -43,6 +46,10 @@ int main()
 ---
 ![Bjarne Stroustrup](./assets/bjarne_stroustrup.jpg)
 ### Bjarne Stroustrup
+
+Note:
+* Inventor of C++
+* Born 30 december 1950 (age 74)
 ---
 ### C with Classes
 #### 1979
@@ -52,8 +59,9 @@ int main()
 ### Renamed to C++
 #### 1984
 ---
-### First C++ compiler
+### First commercial C++ compiler
 #### 1985
+Cfront: Translate C++ to C
 ---
 ### Standardization
 #### 1989 - 1998
@@ -83,9 +91,13 @@ Minor fixes
 * ISO C++26 (WiP)
 ---
 ## Compilation Model
+
+Note:
+* How to convert source to binary?
 ---
-### From source code to binary
 ```c++ []
+// main.cpp
+
 import std;
 
 int main()
@@ -93,6 +105,8 @@ int main()
     std::println("Hello, world!");
 }
 ```
+---
+![Compile Hello World](./assets/compile_helloworld.png)
 ---
 ```c++ []
 // helloworld.cpp
@@ -117,10 +131,11 @@ int main()
 }
 ```
 ---
+![Compile Hello World multi](./assets/compile_helloworld_multi.png)
+---
 ### Compilation steps
-1. Parse files?
-1. Compile each file?
-1. Combine files into executable?
+1. Compile each file
+1. Combine results into executable
 ---
 ### Source code + 9 Compilation phases = Binary (exe, lib, ...)
 ---
@@ -130,3 +145,38 @@ int main()
 | 5-7 | Deal with lexical, grammatical, static semantics rules |
 | 8 | Template instantiation |
 | 9 | Linking |
+
+Note:
+* Our goal is to avoid the preprocessor!
+* Only use it if we have to include non-module libraries.
+* `#include <some_library.h>`
+---
+```c++
+// hello world before modules and println
+
+#include <iostream>
+
+int main()
+{
+    std::cout << "Hello, world!\n";
+}
+```
+---
+## C++ Core Guidelines
+
+Note:
+* Compiler checks if code is valid
+* Backward compatible
+* Old style also valid but unsafe
+---
+### Help people use modern C++ effectively
+---
+* Bjarne Stroustrup
+* Herb Sutter
+---
+<https://isocpp.github.io/CppCoreGuidelines/>
+* Lots of rules... 🙁
+* Use tool to check compliance! 👍
+* [clang-tidy](https://clang.llvm.org/extra/clang-tidy/)
+---
+# Let's learn C++! 🥳
