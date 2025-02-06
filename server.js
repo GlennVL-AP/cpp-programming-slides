@@ -36,11 +36,12 @@ app.get('/slides/:slide_deck', (req, res, next) => {
         res.status(404).send(`Slide deck "${slide_deck}" does not exist`);
         return;
     }
+    const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
     const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
     const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
     ejs.renderFile(
         "slide_deck.ejs",
-        { slidedeck_title: slide_deck, slidedeck_content_markdown: markdown_content },
+        { slidedeck_title: metadata.title, slidedeck_content_markdown: markdown_content },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
