@@ -49,9 +49,17 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
+    slide_decks_metadata = slide_decks.map(slide_deck => {
+        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
+        return {
+            location: "/slides/" + slide_deck,
+            title: metadata.title,
+            description: metadata.description
+        };
+    });
     ejs.renderFile(
         "index.ejs",
-        { slide_decks: slide_decks },
+        { slide_decks: slide_decks_metadata },
         (err, str) => {
             if (err) return next(err);
             res.send(str);

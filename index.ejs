@@ -25,10 +25,10 @@
             right: 10px;
             background-image: url('/favicon.ico');
             background-repeat: no-repeat;
-            background-size: 100px;
-            width: 100px;
-            height: 112.53px;
-            opacity: 0.33;
+            background-size: 80px;
+            width: 80px;
+            height: 90px;
+            opacity: 0.3;
         }
         .list-container {
             max-width: 600px;
@@ -46,21 +46,31 @@
             margin: 0;
         }
         li {
-            margin: 20px 0;
+            margin: 15px 0;
         }
-        a {
+        .slide-link {
+            display: block;
             text-decoration: none;
-            font-size: 1.5em;
             background: #2c2c2c;
             color: #d0d0d0;
-            padding: 15px 30px;
+            padding: 15px;
             border-radius: 10px;
             transition: all 0.3s ease;
-            display: inline-block;
+            border: 1px solid #444;
         }
-        a:hover {
+        .slide-link:hover {
             background: #444;
             color: #ffffff;
+            border-color: #666
+        }
+        .slide-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .slide-description {
+            font-size: 0.9em;
+            color: #bbb;
         }
     </style>
 </head>
@@ -69,7 +79,12 @@
     <div class="list-container">
         <ul>
             <% slide_decks.forEach(function(slide_deck) { %>
-                <li><a href="/slides/<%= slide_deck %>"><%= slide_deck %></a></li>
+                <li>
+                    <a href="<%= slide_deck.location %>" class="slide-link">
+                        <div class="slide-title"><%= slide_deck.title %></div>
+                        <div class="slide-description"><%= slide_deck.description %></div>
+                    </a>
+                </li>
             <% }); %>
         </ul>
     </div>
