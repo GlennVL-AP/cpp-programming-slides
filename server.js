@@ -1,4 +1,3 @@
-const ejs = require("ejs")
 const express = require("express")
 const fs = require("fs")
 const path = require("path")
@@ -8,7 +7,8 @@ const app = express()
 
 const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+
+app.set("view engine", "ejs");
 
 app.get("/slides/assets/:asset", (req, res, next) => {
     const asset = req.params.asset;
@@ -39,8 +39,8 @@ app.get('/slides/:slide_deck', (req, res, next) => {
     const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
     const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
     const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
-    ejs.renderFile(
-        "slide_deck.ejs",
+    res.render(
+        "slide_deck",
         { slidedeck_title: metadata.title, slidedeck_content_markdown: markdown_content },
         (err, str) => {
             if (err) return next(err);
@@ -56,10 +56,8 @@ app.get('/', (req, res, next) => {
             location: "/slides/" + slide_deck,
             title: metadata.title,
             description: metadata.description
-        };
-    });
-    ejs.renderFile(
-        "index.ejs",
+    res.render(
+        "index",
         { slide_decks: slide_decks_metadata },
         (err, str) => {
             if (err) return next(err);
@@ -68,6 +66,7 @@ app.get('/', (req, res, next) => {
     );
 });
 
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")));
 
 app.listen(port, () => {
