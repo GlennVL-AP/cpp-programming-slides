@@ -7,6 +7,13 @@ const app = express()
 
 const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
+    .map(dirent => {
+        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json")));
+        return {
+            [dirent.name]: metadata
+        };
+    })
+    .flatMap(Object.entries);
 
 app.set("view engine", "ejs");
 
@@ -18,7 +25,7 @@ app.get("/slides/assets/:asset", (req, res, next) => {
     }
     const slide_deck = new URL(referer).pathname;
     const asset_path = path.join(__dirname, slide_deck, "assets", asset);
-    if (slide_decks.map((slide_deck => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
+    if (slide_decks.map((([slide_deck]) => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
         res.sendFile(asset_path);
     } else {
         next();
@@ -31,10 +38,11 @@ app.get('/favicon.ico', (req, res, next) => {
 
 app.get('/slides/:slide_deck', (req, res, next) => {
     const slide_deck = req.params.slide_deck;
-    if (!slide_decks.includes(slide_deck)) {
+    const slide_deck_entry = slide_decks.find(([name]) => name === slide_deck);
+    if (!slide_deck_entry) {
         return next();
     }
-    const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
+    const [, metadata] = slide_deck_entry;
     const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
     const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
     res.render(
@@ -48,12 +56,11 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
-    slide_decks_metadata = slide_decks.map(slide_deck => {
-        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
-        return {
-            location: "/slides/" + slide_deck,
-            title: metadata.title,
-            description: metadata.description
+    const slide_decks_metadata = slide_decks.map(([slide_deck, metadata]) => ({
+        location: "/slides/" + slide_deck,
+        title: metadata.title,
+        description: metadata.description
+    }));
     res.render(
         "index",
         { slide_decks: slide_decks_metadata },
