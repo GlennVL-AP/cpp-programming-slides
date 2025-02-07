@@ -40,7 +40,7 @@ clang++ -std=c++23 -stdlib=libc++ \
   --precompile -o std.pcm /usr/lib/llvm-19/share/libc++/v1/std.cppm
 
 clang++ -std=c++23 -stdlib=libc++ \
-  -fmodule-file=std=std.pcm -o helloworld std.pcm main.cpp
+  -fmodule-file=std=std.pcm -o helloworld main.cpp
 ```
 ---
 ## Exercise
@@ -86,7 +86,7 @@ clang++ -std=c++23 -stdlib=libc++ \
 clang++ -std=c++23 -stdlib=libc++ \
   -fmodule-file=std=std.pcm -fmodule-file=helloworld=helloworld.pcm -o helloworld main.cpp
 ```
-```basah
+```bash
 /usr/bin/ld: /tmp/main-2b3cf5.o: in function `main':
 main.cpp:(.text+0x5): undefined reference to `hello@helloworld()'
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
@@ -104,4 +104,4 @@ clang++: error: linker command failed with exit code 1 (use -v to see invocation
 1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-cmake>
 1. Open with `vscode` or `clion`
 1. Start devcontainer
-1. Try cofiguring and building the project
+1. Try configuring and building the project
