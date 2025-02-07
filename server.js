@@ -32,10 +32,6 @@ app.get("/slides/assets/:asset", (req, res, next) => {
     }
 });
 
-app.get('/favicon.ico', (req, res, next) => {
-    res.sendFile(path.join(__dirname, "slides/session_1/assets/iso_cpp_logo.svg"));
-});
-
 app.get('/slides/:slide_deck', (req, res, next) => {
     const slide_deck = req.params.slide_deck;
     const slide_deck_entry = slide_decks.find(([name]) => name === slide_deck);
@@ -72,7 +68,8 @@ app.get('/', (req, res, next) => {
 });
 
 app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")));
+app.use("/favicon.ico", express.static(path.join(__dirname, "public", "iso_cpp_logo.svg")));
+app.use("/reveal.js", express.static(path.join(__dirname, "node_modules", "reveal.js")));
 
 app.use((req, res, next) => {
     res.status(404).render("error", {
