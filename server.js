@@ -14,15 +14,14 @@ app.get("/slides/assets/:asset", (req, res, next) => {
     const asset = req.params.asset;
     const referer = req.headers.referer;
     if (referer == undefined) {
-        res.status(404).send(`Asset "${asset}" not found`);
-        return;
+        return next();
     }
     const slide_deck = new URL(referer).pathname;
     const asset_path = path.join(__dirname, slide_deck, "assets", asset);
     if (slide_decks.map((slide_deck => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
         res.sendFile(asset_path);
     } else {
-        res.status(404).send(`Asset "${asset}" not found`);
+        next();
     }
 });
 
@@ -33,8 +32,7 @@ app.get('/favicon.ico', (req, res, next) => {
 app.get('/slides/:slide_deck', (req, res, next) => {
     const slide_deck = req.params.slide_deck;
     if (!slide_decks.includes(slide_deck)) {
-        res.status(404).send(`Slide deck "${slide_deck}" does not exist`);
-        return;
+        return next();
     }
     const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", slide_deck, "metadata.json")));
     const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
@@ -68,6 +66,18 @@ app.get('/', (req, res, next) => {
 
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")));
+
+app.use((req, res, next) => {
+    res.status(404).render("404", { url: req.originalUrl });
+});
+
+app.use((err, req, res, next) => {
+    res.status(err.status || 500).render("500", {
+        status: err.status || 500,
+        message: err.message || "Internal Server Error",
+        url: req.originalUrl
+    });
+});
 
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}/`);
