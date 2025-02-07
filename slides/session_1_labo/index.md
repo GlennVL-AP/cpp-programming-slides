@@ -37,6 +37,9 @@ int main()
 ```bash
 clang++ -o helloworld main.cpp
 ```
+```bash
+./helloworld
+```
 
 Note:
 * helloworld is name of executable
@@ -61,7 +64,8 @@ int main()
 clang++ -std=c++23 -stdlib=libc++ \
   -Wno-reserved-identifier -Wno-reserved-module-identifier \
   --precompile -o std.pcm /usr/lib/llvm-19/share/libc++/v1/std.cppm
-
+```
+```bash
 clang++ -std=c++23 -stdlib=libc++ \
   -fmodule-file=std=std.pcm -o helloworld main.cpp
 ```
@@ -117,6 +121,11 @@ clang++ -std=c++23 -stdlib=libc++ \
 main.cpp:(.text+0x5): undefined reference to `hello@helloworld()'
 clang++: error: linker command failed with exit code 1 (use -v to see invocation)
 ```
+
+Note:
+* Hard to get right
+* Still results in linker error
+* We don't want to do this
 ---
 ### Let's not do this by hand!
 * Gets complex very quickly
@@ -126,6 +135,12 @@ clang++: error: linker command failed with exit code 1 (use -v to see invocation
 <https://cmake.org/>
 ---
 Build system generator.
+
+Note:
+* Generates the required files to build the project with the desired tools
+* Two phases: configure and build
+* Configure: generate build files from project setup and tools
+* Build: produce executable by running build files using build tool and compiler
 ---
 ![CMake Configure Step](./assets/cmake_overview_configure.png)
 ### Step 1: Configure
