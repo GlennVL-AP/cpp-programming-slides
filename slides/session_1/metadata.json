@@ -1,4 +1,4 @@
 {
     "title": "Session 1: Introduction",
-    "description": "Hello, world! Why C++? A brief history. Compilation model. Core guidelines and clang-format."
+    "description": "Hello, world! Why C++? A brief history. Compilation model. Core guidelines and static analysis."
 }

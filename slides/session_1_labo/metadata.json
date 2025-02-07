@@ -1,4 +1,4 @@
 {
     "title": "Labo 1: Compiling Hello, world!",
-    "description": "Working with a devcontainer. Manually compiling using clang. Old style includes vs modern style modules. Using buildsystem CMake."
+    "description": "Working with a devcontainer. Manually compiling using clang. Old style includes vs modern style modules. Using buildsystem CMake. Compiler warnings and clang-tidy."
 }
