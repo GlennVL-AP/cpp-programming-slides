@@ -19,7 +19,7 @@ Use a devcontainer with all the right tools instead!
 ---
 ### Why clang?
 * Excellent compiler
-* Only one that supports import std 😉
+* Only one that already supports import std 😉
 ---
 ### Before C++20
 ```c++ []
@@ -39,6 +39,8 @@ clang++ -o helloworld main.cpp
 ```
 
 Note:
+* helloworld is name of executable
+* run with `./helloworld`
 * gcc compiler also works
 * `g++ -o helloworld main.cpp`
 ---
@@ -212,6 +214,28 @@ Note:
 * target executable = hello_world
 ---
 ### VSCode Integration
+---
+<video controls width="600">
+  <source src="./assets/vscode_cmake_select_config.mp4" type="video/mp4">
+  <img src="./assets/vscode_cmake_select_config_1.png" alt="vscode cmake select config">
+</video>
+
+Select the configuration preset `clang-debug` from the vscode command palette.
+
+Note:
+* Open command palette: Ctrl+Shift+P
+* But should ask to select preset automatically
+---
+<video controls width="800">
+  <source src="./assets/vscode_cmake_build_run.mp4" type="video/mp4">
+  <img src="./assets/vscode_cmake_build.png" alt="vscode cmake build">
+</video>
+
+Build and run the project using the cmake buttons in the vscode status bar.
+
+Note:
+* CMake integration can be found in the status bar
+* Build, Run, Debug
 ---
 ### Exercise
 ---
