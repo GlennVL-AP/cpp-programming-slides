@@ -1,8 +1,25 @@
 # C/C++ Programming
 ## Labo 1
 ---
-## Clang Compiler
+## Installing the right tools
+---
+* clang
+* clang-tidy
+* clang-format
+* cmake
+* ninja
+* ...
+---
+Long list of tools that all need to be the correct version.
+---
+Use a devcontainer with all the right tools instead!
+---
+## Compiling code using clang
 <https://clang.llvm.org/>
+---
+### Why clang?
+* Excellent compiler
+* Only one that supports import std 😉
 ---
 ### Before C++20
 ```c++ []
@@ -20,6 +37,10 @@ int main()
 ```bash
 clang++ -o helloworld main.cpp
 ```
+
+Note:
+* gcc compiler also works
+* `g++ -o helloworld main.cpp`
 ---
 ### C++23
 ```c++ []
@@ -42,14 +63,17 @@ clang++ -std=c++23 -stdlib=libc++ \
 clang++ -std=c++23 -stdlib=libc++ \
   -fmodule-file=std=std.pcm -o helloworld main.cpp
 ```
+* Build std module first
+* Then build main.cpp and link std module
 ---
 ## Exercise
 ---
-1. Make sure you have docker installed!
 1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-base>
 1. Open with `vscode` or `clion`
 1. Start devcontainer
 1. Try compiling and running the two examples
+---
+### Multiple source files
 ---
 ```c++ []
 // helloworld.cpp
@@ -96,8 +120,98 @@ clang++: error: linker command failed with exit code 1 (use -v to see invocation
 * Gets complex very quickly
 * Use build tool instead! 👍
 ---
-![CMake](./assets/cmake-logo.jpg)
+![CMake](./assets/cmake_logo.jpg)
 <https://cmake.org/>
+---
+Build system generator.
+---
+![CMake Configure Step](./assets/cmake_overview_configure.png)
+### Step 1: Configure
+---
+![CMake Build Step](./assets/cmake_overview_build.png)
+### Step 2: Build
+---
+### CMakeLists.txt
+```cmake
+cmake_minimum_required(VERSION 3.30 FATAL_ERROR) # mandatory
+
+# create a c++ project with name HelloWorld
+project(HelloWorld LANGUAGES CXX)
+
+# add a new target: executable with name hello_world
+add_executable(hello_world)
+target_sources(hello_world
+    PRIVATE FILE_SET CXX_MODULES FILES
+    # add module source files here
+    helloworld.cpp
+    PRIVATE
+    # add old-style source files here
+    main.cpp
+)
+```
+
+Note:
+* lines not shown are configuration to support modules
+* main.cpp should be the only old-style source file
+* all other source files should be modules
+* project is allowed to have many targets
+---
+### CMakePresets.json
+```json
+  "configurePresets": [
+      {
+          "name": "clang-debug",
+          "generator": "Ninja",
+          "binaryDir": "${sourceDir}/build/${presetName}",
+          "cacheVariables": {
+              "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
+              "CMAKE_CXX_FLAGS": "-stdlib=libc++",
+              "CMAKE_EXE_LINKER_FLAGS": "-lc++ -lc++abi",
+              "CMAKE_BUILD_TYPE": "Debug"
+          }
+      }
+  ]
+```
+
+Note:
+* where to output object files and executable
+* which build system to use
+* which compiler to use
+* select standard library
+* ...
+---
+### Commandline CMake
+---
+```bash
+# Step 1: Configure project
+cmake --preset configure_preset_name
+```
+```bash
+# Step 2: Build target
+cmake --build --preset build_preset_name
+```
+```bash
+# Step 3: Run executable
+./build/configure_preset_name/executable_name
+```
+---
+#### Example
+```bash
+cmake --preset clang-debug
+```
+```bash
+cmake --build --preset clang-debug-build
+```
+```bash
+./build/clang-debug/hello_world
+```
+
+Note:
+* configure preset = clang-debug
+* build preset = clang-debug-build
+* target executable = hello_world
+---
+### VSCode Integration
 ---
 ### Exercise
 ---
@@ -105,3 +219,4 @@ clang++: error: linker command failed with exit code 1 (use -v to see invocation
 1. Open with `vscode` or `clion`
 1. Start devcontainer
 1. Try configuring and building the project
+1. Try running the project
