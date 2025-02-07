@@ -259,3 +259,41 @@ Note:
 1. Start devcontainer
 1. Try configuring and building the project
 1. Try running the project
+---
+## Compiler warnings, Static analysis, and Code formatting
+---
+Tools to help you write quality code.
+---
+### Compiler warnings
+---
+They exist for a reason.
+---
+Enable all of them and treat them as errors!
+---
+```cmake
+target_compile_options(hello_world PRIVATE
+    "-Wall;-Wextra;-Wpedantic;-Wshadow;-Wconversion"
+    "-Wsign-conversion;-Wdouble-promotion;-Wextra-semi"
+    "-Wnon-virtual-dtor;-Wold-style-cast;-Wcast-align"
+    "-Wunused;-Woverloaded-virtual;-Wnull-dereference"
+    "-Wimplicit-fallthrough;-Wformat=2;-Werror"
+)
+```
+Add to each target in `CMakeLists.txt`.
+---
+### Static analysis
+---
+TODO some slides about clang-tidy
+---
+### Formatting code
+---
+TODO video demo of clang-format in vscode
+---
+### Exercise
+---
+1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-staticanalysis>
+1. Open the devcontainer with `vscode` or `clion`
+1. Try configuring and building the project
+1. Run clang-format in `helloworld.cpp`
+1. Solve the clang-tidy error in the `Hello` function
+1. Add `// NOLINT(bugprone-exception-escape)` to the `main` function (this is a violation we can't fix yet)
