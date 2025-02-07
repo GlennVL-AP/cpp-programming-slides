@@ -8,11 +8,11 @@
 </head>
 <body>
     <h1>Cpp Programming Slides</h1>
-    <div class="list-container">
+    <div class="container">
         <ul>
             <% slide_decks.forEach(function(slide_deck) { %>
                 <li>
-                    <a href="<%= slide_deck.location %>" class="slide-link">
+                    <a href="<%= slide_deck.location %>" class="link slide-link">
                         <div class="slide-title"><%= slide_deck.title %></div>
                         <div class="slide-description"><%= slide_deck.description %></div>
                     </a>

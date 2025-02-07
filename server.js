@@ -75,13 +75,19 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/reveal.js", express.static(path.join(__dirname, "node_modules/reveal.js")));
 
 app.use((req, res, next) => {
-    res.status(404).render("404", { url: req.originalUrl });
+    res.status(404).render("error", {
+        status: 404,
+        short_message: "Page Not Found",
+        full_message: "Oops! The page you're looking for does not exist.",
+        url: req.originalUrl
+    });
 });
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500).render("500", {
+    res.status(err.status || 500).render("error", {
         status: err.status || 500,
-        message: err.message || "Internal Server Error",
+        short_message: "Internal Server Error",
+        full_message: err.message || "Internal Server Error",
         url: req.originalUrl
     });
 });
