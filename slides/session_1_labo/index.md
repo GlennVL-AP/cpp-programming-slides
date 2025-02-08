@@ -182,7 +182,7 @@ Note:
           "binaryDir": "${sourceDir}/build/${presetName}",
           "cacheVariables": {
               "CMAKE_CXX_COMPILER": "/usr/bin/clang++",
-              "CMAKE_CXX_FLAGS": "-stdlib=libc++",
+              "CMAKE_CXX_FLAGS": "-stdlib=libc++ -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG",
               "CMAKE_EXE_LINKER_FLAGS": "-lc++ -lc++abi",
               "CMAKE_BUILD_TYPE": "Debug"
           }
@@ -194,7 +194,7 @@ Note:
 * where to output object files and executable
 * which build system to use
 * which compiler to use
-* select standard library
+* select standard library (and enable bounds checks)
 * ...
 ---
 ### Commandline CMake
