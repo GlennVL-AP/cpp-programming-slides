@@ -282,12 +282,36 @@ target_compile_options(hello_world PRIVATE
 Add to each target in `CMakeLists.txt`.
 ---
 ### Static analysis
+clang-tidy
 ---
-TODO some slides about clang-tidy
+* Check [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+* Check for potential bugs
+* Check naming conventions
+---
+```cmake
+# look where clang-tidy is installed
+find_program(CLANG_TIDY NAMES clang-tidy REQUIRED)
+
+# enable clang-tidy for the hello_world target
+set_target_properties(hello_world PROPERTIES CXX_CLANG_TIDY
+    "${CLANG_TIDY}"
+)
+```
+Add in `CMakeLists.txt` to run as compilation step.
+
+Note:
+* Extra arguments required for clang-tidy to make it work with modules.
+* Violations will be listed as compilation errors.
 ---
 ### Formatting code
+clang-format
 ---
-TODO video demo of clang-format in vscode
+Automatically format source code.
+---
+<video controls width="800">
+  <source src="./assets/clang_format.mp4" type="video/mp4">
+  clang-format demo
+</video>
 ---
 ### Exercise
 ---
