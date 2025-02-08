@@ -309,8 +309,8 @@ clang-format
 Automatically format source code.
 ---
 <video controls width="800">
-  <source src="./assets/clang_format.mp4" type="video/mp4">
-  clang-format demo
+  <source src="./assets/vscode_clang_format.mp4" type="video/mp4">
+  vscode clang-format demo
 </video>
 ---
 ### Exercise
