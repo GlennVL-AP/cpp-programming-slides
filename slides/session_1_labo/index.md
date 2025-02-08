@@ -74,8 +74,8 @@ clang++ -std=c++23 -stdlib=libc++ \
 ---
 ## Exercise
 ---
-1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-base>
-1. Open with `vscode` or `clion`
+1. Clone <https://gitlab.apstudent.be/cpp-programming/devcontainers-labo-1.git>
+1. Open `cpp-devcontainer-base` with `vscode` or `clion`
 1. Start devcontainer
 1. Try compiling and running the two examples
 ---
@@ -254,8 +254,8 @@ Note:
 ---
 ### Exercise
 ---
-1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-cmake>
-1. Open with `vscode` or `clion`
+1. Clone <https://gitlab.apstudent.be/cpp-programming/devcontainers-labo-1.git>
+1. Open `cpp-devcontainer-cmake` with `vscode` or `clion`
 1. Start devcontainer
 1. Try configuring and building the project
 1. Try running the project
@@ -315,8 +315,8 @@ Automatically format source code.
 ---
 ### Exercise
 ---
-1. Clone <https://gitlab.apstudent.be/cpp-programming/cpp-devcontainer-staticanalysis>
-1. Open the devcontainer with `vscode` or `clion`
+1. Clone <https://gitlab.apstudent.be/cpp-programming/devcontainers-labo-1.git>
+1. Open `cpp-devcontainer-staticanalysis` with `vscode` or `clion`
 1. Try configuring and building the project
 1. Run clang-format in `helloworld.cpp`
 1. Solve the clang-tidy error in the `Hello` function
