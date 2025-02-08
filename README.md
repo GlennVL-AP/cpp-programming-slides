@@ -27,6 +27,8 @@ The slides can be rendered in the browser using the `reveal.js` node package.
    http://localhost:8000
    ```
 
+1. To view speaker notes, press `s`
+
 ## Required tools
 
 * git - <https://git-scm.com>
