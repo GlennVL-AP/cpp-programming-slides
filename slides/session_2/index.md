@@ -779,8 +779,6 @@ Best practice: Use constant expressions instead of magic values!
 ---
 A vector is a dynamic array. It can store multiple values of the same type.
 ---
-<https://en.cppreference.com/w/cpp/container/vector>
----
 ```c++
 // create a vector of ints
 std::vector<int> v1{3, 5, 2, 4, 1};
@@ -796,6 +794,8 @@ std::vector<std::string> v2{"mieke","joske","marieke","jefke"};
 std::ranges::sort(v2);
 ```
 ---
+<https://en.cppreference.com/w/cpp/container/vector>
+---
 ```c++
 import std;
 
@@ -803,6 +803,7 @@ int main()
 {
     std::vector<int> const vec{1, 2, 3, 4, 5};
 
+    // loop with read-only access to elements
     for (auto const& value : vec)
     {
         std::println("{}", value);
@@ -818,6 +819,7 @@ int main()
     std::vector<int> vec{1, 2, 3, 4, 5};
     vec.push_back(6);
 
+    // loop where elements can be modified
     for (auto&& value : vec)
     {
         value += 5;
