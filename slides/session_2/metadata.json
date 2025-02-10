@@ -1,4 +1,4 @@
 {
-    "title": "Session 2: TODO",
-    "description": "TODO"
+    "title": "Session 2: User input and Basic C++",
+    "description": "User input. Variables and Types. Initialization and Conversion. While, for, if, switch. Functions. Const and constexpr. Vector as a general purpose list."
 }
