@@ -259,6 +259,9 @@ Note:
 ![Common C++ operators](./assets/cpp_common_operators.png)
 
 <https://en.cppreference.com/w/cpp/language/expressions>
+
+Note:
+* Don't use a++ or a--
 ---
 ```c++ []
 std::string a{"hello"}; // a starts out with value "hello"
@@ -330,7 +333,7 @@ Conversion happens automagically.
 | | Bytes | Min value | Max value |
 |--|--|--|--|
 | char | 1 | -128 | 127 |
-| int | 4 | -2.147.4883.648 | 2.147.483.647 |
+| int | 4 | -2.147.483.648 | 2.147.483.647 |
 | double | 8 | 2,22e-308 | 1,79e+308|
 ---
 ```c++
@@ -350,6 +353,9 @@ Implicit conversions inherited from C. ☹️
 // int  -> double
 ```
 Target type is large enough to fit original type. Conversion is safe.
+
+Note:
+* Widening conversions are usually convenient
 ---
 #### Narrowing conversion
 ```c++
@@ -358,6 +364,9 @@ Target type is large enough to fit original type. Conversion is safe.
 // double -> int
 ```
 Target type is too small to fit original type. Information may get lost.
+
+Note:
+* Narrowing conversions are dangerous
 ---
 No compiler warnings when assignment operator is used. ☹️
 ---
@@ -370,6 +379,9 @@ No compiler warnings when assignment operator is used. ☹️
 [build]       |              ^
 ```
 clang-tidy finds these problems!
+
+Note:
+* Static analysis to the rescue
 ---
 ```c++
 int x0 = 7.8;   // narrows, compiler accepts, clang-tidy warns
@@ -380,6 +392,9 @@ int x2{7.8};    // illegal, {} does not allow narrowing
 int x3 = {7.8}; // illegal, {} does not allow narrowing
 ```
 Mutiple ways to initialize variables.
+
+Note:
+* {} and ={} are modern C++ constructs inspired by early C
 ---
 ```c++
 type x = value;   // unsafe for initialization, don't use
@@ -403,6 +418,9 @@ Note:
 * Use static analyzer
 ---
 ## Branches
+
+Note:
+* We haven't covered branches yet, so it's probably time we do
 ---
 ```c++
 if (/*condition*/)
@@ -418,6 +436,9 @@ else
     // statements to execute
 }
 ```
+
+Note:
+* No real surprises on how if statements work
 ---
 ```c++
 int x{0};
@@ -438,6 +459,9 @@ else if (x == 1) // this is also part of the if
 }
 // but here x is not in scope!
 ```
+
+Note:
+* Variables can be declared in if
 ---
 ```c++
 std::println("Pick an operation: 1: +, 2: -, 3: *: ");
@@ -456,6 +480,9 @@ if (operation == 1) {
 }
 ```
 ### Common pattern
+
+Note:
+* repetition of `operation == x` in each branch
 ---
 ```c++
 switch (operation)
@@ -510,6 +537,9 @@ Note:
 * Attributes are written between `[[attribute]]`
 ---
 ## Functions
+
+Note:
+* We've already seen examples of functions: main and hello
 ---
 ### Why functions?
 ---
@@ -521,6 +551,9 @@ Note:
 * Short functions with a clear name
 ---
 Makes reuse possible.
+
+Note:
+* Call function multiple times instead of copying code
 ---
 Makes it easier to test the code.
 ---
@@ -611,8 +644,11 @@ int square(int x)
     return x*x;
 }
 ```
-* Definition is obviously required.
-* Implemenation has to be somewhere.
+* Definition tells what the function does.
+* Only one definition is allowed!
+
+Note:
+* ODR = One Definition Rule
 ---
 ```c++ []
 // square.hpp
@@ -639,6 +675,9 @@ int main()
     std::println("{}", square(6));
 }
 ```
+
+Note:
+* Old-style header example
 ---
 We use modules instead.
 
@@ -665,6 +704,10 @@ int main()
     std::println("{}", square(6));
 }
 ```
+
+Note:
+* Module example, how we write code
+* Forward declarations usually not needed
 ---
 ## Const and constexpr
 ---
@@ -772,6 +815,9 @@ constexpr void function()
     }
 }
 ```
+
+Note:
+* We can ask the compiler if a function is being called at runtime or compile-time
 ---
 Best practice: Use constant expressions instead of magic values!
 ---
@@ -810,6 +856,10 @@ int main()
     }
 }
 ```
+
+Note:
+* foreach loop to read elements
+* convention: use auto const& value
 ---
 ```c++
 import std;
@@ -826,3 +876,9 @@ int main()
     }
 }
 ```
+
+Note:
+* foreach loop to modify elements
+* convention: use auto&& value
+---
+## Exercises!
