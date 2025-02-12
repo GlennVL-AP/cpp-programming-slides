@@ -24,10 +24,17 @@
     <script src="/reveal.js/plugin/markdown/markdown.js"></script>
     <script src="/reveal.js/plugin/highlight/highlight.js"></script>
     <script>
-        Reveal.initialize({
+        var revealConfig = {
             hash: true,
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
-        });
+        };
+        if (new URLSearchParams(window.location.search).has("print-pdf")) {
+            Object.assign(revealConfig, {
+                pdfMaxPagesPerSlide: 1,
+                showNotes: true
+            });
+        }
+        Reveal.initialize(revealConfig);
     </script>
 </body>
 </html>
