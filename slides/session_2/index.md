@@ -751,7 +751,7 @@ std::print("Enter the radius of the circle: ");
 std::cin >> radius;
 ```
 ```c++
-double const area{pi*r*r}; // area is constant
+double const area{pi*radius*radius}; // area is constant
 ```
 ---
 ```c++

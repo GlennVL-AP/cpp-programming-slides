@@ -6,7 +6,7 @@
 ---
 ### For each exercise
 * Create new directory for exercise
-* Add following line to main CMakeListst.txt file
+* Add following line to main CMakeLists.txt file
 ```cmake
 add_subdirectory(my_new_directory)
 ```
