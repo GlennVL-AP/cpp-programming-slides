@@ -29,6 +29,21 @@ The slides can be rendered in the browser using the `reveal.js` node package.
 
 9. To view speaker notes, press `s`
 
+## Export to pdf
+
+1. Append `?print-pdf` to the url of a slide deck
+
+   ```text
+   http://localhost:8000/slides/session_0_docker?print-pdf
+   ```
+
+2. Open the print dialog `ctrl+p`
+3. Change `Destination` to `Save to PDF`
+4. Change `Layout` to `Landscape`
+5. Change `Margins` to `None`
+6. Enable `Print backgrounds` option
+7. Click the `Save` button
+
 ## Required tools
 
 * git - <https://git-scm.com>
