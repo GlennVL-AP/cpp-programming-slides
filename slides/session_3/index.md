@@ -2,9 +2,8 @@
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 ---
 * STL containers
-  * std::vector
-  * std::array
-  * std::map
+  * std::vector, std::array, std::unordered_map
+  * std::span, std::string_view
 * Errors
   * Compile-time, link-time, run-time
   * Exceptions
@@ -28,6 +27,11 @@ Note:
 ```c++
 std::array<int, 5> my_array{1, 2, 3, 4, 5};
 ```
+
+Note:
+* Type and length can be deduced: std::array my_array{1, 2, 3, 4, 5};
+* Don't use c-style arrays in c++! int my_array[] = {1, 2, 3, 4, 5}; // bad
+---
 ```c++
 my_array[3] = 7;
 ```
@@ -43,8 +47,67 @@ for (auto&& value : my_array)
     value += 5;
 }
 ```
+
+Note:
+* Can be used the same way as std::vector
 ---
-### Arrays as function arguments
+#### Arrays as function arguments
+---
+```c++
+void read_array(std::array<int, 5> array)
+{
+  // this function only accepts arrays with 5 elements 🙁
+  // array is passed by value, so I can't modify items 🙁
+}
+```
+
+Note:
+* Passed by value means a copy is made that is used in the function.
+* Making changes to the copy does not affect the original.
+---
+#### std::span
+---
+A span is an array slice.
+
+Note:
+* It points to a position in the array (by default the start).
+* And has a number of items (by default the total number of items in the array).
+---
+It is not a copy, but refers it to the original!
+
+Note:
+* Modifying elements through a span will also update the original.
+---
+```c++ []
+using std;
+
+int main()
+{
+    std::span<int> my_span{};
+    {
+        std::array my_array{1, 2, 3, 4, 5};
+        my_span = std::span{my_array};
+    }
+    my_span[0] = 3; // ouch, access violation!
+}
+```
+You are responsible to make sure the lifetime of the array to which it refers is long enough!
+---
+Use std::span to pass arrays to functions.
+---
+```c++
+void modify_array(std::span<int> array)
+{
+    for (auto&& value : array)
+    {
+        value += 5;
+    }
+}
+```
+A span can be used to modify the elements in the original array.
+
+Note:
+* std::span CANNOT be used to add/remove elements!
 ---
 ```c++
 void read_array(std::span<int const> array)
@@ -55,20 +118,7 @@ void read_array(std::span<int const> array)
     }
 }
 ```
-```c++
-void modify_array(std::span<int> array)
-{
-    for (auto&& value : array)
-    {
-        value += 5;
-    }
-}
-```
-
-Note:
-* A span is an array slice
-* Does not copy, but refers to the original
-* You are responsible to make sure the lifetime of the array to which it refers is long enough!
+Add const to the element type if you don't want to modify the original array.
 ---
 ```c++
 std::array my_array{1, 2, 3, 4, 5};
@@ -91,33 +141,13 @@ Note:
 * No template argument for number of elements required
 * Accepts all sorts of array types (std::array, std::vector, c array, ...)
 ---
-### Strings
+#### Best practices
 ---
-```c++
-void read_string(std::string_view string)
-{
-    std::println("{}", string);
-}
-```
-
-Note:
-* string_view is a read-only array slice
-* Be mindful of lifetimes!
+* Use std::array when you know the number of elements at compile time.
+* Use std::vector when you don't.
 ---
-```c++
-std::string my_string{"some text"};
-std::string_view my_string_literal{"some text"};
-char my_c_string[] = "some text"; // don't do this in c++
-```
-```c++
-read_string(my_string);
-read_string(my_string_literal);
-read_string(my_c_string);
-```
-
-Note:
-* Why use string_view over string?
-* Accepts all sorts of strings (std::string, string literal, c char array, ...)
+* Use std::span to pass arrays to functions.
+* Add const to the element type for read-only access.
 ---
 ### std::unordered_map
 ---
@@ -159,6 +189,9 @@ if (colors.contains("black"))
     std::println("black has value {}", colors["black"]);
 }
 ```
+
+Note:
+* Use contains() to avoid accidentally creating default-initialized elements.
 ---
 ```c++
 // read
@@ -176,7 +209,18 @@ for (auto&& [color, code] : colors)
 ```
 
 Note:
-* structured bindings
+* Each iteration we get a key and a value.
+* Syntax to extract them is [key, value].
+* This is called structured bindings.
+---
+* std::string
+* std::vector
+* std::array
+* std::span
+* std::unordered_map
+
+Note:
+* Our STL journey so far.
 ---
 ## Error handling
 ---
