@@ -222,6 +222,51 @@ Note:
 Note:
 * Our STL journey so far.
 ---
-## Error handling
+## Errors!
 ---
-TODO
+
+<div style="display: flex; align-items: center; justify-content: space-around;">
+<div style="max-width: 55%;">
+
+> I realized that from now on a large part of my life would be spent finding and correcting my own mistakes.
+
+Maurice Wilkes, 1945
+
+</div>
+<div style="max-width: 45%;">
+
+![Maurice Wilkes](./assets/maurice_wilkes.jpg)
+
+</div>
+</div>
+
+---
+Errors are simply unavoidable when you develop a program, yet the final program must be *free of errors\**.
+
+Note:
+* At least, free of critical errors.
+---
+### Error classifications
+---
+#### Compile-time errors
+Errors found by the compiler. Can be further classified based on which language rule is violated.
+
+Note:
+* Syntax errors (for example missing braces, missing ;)
+* Type errors (for example wrong number of function arguments, incorrect type of function arguments)
+---
+#### Link-time errors
+Errors found by the linker when it is trying to combine object-files into an executable.
+
+Note:
+* Undefined references (for example function definition is not found)
+---
+#### Run-time errors
+Errors found by checks in a running program.
+
+aka Logic Errors
+
+Note:
+* Errors detected by the computer (OS or hardware, for example access violations, out of memory)
+* Errors detected by a library (for example bounds checking in the stl)
+* Errors detected by user code (for example unit tests)
