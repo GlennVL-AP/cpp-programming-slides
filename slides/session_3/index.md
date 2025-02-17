@@ -8,7 +8,7 @@
 * Errors
   * Compile-time, link-time, run-time
   * Exceptions
-  * Debugging
+  * Avoiding and finding errors
 ---
 ## More stl containers
 ---
@@ -180,7 +180,4 @@ Note:
 ---
 ## Error handling
 ---
-* compiler errors
-* debugging
-* exceptions
-* std::expected
+TODO

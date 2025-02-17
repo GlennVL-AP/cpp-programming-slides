@@ -1,4 +1,4 @@
 {
-    "title": "Session 3: TODO",
-    "description": "TODO"
+    "title": "Session 3: STL Containers and Errors",
+    "description": "STL containers: std::array, std::unordered_map, std::span, std::string_view. Compile-time, link-time and run-time errors. Exceptions. Avoiding and finding errors."
 }
