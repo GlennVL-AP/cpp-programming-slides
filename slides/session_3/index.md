@@ -121,7 +121,7 @@ Note:
 ---
 ### std::unordered_map
 ---
-std::unordered_map is an associative container that contain key-value pairs with unique keys.
+std::unordered_map is an associative container that contains key-value pairs with unique keys.
 ---
 * std::unordered_map - hashmap
 * std::map - sorted by key
