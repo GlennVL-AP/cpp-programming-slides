@@ -88,7 +88,7 @@ int main()
         std::array my_array{1, 2, 3, 4, 5};
         my_span = std::span{my_array};
     }
-    my_span[0] = 3; // ouch, access violation!
+    my_span[0] = 3; // ouch, access violation! 😬
 }
 ```
 You are responsible to make sure the lifetime of the array to which it refers is long enough!
@@ -165,8 +165,8 @@ Note:
 ```c++
 std::unordered_map<std::string, std::string> colors{
     {"red", "#FF0000"},
-    {"green", "##00FF00"},
-    {"blue", "##0000FF"}
+    {"green", "#00FF00"},
+    {"blue", "#0000FF"}
 };
 ```
 
@@ -207,6 +207,7 @@ for (auto&& [color, code] : colors)
     code = "[" + code + "]";
 }
 ```
+structured bindings
 
 Note:
 * Each iteration we get a key and a value.
@@ -270,3 +271,201 @@ Note:
 * Errors detected by the computer (OS or hardware, for example access violations, out of memory)
 * Errors detected by a library (for example bounds checking in the stl)
 * Errors detected by user code (for example unit tests)
+---
+C++ provides a mechanism to deal with errors.
+---
+### Exceptions
+---
+Separates the detection and handling of an error.
+
+Note:
+* Detection should be done in the called function
+* Handling should be done in the calling function
+---
+Ensures that a detected error cannot be ignored.
+---
+#### What if a function detects an error it cannot handle?
+---
+It should not return normally.
+---
+Instead it should throw an exception and pass the responbility to handle the error to the caller.
+---
+```c++
+int main()
+try
+{
+    std::vector vec{1, 2, 3, 4, 5};
+    vec.at(5) = 6; // out of bounds access
+}
+catch (std::exception const& e)
+{
+    std::cerr << "Exception caught: " << e.what() << '\n';
+}
+```
+```text
+Exception caught: vector
+```
+
+Note:
+* Bounds checking at at() function, exception is thrown
+---
+```c++
+int main()
+try
+{
+    std::vector vec{1, 2, 3, 4, 5};
+    vec[5] = 6; // out of bounds access
+}
+catch (std::exception const& e)
+{
+    // no exception thrown, application terminates
+    std::cerr << e.what() << '\n';
+}
+```
+```text
+/usr/lib/llvm-19/bin/../include/c++/v1/vector:1436:
+assertion __n < size() failed: vector[] index out of bounds
+Aborted (core dumped)
+```
+
+Note:
+* STL only does bounds checking in at() function, not in operator[]
+* We have enabled STL hardening mode to also check in operator[], this will cause an assertion error and abort instead of exception
+---
+```c++
+struct BadArea : std::exception {};
+```
+```c++
+int calculate_area(int length, int width)
+{
+    if ((length < 0) || (width < 0)) { throw BadArea{}; }
+    return length * width;
+}
+```
+```c++
+int main()
+try
+{
+    calculate_area(5, -1);
+}
+catch (BadArea const& e)
+{
+    std::cerr << "Bad area exception!\n";
+}
+```
+
+Note:
+* Custom exceptions
+* Best practice: inherit from std::exception
+---
+#### When to use exceptions?
+---
+#### Use exceptions for exceptional cases.
+Invalid user input or failing to open a file is expected and should be handled properly.
+---
+### Avoiding and finding errors
+---
+#### Debugging
+---
+1. Get the program to compile.
+2. Get the program to link.
+3. Get the program to do what it is supposed to do.
+---
+Think about debugging before you start writing code.
+---
+* Add clear comments.
+* Use meaningful names.
+* Use a consistent layout (clang-format!).
+* Break code into small functions.
+* Avoid complicated sequences (nested loops, ifs, ...).
+* Use libraries instead of reinventing the wheel.
+---
+#### Design by contract
+---
+A contract consists of preconditions, postconditions and invariants.
+---
+##### Preconditions
+---
+A precondition is a requirement of a function upon its arguments.
+---
+```c++
+int calculate_area(int length, int width)
+{
+    if ((length < 0) || (width < 0)) { throw BadArea{}; }
+    return length * width;
+}
+```
+What are the preconditions?
+
+Note:
+* The function takes two arguments.
+* Both arguments are of type int.
+* Neither of the arguments is allowed to be a negative value.
+---
+Types are a form of precondition that is enforced by the compiler.
+---
+Some preconditions we can enforce by writing code.
+---
+Some preconditions cannot be expressed as code, but can be added as a comment.
+---
+##### Postconditions
+---
+A postcondition is a promise a function makes if and only off all preconditions are satisfied.
+---
+```c++
+int calculate_area(int length, int width)
+{
+    if ((length < 0) || (width < 0)) { throw BadArea{}; }
+    return length * width;
+}
+```
+What are the postconditions?
+
+Note:
+* There is one return value.
+* The type of the return value is an integer.
+* If both length and width are positive, the area will also be positive.
+---
+##### Writing contracts in code
+---
+I don't want to add if statements with throw all over the place! 🙃
+---
+A helper function: expect()
+
+Note:
+* We have to implement expect() ourselves.
+* It is not part of the standard library.
+---
+```c++ []
+int calculate_area(int length, int width)
+{
+    // precondition
+    expect([&]{ return (length >= 0) && (width >= 0); },
+           "length and width cannot be negative");
+
+    int result{length * width};
+
+    // postcondition
+    expect([&]{ return result >= 0; }, "area is positive");
+
+    return result;
+}
+```
+If you give me a positive length and width, I promise you that the area will also be positive.
+
+Note:
+* Preconditions are the most important!
+* Postcondition are not often added as code.
+* We are using lambdas here, a short way of writing functions.
+* []{} declares a lambda.
+* Between [] we say which variables we want to be available inside the lambda {}.
+* [&] means all variables.
+* We write the function body between {}. In this case it should return a boolean.
+---
+### C++26 will support contracts! 👍
+But for now we are stuck with expect().
+
+Note:
+* New syntax is accepted for C++26 that will allow you to write preconditions and postconditions.
+---
+## Exercises!
