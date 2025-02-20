@@ -21,7 +21,7 @@
 * std::array for static number of elements
 
 Note:
-* Known the number of elements at compile-time? std::array
+* Know the number of elements at compile-time? std::array
 * Don't know the number of elements at compile-time? std::vector
 ---
 ```c++
@@ -458,8 +458,8 @@ Note:
 * Postcondition are not often added as code.
 * We are using lambdas here, a short way of writing functions.
 * []{} declares a lambda.
-* Between [] we say which variables we want to be available inside the lambda {}.
-* [&] means all variables.
+* Between [] we say which variables we want to be available inside the lambda body {}.
+* [&] means we want access to all variables.
 * We write the function body between {}. In this case it should return a boolean.
 ---
 ### C++26 will support contracts! 👍

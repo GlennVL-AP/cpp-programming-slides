@@ -11,7 +11,7 @@
 ---
 * Similar to labo 2 devcontainer.
 * Uses a src subdirectory.
-* Has a cpprog module with expect function.
+* Has a cpprog module with expect() function.
 * See [README.md](https://gitlab.apstudent.be/cpp-programming/devcontainer-labo-3/-/blob/main/README.md) file in git repository.
 ---
 ```c++
@@ -27,7 +27,7 @@ int my_division(int numerator, int denominator)
 ```
 
 Note:
-* How to use the except function for preconditions?
+* How to use the expect() function for preconditions?
 * See also hellocontracts example in devcontainer.
 ---
 ## Clang-tidy
