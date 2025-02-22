@@ -58,6 +58,22 @@ h1 {
     display: flex;
     align-items: stretch;
 }
+.placeholder-item {
+    background: #2c2c2c;
+    color: #d0d0d0;
+    border-radius: 10px;
+    border: 1px solid #444;
+    padding: 15px;
+}
+.no-slides-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.no-slides-message {
+    font-size: 0.9em;
+    color: #bbb;
+}
 .error-container p {
     font-size: 1.2em;
     color: #bbbbbb;

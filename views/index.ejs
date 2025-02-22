@@ -10,14 +10,23 @@
     <h1>C++ Programming Slides</h1>
     <div class="container slide-container">
         <ul>
-            <% slide_decks.forEach(function(slide_deck) { %>
-                <li>
-                    <a href="<%= slide_deck.location %>" class="link slide-link">
-                        <div class="slide-title"><%- slide_deck.title %></div>
-                        <div class="slide-description"><%- slide_deck.description %></div>
-                    </a>
-                </li>
-            <% }); %>
+<% if (slide_decks.length > 0) { %>
+    <% slide_decks.forEach(function(slide_deck) { %>
+            <li>
+                <a href="<%= slide_deck.location %>" class="link slide-link">
+                    <div class="slide-title"><%- slide_deck.title %></div>
+                    <div class="slide-description"><%- slide_deck.description %></div>
+                </a>
+            </li>
+    <% }); %>
+<% } else { %>
+            <li >
+                <div class="placeholder-item">
+                    <div class="no-slides-title">No slides available!</div>
+                    <div class="no-slides-message">Please be patient while the slides are being created. 😉</div>
+                </div>
+            </li>
+<% } %>
         </ul>
     </div>
     <script>
