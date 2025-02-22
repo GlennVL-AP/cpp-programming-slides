@@ -23,9 +23,13 @@
     <script>
         function updateListItemHeights() {
             const items = document.querySelectorAll(".container ul li");
+            if (items.length === 0) return;
+            const columnCount = window.getComputedStyle(document.querySelector(".container ul")).gridTemplateColumns.split(" ").length;
             items.forEach(item => item.style.height = "auto");
-            const maxHeight = Math.max(...Array.from(items, item => item.offsetHeight));
-            items.forEach(item => item.style.height = `${maxHeight}px`);
+            if (columnCount > 1) {
+                const maxHeight = Math.max(...Array.from(items, item => item.offsetHeight));
+                items.forEach(item => item.style.height = `${maxHeight}px`);
+            }
         }
         document.addEventListener("DOMContentLoaded", updateListItemHeights);
         window.addEventListener("resize", updateListItemHeights);
