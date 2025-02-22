@@ -11,6 +11,9 @@ h1 {
     text-align: center;
     margin-top: 50px;
 }
+.no-break {
+    white-space: nowrap;
+}
 .container::before {
     content: "";
     position: absolute;
@@ -41,7 +44,7 @@ h1 {
 .slide-container ul {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 15px;
     padding: 0;
     margin: 0;

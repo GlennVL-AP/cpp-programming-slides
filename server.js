@@ -52,12 +52,19 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
+    const words_to_prevent_break = ["C++"];
+    function wrap_no_break(text) {
+        return words_to_prevent_break.reduce((acc, word) => {
+            const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
+            return acc.replace(regex, `<span class="no-break">${word}</span>`);
+        }, text);
+    }
     const slide_decks_metadata = slide_decks
         .filter(([slide_deck, metadata]) => !(metadata.hidden && metadata.hidden === true))
         .map(([slide_deck, metadata]) => ({
             location: "/slides/" + slide_deck,
-            title: metadata.title,
-            description: metadata.description
+            title: wrap_no_break(metadata.title),
+            description: wrap_no_break(metadata.description)
         }));
     res.render(
         "index",
