@@ -36,7 +36,7 @@ h1 {
     text-align: left;
 }
 .slide-container {
-    max-width: 1800px;
+    width: calc(100% - 80px);
 }
 .error-container {
     max-width: 600px;
