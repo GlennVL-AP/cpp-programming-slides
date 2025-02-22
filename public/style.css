@@ -38,7 +38,7 @@ h1 {
 .error-container {
     max-width: 600px;
 }
-ul {
+.slide-container ul {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -46,11 +46,11 @@ ul {
     padding: 0;
     margin: 0;
 }
-li {
+.slide-container li {
     display: flex;
     align-items: stretch;
 }
-p {
+.error-container p {
     font-size: 1.2em;
     color: #bbbbbb;
     margin-bottom: 20px;
