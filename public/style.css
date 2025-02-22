@@ -44,10 +44,15 @@ h1 {
 .slide-container ul {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
     gap: 15px;
     padding: 0;
     margin: 0;
+}
+@media(max-width: 600px) {
+    .slide-container ul {
+        grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    }
 }
 .slide-container li {
     display: flex;
