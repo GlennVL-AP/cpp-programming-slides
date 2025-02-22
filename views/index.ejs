@@ -21,11 +21,14 @@
         </ul>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        function updateListItemHeights() {
             const items = document.querySelectorAll(".container ul li");
+            items.forEach(item => item.style.height = "auto");
             const maxHeight = Math.max(...Array.from(items, item => item.offsetHeight));
             items.forEach(item => item.style.height = `${maxHeight}px`);
-        });
+        }
+        document.addEventListener("DOMContentLoaded", updateListItemHeights);
+        window.addEventListener("resize", updateListItemHeights);
     </script>
 </body>
 </html>
