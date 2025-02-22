@@ -24,7 +24,6 @@ h1 {
     opacity: 0.3;
 }
 .container {
-    max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     border: 1px solid #444;
@@ -33,13 +32,23 @@ h1 {
     position: relative;
     text-align: left;
 }
+.slide-container {
+    max-width: 1800px;
+}
+.error-container {
+    max-width: 600px;
+}
 ul {
     list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
     padding: 0;
     margin: 0;
 }
 li {
-    margin: 15px 0;
+    display: flex;
+    align-items: stretch;
 }
 p {
     font-size: 1.2em;
@@ -61,7 +70,9 @@ p {
     border-color: #666;
 }
 .slide-link {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 .slide-title {
     font-size: 1.5em;
