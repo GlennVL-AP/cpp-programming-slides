@@ -2,3 +2,26 @@
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 ---
 TODO
+---
+* Function overloading
+* References
+* Classes
+* RAII
+* Operator overloading
+* Inheritance
+* Run-time polymorphism
+* Value categories
+* Rule-of-5
+---
+## Value Categories
+---
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
+graph TD;
+    A["value categories"] --> B["generalized lvalues"];
+    A --> C["rvalues"];
+    B --> D["lvalues"];
+    B --> E["expiring values"];
+    C --> E;
+    C --> F["pure rvalues"];
+```

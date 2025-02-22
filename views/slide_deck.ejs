@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
     <link rel="stylesheet" href="/reveal.js/dist/theme/black.css">
     <link rel="stylesheet" href="/reveal.js/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides .mermaid {
+            background: none !important;
+        }
+        .reveal .slides .mermaid svg {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
     <div class="reveal">
@@ -23,10 +32,11 @@
     <script src="/reveal.js/plugin/notes/notes.js"></script>
     <script src="/reveal.js/plugin/markdown/markdown.js"></script>
     <script src="/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.js"></script>
     <script>
         var revealConfig = {
             hash: true,
-            plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid]
         };
         if (new URLSearchParams(window.location.search).has("print-pdf")) {
             Object.assign(revealConfig, {
