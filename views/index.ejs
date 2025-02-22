@@ -20,5 +20,12 @@
             <% }); %>
         </ul>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const items = document.querySelectorAll(".container ul li");
+            const maxHeight = Math.max(...Array.from(items, item => item.offsetHeight));
+            items.forEach(item => item.style.height = `${maxHeight}px`);
+        });
+    </script>
 </body>
 </html>
