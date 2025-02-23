@@ -16,7 +16,6 @@ TODO
 ## Value Categories
 ---
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 graph TD;
     A["value categories"] --> B["generalized lvalue"];
     A --> C["rvalue"];

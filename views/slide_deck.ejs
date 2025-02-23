@@ -40,6 +40,7 @@
     <script>
         var revealConfig = {
             hash: true,
+            mermaid: {'theme': 'dark', 'themeVariables': { 'darkMode': true }},
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid]
         };
         if (new URLSearchParams(window.location.search).has("print-pdf")) {
