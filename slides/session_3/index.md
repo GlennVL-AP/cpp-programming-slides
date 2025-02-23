@@ -288,7 +288,7 @@ Ensures that a detected error cannot be ignored.
 ---
 It should not return normally.
 ---
-Instead it should throw an exception and pass the responbility to handle the error to the caller.
+Instead it should throw an exception and pass the responsibility to handle the error to the caller.
 ---
 ```c++
 int main()
@@ -410,7 +410,7 @@ Some preconditions cannot be expressed as code, but can be added as a comment.
 ---
 ##### Postconditions
 ---
-A postcondition is a promise a function makes if and only off all preconditions are satisfied.
+A postcondition is a promise a function makes if and only if all preconditions are satisfied.
 ---
 ```c++
 int calculate_area(int length, int width)
