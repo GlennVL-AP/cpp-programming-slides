@@ -7,28 +7,30 @@
     <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
-    <h1>C++ Programming Slides</h1>
-    <div class="container slide-container">
-        <ul>
+    <header><h1>C++ Programming Slides</h1></header>
+    <main>
+        <section class="container slide-container">
+            <ul>
 <% if (slide_decks.length > 0) { %>
     <% slide_decks.forEach(function(slide_deck) { %>
-            <li>
-                <a href="<%= slide_deck.location %>" class="link slide-link">
-                    <div class="slide-title"><%- slide_deck.title %></div>
-                    <div class="slide-description"><%- slide_deck.description %></div>
-                </a>
-            </li>
+                <li>
+                    <a href="<%= slide_deck.location %>" class="link slide-link">
+                        <div class="slide-title"><%- slide_deck.title %></div>
+                        <div class="slide-description"><%- slide_deck.description %></div>
+                    </a>
+                </li>
     <% }); %>
 <% } else { %>
-            <li >
-                <a href="/" class="link slide-link">
-                    <div class="slide-title">No slides available!</div>
-                    <div class="slide-description">Please be patient while the slides are being created. 😉</div>
-                </a>
-            </li>
+                <li >
+                    <a href="/" class="link slide-link">
+                        <div class="slide-title">No slides available!</div>
+                        <div class="slide-description">Please be patient while the slides are being created. 😉</div>
+                    </a>
+                </li>
 <% } %>
-        </ul>
-    </div>
+            </ul>
+        </section>
+    </main>
     <script>
         function updateListItemHeights() {
             const items = document.querySelectorAll(".container ul li");

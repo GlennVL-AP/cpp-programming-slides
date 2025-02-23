@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
-    <h1><%= status %> - <%= short_message %></h1>
-    <div class="container error-container">
-        <h2><%= url %></h2>
-        <p><%= full_message %></p>
-        <a href="/" class="link home-link">Go Home</a>
-    </div>
+    <header><h1><%= status %> - <%= short_message %></h1></header>
+    <main>
+        <section class="container error-container">
+            <h2><%= url %></h2>
+            <p><%= full_message %></p>
+            <a href="/" class="link home-link">Go Home</a>
+        </section>
+    </main>
 </body>
 </html>
