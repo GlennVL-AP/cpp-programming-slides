@@ -18,10 +18,10 @@ TODO
 ```mermaid
 %%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true }}}%%
 graph TD;
-    A["value categories"] --> B["generalized lvalues"];
-    A --> C["rvalues"];
-    B --> D["lvalues"];
-    B --> E["expiring values"];
+    A["value categories"] --> B["generalized lvalue"];
+    A --> C["rvalue"];
+    B --> D["lvalue"];
+    B --> E["expiring value"];
     C --> E;
-    C --> F["pure rvalues"];
+    C --> F["pure rvalue"];
 ```
