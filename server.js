@@ -52,11 +52,13 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
-    const slide_decks_metadata = slide_decks.map(([slide_deck, metadata]) => ({
-        location: "/slides/" + slide_deck,
-        title: metadata.title,
-        description: metadata.description
-    }));
+    const slide_decks_metadata = slide_decks
+        .filter(([slide_deck, metadata]) => !(metadata.hidden && metadata.hidden === true))
+        .map(([slide_deck, metadata]) => ({
+            location: "/slides/" + slide_deck,
+            title: metadata.title,
+            description: metadata.description
+        }));
     res.render(
         "index",
         { slide_decks: slide_decks_metadata },
