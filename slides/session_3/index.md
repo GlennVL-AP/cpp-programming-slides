@@ -157,10 +157,9 @@ std::unordered_map is an associative container that contains key-value pairs wit
 * std::map - sorted by key
 
 Note:
-* std::map implemented as red-black tree
-* Hashmap is faster
-* std::map: search, insert, delete all O(log n)
-* std::unoredered_map: search, insert, delete all O(1)
+* std::map is a red-black tree
+* std::map: search, insert, delete all O(log n) (performance depends on the number of elements)
+* std::unoredered_map: search, insert, delete all O(1) (constant time: does not depend on the number of elements)
 ---
 ```c++
 std::unordered_map<std::string, std::string> colors{
