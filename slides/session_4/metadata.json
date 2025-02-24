@@ -1,4 +1,4 @@
 {
-    "title": "Session 4: TODO",
-    "description": "TODO"
+    "title": "Session 4: References and OOP",
+    "description": "Some C++ technicalities. References, function overloading and value categories. Object Oriented Programming. Classes, enums, RAII, operator overloading. The rule-of-5."
 }
