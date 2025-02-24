@@ -147,6 +147,23 @@ auto sum = my_func(4, 5);
 Use return values instead of output arguments! 👍
 ---
 ```c++
+auto my_func(int a, int b) -> int
+{
+    if (b != 0)
+    {
+        return a + b;
+    }
+    return 0;
+}
+```
+Trailing return type.
+
+Note:
+* Since C++11 it is allowed to write the return type at the end.
+* Syntax: auto func() -> return_type
+* Useful in metaprogramming when return type depends on function arguments.
+---
+```c++
 std::unordered_map dict{
     {"word 1": "explanation of word 1"},
     {"word 2": "explanation of word 2"}
