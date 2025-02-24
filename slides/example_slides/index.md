@@ -18,9 +18,9 @@ int main()
 }
 ```
 What is the value category of `x`?
-* lvalue
-* xvalue <!-- .element: class="fragment highlight-current-blue" -->
-* prvalue
+* lvalue <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* xvalue <!-- .element: class="fragment highlight-current-blue grow" data-fragment-index="1" -->
+* prvalue <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
 
 Note:
 * Using fragments in markdown.
@@ -36,9 +36,9 @@ int main()
 ```
 What is the value category of `x`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div>a) lvalue</div>
-    <div class="fragment highlight-current-blue">b) xvalue</div>
-    <div>c) prvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
