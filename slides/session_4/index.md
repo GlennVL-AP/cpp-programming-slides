@@ -6,13 +6,12 @@ kanban
   column1[Technicalities]
     task1[References]
     task2[Function overloading]
-    task3[Function call implementation]
-    task4[Value categories]
+    task3[Value categories]
   column2[OOP]
-    task5[Classes and Enums]
-    task6[RAII]
-    task7[Operator overloading]
-    task8[Rule-of-5]
+    task4[Classes and Enums]
+    task5[RAII]
+    task6[Operator overloading]
+    task7[Rule-of-5]
 ```
 ---
 ## References
@@ -370,10 +369,6 @@ What will the program print?
 
 Note:
 * String literal promoted to std::string. Literal cannot be modified, so const.
----
-## Function call implementation
----
-TODO
 ---
 ## Classes and Enums
 Create your own type.
