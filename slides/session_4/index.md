@@ -146,6 +146,22 @@ auto sum = my_func(4, 5);
 ```
 Use return values instead of output arguments! 👍
 ---
+```c++
+std::unordered_map dict{
+    {"word 1": "explanation of word 1"},
+    {"word 2": "explanation of word 2"}
+};
+
+for (auto const& [word, explanation] : dict)
+{
+    // ...
+}
+```
+References are not restricted to function arguments.
+
+Note:
+* We've already used references in for loops.
+---
 ```c++ []
 int a{5};           // define an integer a with value 5
 int& b{a};          // b is an alias for a
@@ -153,7 +169,7 @@ b = 15;             // a is updated to the value 15
 int const& c{b};    // c is a read-only alias for b (and a)
 c = 30;             // not allowed, can't write to c
 ```
-References are not restricted to function arguments.
+References can be used anywhere.
 ---
 ### Best practice
 ---
@@ -170,7 +186,8 @@ TODO date example?
 * month is enum
 ---
 ## RAII
-Resource Allocation Is Initialization.
+---
+Resource Allocation Is Initialization
 ---
 ```c++
 import std;
