@@ -400,7 +400,7 @@ auto a = MyType{}.my_int;       // MyType{}.my_int
 A member of object expression where the object is an rvalue.
 ---
 ```c++
-auto a = std::array{1, 2}[1];   // std::array{1, 2, 3}[1]
+auto a = std::array{1, 2}[1];   // std::array{1, 2}[1]
 ```
 The build-int subscript expression where the array is an rvalue.
 ---
