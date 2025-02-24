@@ -42,6 +42,20 @@ Note:
 ![Tiobe Index 2025](./assets/tiobe_index.png)
 <https://www.tiobe.com/tiobe-index/>
 ---
+```mermaid
+pie title Programming languages by popularity
+    "Python" : 23.88
+    "C++" : 11.37
+    "Java" : 10.66
+    "C" : 9.84
+    "C#": 4.12
+    "JavaScript": 3.78
+    "Other" : 36.35
+```
+
+Note:
+* Tiobe index as piechart.
+---
 ## History
 ---
 ![Bjarne Stroustrup](./assets/bjarne_stroustrup.jpg)
@@ -89,6 +103,27 @@ Minor fixes
 * ISO C++20
 * ISO C++23
 * ISO C++26 (WiP)
+---
+<!-- .slide: data-visibility="hidden" -->
+```mermaid
+timeline
+    title History of C++
+    section Pre-standardization
+      1979: C with Classes
+      1984: Renamed to C++
+      1985: CFront
+    section Standardization
+      1989: Request for standardization
+      1998: First standard : ISO C++98
+      2003: Minor fixes : ISO C++03
+    section Modern C++
+      2011: ISO C++11
+      2014-...: ISO C++14
+              : ISO C++17
+              : ISO C++20
+              : ISO C++23
+              : ISO C++26 (WiP)
+```
 ---
 ## Compilation Model
 
