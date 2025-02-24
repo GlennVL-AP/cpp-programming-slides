@@ -195,6 +195,17 @@ References can be used anywhere.
 * Return a result rather than modifying an object through a reference argument. <!-- .element: class="fragment" data-fragment-index="2" -->
 * Use pass-by-reference only when you have to. <!-- .element: class="fragment" data-fragment-index="3" -->
 ---
+```c++
+void read_func(std::span<int const> readonly_array);
+void modify_func(std::span<int> writable_array)
+```
+```c++
+std::array my_array{1, 2, 3, 4, 5};
+read_func(my_aray);
+modify_func(my_array);
+```
+Remember to use std::span for arrays.
+---
 ## Classes and Enums
 Create your own type.
 ---
