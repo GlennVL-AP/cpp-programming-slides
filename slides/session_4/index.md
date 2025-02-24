@@ -6,12 +6,13 @@ kanban
   column1[Technicalities]
     task1[References]
     task2[Function overloading]
-    task3[Value categories]
+    task3[Function call implementation]
+    task4[Value categories]
   column2[OOP]
-    task4[Classes and Enums]
-    task5[RAII]
-    task6[Operator overloading]
-    task7[Rule-of-5]
+    task5[Classes and Enums]
+    task6[RAII]
+    task7[Operator overloading]
+    task8[Rule-of-5]
 ```
 ---
 ## References
@@ -188,7 +189,7 @@ c = 30;             // not allowed, can't write to c
 ```
 References can be used anywhere.
 ---
-### Best practice
+### Best practices
 ---
 * Use pass-by-value to pass very small objects.
 * Use pass-by-const-reference to pass large objects you don't need to modify. <!-- .element: class="fragment" data-fragment-index="1" -->
@@ -205,6 +206,174 @@ read_func(my_aray);
 modify_func(my_array);
 ```
 Remember to use std::span for arrays.
+---
+## Function overloading
+---
+C++ allows multiple functions to have the same name as long as they have different arguments.
+
+Note:
+* Function overloading is based on the function name and the type or number of its arguments.
+* The return type alone does not distinguish overloaded functions!
+---
+```c++
+void print(int a) { std::println("{}", a); }
+void print(int a, int b) { std::println("{} {}", a, b); }
+void print(double a) { std::println("{}", a); }
+void print(std::string const& a) { std::println("{}", a); }
+```
+---
+```c++
+int add(int a, int b) { return a + b; }
+```
+```c++
+double add(double a, double b) { return a + b; } // OK
+```
+```c++
+double add(int a, int b) { return a + b; } // error
+```
+---
+### Which candidate function to call?
+
+Note:
+* <https://en.cppreference.com/w/cpp/language/overload_resolution>
+---
+```c++
+void print(int a) { std::println("{}", a); }
+void print(std::string const& a) { std::println("{}", a); }
+```
+```c++
+print(5);
+```
+Exact match, easy.
+---
+```c++
+void print(int a) { std::println("{}", a); }
+void print(std::string const& a) { std::println("{}", a); }
+```
+```c++
+print('a');
+```
+No exact match found. Char is promoted to int.
+
+Note:
+* Widening conversion.
+---
+```c++
+void print(int a) { std::println("{}", a); }
+void print(std::string const& a) { std::println("{}", a); }
+```
+```c++
+print(3.5);
+```
+No exact match found. Narrowing conversion from double to int. Compiler may warn.
+---
+```c++
+void print(int a) { std::println("{}", a); }
+void print(std::string const& a) { std::println("{}", a); }
+```
+```c++
+print("Hello!");
+```
+No exact match found. Implicit conversion from string literal to std::string.
+
+Note:
+* std::string has an implicit constructor that takes a string literal.
+* This constructor is used.
+---
+![quiz image](./assets/quiz.png)
+### function overloading
+---
+```c++
+void my_func(int a)    { std::println("f1"); }
+void my_func(double a) { std::println("f2"); }
+```
+```c++
+my_func("test");
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) error</div>
+</div>
+
+Note:
+* No conversion from a string literal to either an int or a double.
+* No viable functions found.
+---
+```c++
+void my_func(int a)            { std::println("f1"); }
+void my_func(int a, int b = 0) { std::println("f2"); }
+```
+```c++
+my_func(5, 6);
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) error</div>
+</div>
+
+Note:
+* Exact match found.
+---
+```c++
+void my_func(int a)            { std::println("f1"); }
+void my_func(int a, int b = 0) { std::println("f2"); }
+```
+```c++
+my_func(5.6);
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) error</div>
+</div>
+
+Note:
+* Call to my_func is ambiguous.
+* Both functions are viable candidates.
+---
+```c++
+void my_func(std::string& a)       { std::println("f1"); }
+void my_func(std::string const& a) { std::println("f2"); }
+```
+```c++
+my_func("test");
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) error</div>
+</div>
+
+Note:
+* String literal promoted to std::string. Literal cannot be modified, so const.
+---
+```c++
+void my_func(std::string& a)       { std::println("f1"); }
+void my_func(std::string const& a) { std::println("f2"); }
+```
+```c++
+std::string str{"test"};
+my_func(str);
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) error</div>
+</div>
+
+Note:
+* String literal promoted to std::string. Literal cannot be modified, so const.
+---
+## Function call implementation
+---
+TODO
 ---
 ## Classes and Enums
 Create your own type.
@@ -279,6 +448,8 @@ Note:
 * Best practice: always add explicit to constructors that only take one argument.
 ---
 ## Operator overloading
+---
+TODO
 ---
 ## Value Categories
 ---
