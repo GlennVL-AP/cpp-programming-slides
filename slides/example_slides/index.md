@@ -5,6 +5,9 @@ Showcasing reveal.js features.
 
 <https://revealjs.com/>
 ---
+<!-- .slide: data-visibility="hidden" -->
+This slide is excluded.
+---
 <!-- .slide: data-background-color="white" -->
 Black text on white background.
 ---
