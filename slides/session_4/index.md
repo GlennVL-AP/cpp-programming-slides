@@ -1,12 +1,18 @@
 # C/C++ Programming
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 ---
-* References
-* Classes and Enums
-* RAII
-* Operator overloading
-* Value categories
-* Rule-of-5
+```mermaid
+kanban
+  column1[Technicalities]
+    task1[References]
+    task2[Function overloading]
+    task3[Value categories]
+  column2[OOP]
+    task4[Classes and Enums]
+    task5[RAII]
+    task6[Operator overloading]
+    task7[Rule-of-5]
+```
 ---
 ## References
 ---
@@ -382,6 +388,7 @@ auto a = std::array{1, 2}[1];   // std::array{1, 2, 3}[1]
 The build-int subscript expression where the array is an rvalue.
 ---
 ![quiz image](./assets/quiz.png)
+### value categories
 ---
 ```c++ []
 import std;
@@ -394,9 +401,9 @@ int main()
 ```
 What is the value category of `x`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div>a) lvalue</div>
-    <div class="fragment highlight-current-blue">b) xvalue</div>
-    <div>c) prvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
@@ -413,9 +420,9 @@ int main()
 ```
 What is the value category of `5`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div>a) lvalue</div>
-    <div>b) xvalue</div>
-    <div class="fragment highlight-current-blue">c) prvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
@@ -432,9 +439,9 @@ int main()
 ```
 What is the value category of `some_function`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div class="fragment highlight-current-blue">a) lvalue</div>
-    <div>b) xvalue</div>
-    <div>c) prvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
@@ -448,9 +455,9 @@ void some_function(std::string&& x)
 ```
 What is the value category of `x`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div class="fragment highlight-current-blue">a) lvalue</div>
-    <div>b) xvalue</div>
-    <div>c) prvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
@@ -469,12 +476,152 @@ auto other = some_function(my_str);
 ```
 What is the value category of `some_function(my_str)`?
 <div style="display: flex; justify-content: space-evenly;">
-    <div class="fragment highlight-current-blue">a) lvalue</div>
-    <div>b) xvalue</div>
-    <div>c) prvalue</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) lvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) xvalue</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) prvalue</div>
 </div>
 
 Note:
 * Function returns a reference to an lvalue.
+---
+### rvalue references
+---
+```c++
+void my_func(std::string&& str);
+void my_func(std::vector<int>&& vec);
+```
+`type&&` is an rvalue reference.
+---
+```c++
+void my_func(std::vector<int>&& vec);
+```
+```c++
+my_func(std::vector{1, 2, 3}); // OK
+```
+```c++
+std::vector my_vec{1, 2, 3};
+my_func(my_vec);               // error, no matching function
+```
+Only rvalues bind to rvalue references.
+---
+![quiz image](./assets/quiz.png)
+### rvalue references and function overloading
+
+Note:
+* <https://compiler-explorer.com/z/caoPha635>
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+my_func("hello");
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* temporary std::string is created from string literal.
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+my_func(std::string{"hello"});
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* temporary string is created by the programmer
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+std::string const cstr{"hello"};
+my_func(cstr);
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* Only const option is const&.
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+std::string str{"hello"};
+my_func(str);
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* str is an lvalue.
+* Overload resolution picks & over const&.
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+std::string str{"hello"};
+my_func(std::as_const(str));
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) f2</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* Explicitly convert str to a constant.
+* Only const option is const&.
+---
+```c++
+void my_func(std::string&& str)      { std::println("f1"); }
+void my_func(std::string const& str) { std::println("f2"); }
+void my_func(std::string& str)       { std::println("f3"); }
+```
+```c++
+std::string str{"hello"};
+my_func(std::move(str));
+```
+What will the program print?
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) f3</div>
+</div>
+
+Note:
+* std::move makes str an xvalue.
 ---
 ## Rule of 5
