@@ -1,13 +1,17 @@
 # C/C++ Programming
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 ---
-* STL containers
-  * std::vector, std::array, std::unordered_map
-  * std::span, std::string_view
-* Errors
-  * Compile-time, link-time, run-time
-  * Exceptions
-  * Avoiding and finding errors
+```mermaid
+kanban
+  column1[STL containers]
+    task1[std::array]
+    task2[std::unordered_map]
+    task3[std::span]
+  column2[Errors]
+    task4[Compile-time, link-time, run-time]
+    task5[Exceptions]
+    task6[Avoiding and finding errors]
+```
 ---
 ## More stl containers
 ---

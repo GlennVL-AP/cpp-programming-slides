@@ -1,10 +1,14 @@
 # C/C++ Programming
 ## Labo 3
 ---
-* Clang-tidy bugprone-exception-escape
-* Using the vscode debugger
-* STL containers exercises
-* Error handling exercises
+```mermaid
+kanban
+  column1[Content]
+    task1[Clang-tidy bugprone-exception-escape]
+    task2[Using the vscode debugger]
+    task3[STL containers exercises]
+    task4[Error handling exercises]
+```
 ---
 ## Devcontainer
 <https://gitlab.apstudent.be/cpp-programming/devcontainer-labo-3>
@@ -38,15 +42,15 @@ Finds functions which may throw an exception directly or indirectly, but they sh
 Note:
 * <https://clang.llvm.org/extra/clang-tidy/checks/bugprone/exception-escape.html>
 ---
-* Destructors
-* Move constructors
-* Move assignment operators
-* The main() functions <!-- .element: class="fragment highlight-current-blue" -->
-* swap() functions
-* iter_swap() functions
-* iter_move() functions
-* Functions marked with throw() or noexcept
-* Other functions given as option
+* Destructors <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* Move constructors <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* Move assignment operators <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* The main() functions <!-- .element: class="fragment highlight-current-blue grow" data-fragment-index="1" -->
+* swap() functions <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* iter_swap() functions <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* iter_move() functions <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* Functions marked with throw() or noexcept <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
+* Other functions given as option <!-- .element: class="fragment semi-fade-out shrink" data-fragment-index="1" -->
 
 Note:
 * When an exception escapes the main function, the application crashes.

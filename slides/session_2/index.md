@@ -1,13 +1,17 @@
 # C/C++ Programming
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 ---
-* User input
-* Variables and Types
-* Loops (while, for)
-* Branches (if, switch)
-* Functions
-* Const and Constexpr
-* std::vector
+```mermaid
+kanban
+  column1[Content]
+    task1[User input]
+    task2[Variables and Types]
+    task3[While and For loops]
+    task4[If and switch]
+    task5[Functions]
+    task6[Const and Constexpr]
+    task7[std::vector]
+```
 ---
 ```c++
 import std;
