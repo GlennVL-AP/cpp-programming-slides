@@ -600,7 +600,7 @@ A member of object expression where the object is an rvalue.
 ```c++
 auto a = std::array{1, 2}[1];   // std::array{1, 2}[1]
 ```
-The build-int subscript expression where the array is an rvalue.
+The build-in subscript expression where the array is an rvalue.
 ---
 ![quiz image](./assets/quiz.png)
 ### value categories
