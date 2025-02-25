@@ -9,8 +9,8 @@ kanban
     task3[Value categories]
   column2[OOP]
     task4[Classes and Enums]
-    task5[RAII]
-    task6[Operator overloading]
+    task5[Operator overloading]
+    task6[RAII]
     task7[Rule-of-5]
 ```
 ---
@@ -373,11 +373,391 @@ Note:
 ## Classes and Enums
 Create your own type.
 ---
-TODO date example?
-* date class has year, month, day
-* month is enum
+Suppose we want to create a type for a date.
+---
+How would we represent a date?
+
+Note:
+* day
+* month
+* year
+* all integers
+---
+```c++
+class Date
+{
+public:
+    int year;
+    int month;
+    int day;
+};
+```
+```c++
+Date today{2025, 2, 26};
+Date wrong{2025, 14, 312}; // oops
+Date not_initialized;      // ouch
+```
+---
+We want to check if the date is valid!
+---
+```c++ []
+class Date
+{
+public:
+    Date(int year, int month, int date)
+      : year_{year}, month_{month}, date_{date}
+    {
+        expect([&]{ return /*valid*/; }, "Invalid date!");
+    }
+
+private:
+    int year_{};
+    int month_{};
+    int day_{};
+};
+```
+
+Note:
+* Make members private, so user can't access them directly.
+* Initialize private members.
+* Add constructor to initialize the object with the desired values.
+* Add precondition to constructor that date must be valid.
+* Good practice to default init private members with {}. Makes sure we can't end up with unitialized values. Constructor will overwrite these values.
+---
+Let's add some functionality.
+---
+I want to read the values of year, month, day.
+---
+```c++ [10-12]
+class Date
+{
+public:
+    Date(int year, int month, int day)
+      : year_{year}, month_{month}, day_{day}
+    {
+        expect([&]{ return /*valid*/; }, "Invalid date!");
+    }
+
+    [[nodiscard]] int year() const { return year_; }
+    [[nodiscard]] int month() const { return month_; }
+    [[nodiscard]] int day() const { return day_; }
+
+private:
+    int year_{};
+    int month_{};
+    int day_{};
+};
+```
+---
+```c++
+Date today{2025, 2, 26};
+
+std::println("today is {}-{}-{}",
+             today.day(), today.month(), today.year());
+```
+```text
+today is 26-2-2025
+```
+
+Note:
+* Functions are in public section so user can access them.
+---
+```c++
+[[nodiscard]] int year() const { return year_; }
+```
+```c++
+Date const tomorrow{2025, 2, 27};
+auto year = today.year(); // ok because const method
+```
+```c++
+Date today{2025, 2, 26};
+auto year = today.year(); // ok
+today.year();             // compiler warning b/c nodiscard
+```
+
+Note:
+* ```[[nodiscard]]``` is a function attribute that causes a compiler warning if the return value is ignored.
+* Add this attributes to functions where ignoring the return value is likely a bug.
+* Add ```const``` to member functions that don't modify any member variables.
+---
+### class vs struct
+
+<div style="display: flex; justify-content: space-evenly;">
+<div>
+
+```c++
+class Date
+{
+    int y;
+    int m;
+    int d;
+};
+```
+```c++
+Date d;
+d.y = 2025;
+```
+
+Error, y is private.
+
+</div>
+<div>
+
+```c++
+struct Date
+{
+    int y;
+    int m;
+    int d;
+};
+```
+```c++
+Date d;
+d.y = 2025;
+```
+
+Ok, y is public.
+
+</div>
+</div>
+
+Note:
+* class: private by default
+* struct: public by default
+---
+```c++ []
+class Date
+{
+public:
+    Date(int year, int month, int day)
+      : year_{year}, month_{month}, day_{day}
+    {
+        expect([&]{ return /*valid*/; }, "Invalid date!");
+    }
+
+    [[nodiscard]] int year() const { return year_; }
+    [[nodiscard]] int month() const { return month_; }
+    [[nodiscard]] int day() const { return day_; }
+
+private:
+    int year_{};
+    int month_{};
+    int day_{};
+};
+```
+It's still easy to accidentally misuse this class.
+
+Note:
+* Does anyone have an idea what's wrong?
+---
+```c++
+Date today{26, 2, 2025}; // oops, swapped arguments
+```
+```c++
+Date today{2, 26, 2025}; // american style?
+```
+---
+```c++
+class Year
+{
+public:
+    explicit Year(int year) : year_{year} {}
+
+    [[nodiscard]] int get() const { return year_; }
+    [[nodiscard]] int& get() { return year_; }
+
+private:
+    int year_{};
+};
+```
+```c++
+class Month { /*...*/ };
+class Day { /*...*/ };
+```
+
+Note:
+* Why the overloaded get methods? (const and non-const)
+* Non-const version that returns a reference added so we can modify the value.
+---
+```c++ []
+class Date
+{
+public:
+    Date(Year year, Month month, Day day)
+      : year_{year}, month_{month}, day_{day}
+    {
+        expect([&]{ return /*valid*/; }, "Invalid date!");
+    }
+
+    [[nodiscard]] Year year() const { return year_; }
+    [[nodiscard]] Month month() const { return month_; }
+    [[nodiscard]] Day day() const { return day_; }
+
+private:
+    Year year_{};
+    Month month_{};
+    Day day_{};
+};
+```
+---
+```c++
+Date today{Year{2025}, Month{2}, Day{26}}; // ok
+```
+```c++
+Date today{Month{2}, Day{26}, Year{2025}}; // compiler error!
+```
+```c++
+// explicit disables implicit conversion
+Date today{2025, 2, 26};                   // compiler error!
+```
+---
+Can we do even better?
+
+Note:
+* Does anyone have an idea?
+---
+* Year: probably not
+* Day: probably not
+* Month: yes!
+---
+### Enum
+---
+```c++
+enum class Month
+{
+    jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
+};
+```
+```c++
+Month m1{Month::jan};
+auto m2 = Month::feb;
+```
+
+Note:
+* Underlying type is integer by default.
+* Starts counting at zero.
+* Allowed to explicitly assign unique values to all elements.
+* If only assigned to first, that's where count starts.
+* Setting jan = 1 results in feb = 2, mar = 3, ...
+---
+```c++
+// explicit conversion from int is allowed 🙁
+
+Month m{15};
+```
+```c++
+// sadly can't add constructor to enum
+// best we can do
+
+Month month_from_int(int x)
+{
+    expect([&]{ return (1 <= x) && (x <= 12); },
+           "invalid month");
+
+    return Month{x};
+};
+
+auto m = month_from_int(15); // runtime expect error
+```
+---
+```c++
+// conversion to int is not allowed 👍
+
+int m{Month::jun;} // error
+```
+```c++
+// must convert explicitly
+
+int m{std::to_underlying(Month::jun)};
+```
+---
+```c++
+class Date { /* unchanged */ };
+```
+```c++
+Date today{Year{2025}, Month::feb, Day{26}};
+```
+Use the type system to let the compiler check as much as possible!
+---
+```c++ []
+class Date
+{
+public:
+    Date() {} // add a default constructor
+
+    /* other constructor and getters */
+
+private:
+    Year year_{1970};
+    Month month_{Month::jan};
+    Day day_{1};
+};
+```
+```c++
+Date today{Year{2025}, Month::feb, Day{26}};
+Date epoch_time{}; // 1970-01-01
+```
+
+Note:
+* Illustrative, probably not really useful to add a default constructor to Date.
+---
+## Operator overloading
+---
+C++ allows the implementation of operators for custom types.
+
+Note:
+* <https://en.cppreference.com/w/cpp/language/operators>
+* <https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading#4421719>
+---
+Make sure operators do what the user expects!
+
+Note:
+* Don't abuse operators to do something else entirely.
+* (Unless building a Domain Specific Language)
+---
+```c++
+bool operator==(Date const& rhs, Date const& lhs)
+{
+    return (lhs.year().get() == rhs.year().get())
+        && (lhs.month() == rhs.month())
+        && (lhs.day().get() == rhs.day().get());
+}
+```
+```c++
+bool operator!=(Date const& rhs, Date const& lhs)
+{
+    return !(lhs == rhs);
+}
+```
+```c++
+Date today {Year{2025}, Month::feb, Day{26}};
+Date tomorrow{Year{2025}, Month::feb, Day{27}};
+bool equal = today == tomorrow;
+```
+Check if two dates are equal.
+
+Note:
+* If you want to compare for equality, always implement both operator== and operator!=.
+* Implement operator!= in terms of operator==.
+---
+```c++
+Month operator++(Month& month)
+{
+    month = (month == Month::dec) ?
+        Month::jan : Month{std::to_underlying(month) + 1};
+    return month;
+}
+```
+```c++
+auto m = Month::oct;
+++m; // nov
+++m; // dec
+++m; // jan
+```
+Increase a month to the next.
 ---
 ## RAII
+The power of constructors and destructors.
 ---
 Resource Allocation Is Initialization
 ---
@@ -441,10 +821,6 @@ int main()
 Note:
 * Keyword explicit added to prevent implicit conversion from std::string to File.
 * Best practice: always add explicit to constructors that only take one argument.
----
-## Operator overloading
----
-TODO
 ---
 ## Value Categories
 ---
