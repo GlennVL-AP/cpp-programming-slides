@@ -708,6 +708,7 @@ C++ allows the implementation of operators for custom types.
 Note:
 * <https://en.cppreference.com/w/cpp/language/operators>
 * <https://stackoverflow.com/questions/4421706/what-are-the-basic-rules-and-idioms-for-operator-overloading#4421719>
+* Prefer the hidden friend idiom.
 ---
 Make sure operators do what the user expects!
 
