@@ -683,7 +683,7 @@ Use the type system to let the compiler check as much as possible!
 class Date
 {
 public:
-    Date() {} // add a default constructor
+    Date() = default // add a default constructor
 
     /* other constructor and getters */
 
