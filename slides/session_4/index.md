@@ -823,6 +823,19 @@ Note:
 * Keyword explicit added to prevent implicit conversion from std::string to File.
 * Best practice: always add explicit to constructors that only take one argument.
 ---
+### Best practices
+for class design
+---
+* Keep interfaces as small as possible, but no smaller.
+* Provide constructors. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Use types to provide good argument checking. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Identify nonmodifying member functions. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Support copying (or disable it). <!-- .element: class="fragment" data-fragment-index="4" -->
+* Free all resources in the destructor. <!-- .element: class="fragment" data-fragment-index="5" -->
+
+Note:
+* Prefer helper functions over member functions to keep the class small.
+---
 ## Value Categories
 ---
 ```mermaid
@@ -1338,5 +1351,16 @@ Properties can be checked at compile time!
 
 Note:
 * <https://compiler-explorer.com/z/4eaqcjorT>
+---
+### Best practices
+for class design
+---
+* Keep interfaces as small as possible, but no smaller. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Provide constructors. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Use types to provide good argument checking. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Identify nonmodifying member functions. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Support copying (or disable it). <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Free all resources in the destructor. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Respect the rule-of-5. <!-- .element: class="fragment highlight-current-blue" data-fragment-index="1" -->
 ---
 ## Exercises!
