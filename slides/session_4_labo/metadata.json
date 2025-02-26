@@ -1,4 +1,4 @@
 {
-    "title": "Labo 4: TODO",
-    "description": "TODO"
+    "title": "Labo 4: Class design",
+    "description": "Designing the Date class. Operator overloading. Making it possible to create dates at compile time. std::chrono. See digitap for exercise assignments."
 }
