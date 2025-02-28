@@ -1238,9 +1238,9 @@ my_func(std::move(str));
 ```
 What will the program print?
 <div style="display: flex; justify-content: space-evenly;">
-    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f1</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) f1</div>
     <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) f2</div>
-    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) f3</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) f3</div>
 </div>
 
 Note:
