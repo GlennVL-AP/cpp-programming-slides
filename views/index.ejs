@@ -35,6 +35,9 @@
                     <a href="<%= slide_deck.location %>" class="link slide-link">
                         <div class="slide-title"><%- slide_deck.title %></div>
                         <div class="slide-description"><%- slide_deck.description %></div>
+                        <a href="<%= slide_deck.location %>?print-pdf" class="print-to-pdf display-button link">
+                            <img src="/public/pdf_icon.png" alt="Print to pdf" />
+                        </a>
                     </a>
                 </li>
     <% }); %>
@@ -57,7 +60,7 @@
             <span class="ejs-logo">&lt;%= EJS %&gt;</span>
         </a>
         <a href="https://revealjs.com/" target="_blank">
-            <img src="/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo">
+            <img src="/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo" />
         </a>
     </footer>
     <script>

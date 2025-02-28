@@ -55,6 +55,7 @@ h1 {
     }
 }
 .slide-container li {
+    position: relative;
     display: flex;
     align-items: stretch;
 }
@@ -138,6 +139,18 @@ h1 {
     stroke: #bbb;
     stroke-width: 2;
     fill: none;
+}
+.print-to-pdf {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+}
+.print-to-pdf img {
+    width: 36px;
+    height: 36px;
 }
 .footer {
     display: flex;
