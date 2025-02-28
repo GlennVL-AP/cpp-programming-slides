@@ -58,6 +58,12 @@ h1 {
     display: flex;
     align-items: stretch;
 }
+.single-column {
+    max-width: 600px;
+}
+.single-column ul {
+    grid-template-columns: 1fr;
+}
 .error-container p {
     font-size: 1.2em;
     color: #bbbbbb;

@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
-    <header><h1>C++ Programming Slides</h1></header>
+    <header>
+        <h1>C++ Programming Slides</h1>
+        <button id="toggleView" class="link">Toggle View</button>
+    </header>
     <main>
         <section class="container slide-container">
             <ul>
@@ -49,6 +52,10 @@
         }
         document.addEventListener("DOMContentLoaded", updateListItemHeights);
         window.addEventListener("resize", updateListItemHeights);
+        document.getElementById("toggleView").addEventListener("click", function() {
+            document.querySelector(".slide-container").classList.toggle("single-column");
+            updateListItemHeights();
+        });
     </script>
 </body>
 </html>
