@@ -12,7 +12,10 @@ h1 {
     margin-top: 50px;
 }
 .no-break {
-    white-space: nowrap;
+    white-space: nowrap !important;
+}
+.hidden {
+    display: none !important;
 }
 .container::before {
     content: "";
