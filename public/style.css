@@ -119,6 +119,32 @@ h1 {
     opacity: 1;
     transform: scale(1.1);
 }
-#toggleView {
+.display-button-container {
+    display: flex;
+    gap: 5px;
     margin-bottom: 15px;
+}
+.display-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    padding: 0;
+}
+.active-display-button {
+    border-color: #666;
+    background: #666;
+}
+.active-display-button:hover {
+    background: #666;
+}
+.display-button svg {
+    width: 16px;
+    height: 16px;
+    stroke: #bbb;
+    stroke-width: 2;
+    fill: none;
 }

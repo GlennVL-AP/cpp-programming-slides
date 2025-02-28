@@ -12,7 +12,22 @@
     </header>
     <main>
         <section class="container slide-container">
-            <button id="toggleView" class="link">Toggle View</button>
+            <section class="display-button-container">
+                <button id="displayGrid" class="display-button active-display-button link">
+                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="16" height="16" />
+                        <line x1="8" y1="0" x2="8" y2="16" />
+                        <line x1="0" y1="8" x2="16" y2="8" />
+                    </svg>
+                </button>
+                <button id="displayList" class="display-button link">
+                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="3" x2="16" y2="3" />
+                        <line x1="0" y1="8" x2="16" y2="8" />
+                        <line x1="0" y1="13" x2="16" y2="13" />
+                    </svg>
+                </button>
+            </section>
             <ul>
 <% if (slide_decks.length > 0) { %>
     <% slide_decks.forEach(function(slide_deck) { %>
@@ -52,9 +67,23 @@
         }
         document.addEventListener("DOMContentLoaded", updateListItemHeights);
         window.addEventListener("resize", updateListItemHeights);
-        document.getElementById("toggleView").addEventListener("click", function() {
-            document.querySelector(".slide-container").classList.toggle("single-column");
-            updateListItemHeights();
+        document.getElementById("displayGrid").addEventListener("click", function() {
+            var classes = document.querySelector(".slide-container").classList;
+            if (classes.contains("single-column")) {
+                document.getElementById("displayGrid").classList.toggle("active-display-button");
+                document.getElementById("displayList").classList.toggle("active-display-button");
+                classes.remove("single-column");
+                updateListItemHeights();
+            }
+        });
+        document.getElementById("displayList").addEventListener("click", function() {
+            var classes = document.querySelector(".slide-container").classList;
+            if (!classes.contains("single-column")) {
+                document.getElementById("displayGrid").classList.toggle("active-display-button");
+                document.getElementById("displayList").classList.toggle("active-display-button");
+                classes.add("single-column");
+                updateListItemHeights();
+            }
         });
     </script>
 </body>
