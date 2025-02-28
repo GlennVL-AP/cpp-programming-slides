@@ -124,6 +124,11 @@ h1 {
     gap: 5px;
     margin-bottom: 15px;
 }
+@media(max-width: 600px) {
+    .display-button-container {
+        display: none;
+    }
+}
 .display-button {
     display: inline-flex;
     align-items: center;
