@@ -9,8 +9,46 @@
     display: block;
     margin: 0 auto;
 }
-@media(print) {
-    .hidden-on-print {
-        display: none;
+#printPdfSection .hidden {
+    display: none !important;
+}
+#printPdfSection {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+}
+#printPdfSection .print-pdf-container {
+    display: flex;
+    gap: 5px;
+    z-index: 10;
+}
+#printPdfSection .print-pdf-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    padding: 0;
+    background: #2c2c2c;
+    color: #d0d0d0;
+    transition: all 0.3s ease;
+    border: 1px solid #444;
+    font-size: 24px;
+    font-weight: bold;
+}
+#printPdfSection .print-pdf-button:hover {
+    background: #444;
+    color: #ffffff;
+    border-color: #666;
+}
+#printPdfSection .print-pdf-button img {
+    width: 24px;
+    height: 24px;
+}
+@media print {
+    #printPdfSection {
+        display: none !important;
     }
 }

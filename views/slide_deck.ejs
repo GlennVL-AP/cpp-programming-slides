@@ -11,6 +11,25 @@
     <link rel="stylesheet" href="/public/slides.css">
 </head>
 <body>
+    <section id="printPdfSection" class="hidden">
+        <section class="print-pdf-container">
+            <button id="printPdfPrintBtn" class="print-pdf-button">
+                <img src="/public/printer_icon.png" alt="Print PDF" />
+            </button>
+            <button id="printPdfConfigBtn" class="print-pdf-button">
+                <img src="/public/settings_icon.png" alt="PDF options" />
+            </button>
+            <button id="printPdfHelpBtn" class="print-pdf-button">
+                <span>?</span>
+            </button>
+        </section>
+        <section id="printPdfConfig" class="hidden">
+            <p>config config config</p>
+        </section>
+        <section id="printPdfHelp" class="hidden">
+            <p>help help help</p>
+        </section>
+    </section>
     <div class="reveal">
         <div class="slides">
             <section data-markdown>
@@ -32,12 +51,24 @@
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid]
         };
         if (new URLSearchParams(window.location.search).has("print-pdf")) {
+            document.getElementById("printPdfSection").classList.remove("hidden");
             Object.assign(revealConfig, {
                 pdfMaxPagesPerSlide: 1,
                 showNotes: true
             });
         }
         Reveal.initialize(revealConfig);
+        document.getElementById("printPdfPrintBtn").addEventListener("click", function() {
+            window.print();
+        });
+        document.getElementById("printPdfConfigBtn").addEventListener("click", function() {
+            document.getElementById("printPdfHelp").classList.add("hidden");
+            document.getElementById("printPdfConfig").classList.toggle("hidden");
+        });
+        document.getElementById("printPdfHelpBtn").addEventListener("click", function() {
+            document.getElementById("printPdfConfig").classList.add("hidden");
+            document.getElementById("printPdfHelp").classList.toggle("hidden");
+        });
     </script>
 </body>
 </html>
