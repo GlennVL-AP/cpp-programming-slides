@@ -91,6 +91,11 @@ h1 {
     display: flex;
     flex-direction: column;
     width: 100%;
+    background: rgba(44, 44, 44, .6);
+    position: relative;
+}
+.slide-link:hover {
+    background: rgba(68, 68, 68, .6);
 }
 .slide-title {
     font-size: 1.5em;
@@ -157,6 +162,10 @@ h1 {
     z-index: 10;
     width: 36px;
     height: 36px;
+    background: rgba(44, 44, 44, .6);
+}
+.print-to-pdf:hover {
+    background: rgba(68, 68, 68, .6);
 }
 .print-to-pdf img {
     width: 36px;
