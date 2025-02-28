@@ -102,23 +102,6 @@ h1 {
     margin-top: 20px;
     font-size: 1.2em;
 }
-.footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 20px;
-}
-.footer a {
-    display: inline-block;
-}
-.reveal-logo {
-    width: 120px;
-    opacity: 0.4;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.reveal-logo:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
 .display-button-container {
     display: flex;
     gap: 5px;
@@ -155,4 +138,29 @@ h1 {
     stroke: #bbb;
     stroke-width: 2;
     fill: none;
+}
+.footer {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.footer a {
+    display: inline-flex;
+    opacity: 0.15;
+    text-decoration: none;
+    font-size: 24px;
+    color: #f7f4f4;
+}
+.footer a:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+.footer .reveal-logo {
+    width: 120px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.footer .express-logo {
+    font-family: "Helvetica Neue", "Open Sans", sans-serif;
 }
