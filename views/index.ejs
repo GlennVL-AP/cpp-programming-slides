@@ -65,26 +65,19 @@
                 items.forEach(item => item.style.height = `${maxHeight}px`);
             }
         }
+        function updateDisplayStyle(display_grid) {
+            var classes = document.querySelector(".slide-container").classList;
+            if (classes.contains("single-column") == display_grid) {
+                document.getElementById("displayGrid").classList.toggle("active-display-button");
+                document.getElementById("displayList").classList.toggle("active-display-button");
+                if (display_grid) { classes.remove("single-column"); } else { classes.add("single-column"); }
+                updateListItemHeights();
+            }
+        }
         document.addEventListener("DOMContentLoaded", updateListItemHeights);
         window.addEventListener("resize", updateListItemHeights);
-        document.getElementById("displayGrid").addEventListener("click", function() {
-            var classes = document.querySelector(".slide-container").classList;
-            if (classes.contains("single-column")) {
-                document.getElementById("displayGrid").classList.toggle("active-display-button");
-                document.getElementById("displayList").classList.toggle("active-display-button");
-                classes.remove("single-column");
-                updateListItemHeights();
-            }
-        });
-        document.getElementById("displayList").addEventListener("click", function() {
-            var classes = document.querySelector(".slide-container").classList;
-            if (!classes.contains("single-column")) {
-                document.getElementById("displayGrid").classList.toggle("active-display-button");
-                document.getElementById("displayList").classList.toggle("active-display-button");
-                classes.add("single-column");
-                updateListItemHeights();
-            }
-        });
+        document.getElementById("displayGrid").addEventListener("click", function() { updateDisplayStyle(true); });
+        document.getElementById("displayList").addEventListener("click", function() { updateDisplayStyle(false); });
     </script>
 </body>
 </html>
