@@ -27,6 +27,9 @@
                         <line x1="0" y1="13" x2="16" y2="13" />
                     </svg>
                 </button>
+                <button id="togglePdf" class="display-button link">
+                    <img src="/public/pdf_icon.png" alt="Toggle print to pdf" />
+                </button>
             </section>
             <ul>
 <% if (slide_decks.length > 0) { %>
@@ -87,6 +90,10 @@
         window.addEventListener("resize", updateListItemHeights);
         document.getElementById("displayGrid").addEventListener("click", function() { updateDisplayStyle(true); });
         document.getElementById("displayList").addEventListener("click", function() { updateDisplayStyle(false); });
+        document.getElementById("togglePdf").addEventListener("click", function() {
+            this.classList.toggle("active-display-button");
+            document.querySelectorAll(".print-to-pdf").forEach(item => item.classList.toggle("hidden"));
+         });
     </script>
 </body>
 </html>

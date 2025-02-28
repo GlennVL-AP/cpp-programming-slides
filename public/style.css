@@ -143,6 +143,10 @@ h1 {
     stroke-width: 2;
     fill: none;
 }
+.display-button img {
+    width: 24px;
+    height: 24px;
+}
 .print-to-pdf {
     position: absolute;
     top: 5px;
