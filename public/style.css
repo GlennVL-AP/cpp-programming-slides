@@ -115,7 +115,10 @@ h1 {
     z-index: 10;
 }
 @media(max-width: 600px) {
-    .display-button-container {
+    .display-button-container #displayGrid {
+        display: none;
+    }
+    .display-button-container #displayList {
         display: none;
     }
 }
