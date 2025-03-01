@@ -45,6 +45,9 @@
                 <button type="button" id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
                     <span>Apply</span>
                 </button>
+                <button type="button" id="resetPdfConfig" class="print-pdf-button print-pdf-txt-button">
+                    <span>Reset</span>
+                </button>
             </form>
         </section>
         <section id="printPdfHelp" class="print-pdf-section hidden">
@@ -122,6 +125,15 @@
                 slideNumber: showSlideNumbers ? "c/t" : false
             };
             localStorage.setItem("revealPdfConfig", JSON.stringify(newConfig));
+            window.location.reload();
+        });
+        document.getElementById("resetPdfConfig").addEventListener("click", function () {
+            const defaultConfig = {
+                showNotes: true,
+                pdfSeparateFragments: false,
+                slideNumber: false
+            };
+            localStorage.setItem("revealPdfConfig", JSON.stringify(defaultConfig));
             window.location.reload();
         });
     </script>
