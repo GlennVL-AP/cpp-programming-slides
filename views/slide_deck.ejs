@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title><%= slidedeck_title %></title>
     <link rel="stylesheet" href="/reveal.js/dist/reset.css">
     <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
@@ -11,18 +11,18 @@
     <link rel="stylesheet" href="/public/slides.css">
 </head>
 <body>
-    <section id="printPdfSection" class="hidden">
-        <section class="print-pdf-buttons">
+    <div id="printPdfSection" class="hidden">
+        <div class="print-pdf-buttons">
             <button id="printPdfPrintBtn" class="print-pdf-button print-pdf-img-button">
-                <img src="/public/printer_icon.png" alt="Print PDF" />
+                <img src="/public/printer_icon.png" alt="Print PDF">
             </button>
             <button id="printPdfConfigBtn" class="print-pdf-button print-pdf-img-button">
-                <img src="/public/settings_icon.png" alt="PDF options" />
+                <img src="/public/settings_icon.png" alt="PDF options">
             </button>
             <button id="printPdfHelpBtn" class="print-pdf-button print-pdf-img-button">
                 <span>?</span>
             </button>
-        </section>
+        </div>
         <section id="printPdfConfig" class="print-pdf-section hidden">
             <h1>Slides configuration</h1>
             <form id="pdfConfigForm">
@@ -63,7 +63,7 @@
                 <li>Choose a filename and destination.</li>
             </ol>
         </section>
-    </section>
+    </div>
     <div class="reveal">
         <div class="slides">
             <section data-markdown>

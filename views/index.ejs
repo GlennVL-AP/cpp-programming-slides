@@ -11,8 +11,8 @@
         <h1>C++ Programming Slides</h1>
     </header>
     <main>
-        <section class="container slide-container">
-            <section class="display-button-container">
+        <div class="container slide-container">
+            <div class="display-button-container">
                 <button id="displayGrid" class="display-button active-display-button link">
                     <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
                         <rect x="0" y="0" width="16" height="16" />
@@ -28,9 +28,9 @@
                     </svg>
                 </button>
                 <button id="togglePdf" class="display-button link">
-                    <img src="/public/pdf_icon.png" alt="Toggle print to pdf" />
+                    <img src="/public/pdf_icon.png" alt="Toggle print to pdf">
                 </button>
-            </section>
+            </div>
             <ul>
 <% if (slide_decks.length > 0) { %>
     <% slide_decks.forEach(function(slide_deck) { %>
@@ -40,7 +40,7 @@
                         <div class="slide-description"><%- slide_deck.description %></div>
                     </a>
                     <a href="<%= slide_deck.location %>?print-pdf" class="print-to-pdf display-button link hidden">
-                        <img src="/public/pdf_icon.png" alt="Print to pdf" />
+                        <img src="/public/pdf_icon.png" alt="Print to pdf">
                     </a>
                 </li>
     <% }); %>
@@ -53,7 +53,7 @@
                 </li>
 <% } %>
             </ul>
-        </section>
+        </div>
     </main>
     <footer class="footer">
         <a href="https://expressjs.com/" target="_blank">
@@ -63,7 +63,7 @@
             <span class="ejs-logo">&lt;%= EJS %&gt;</span>
         </a>
         <a href="https://revealjs.com/" target="_blank">
-            <img src="/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo" />
+            <img src="/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo">
         </a>
     </footer>
     <script>
