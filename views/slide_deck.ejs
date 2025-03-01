@@ -13,19 +13,22 @@
 <body>
     <section id="printPdfSection" class="hidden">
         <section class="print-pdf-buttons">
-            <button id="printPdfPrintBtn" class="print-pdf-button">
+            <button id="printPdfPrintBtn" class="print-pdf-button print-pdf-img-button">
                 <img src="/public/printer_icon.png" alt="Print PDF" />
             </button>
-            <button id="printPdfConfigBtn" class="print-pdf-button">
+            <button id="printPdfConfigBtn" class="print-pdf-button print-pdf-img-button">
                 <img src="/public/settings_icon.png" alt="PDF options" />
             </button>
-            <button id="printPdfHelpBtn" class="print-pdf-button">
+            <button id="printPdfHelpBtn" class="print-pdf-button print-pdf-img-button">
                 <span>?</span>
             </button>
         </section>
         <section id="printPdfConfig" class="print-pdf-section hidden">
             <h1>Slides configuration</h1>
             <p>TODO</p>
+            <button id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
+                <span>Apply</span>
+            </button>
         </section>
         <section id="printPdfHelp" class="print-pdf-section hidden">
             <h1>How to save slides as pdf?</h1>
@@ -83,6 +86,9 @@
             document.getElementById("printPdfConfig").classList.add("hidden");
             document.getElementById("printPdfHelp").classList.toggle("hidden");
         });
+        document.getElementById("applyPdfConfig").addEventListener("click", function() {
+            alert("TODO update reveal.js config");
+        })
     </script>
 </body>
 </html>
