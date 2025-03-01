@@ -71,18 +71,18 @@
             const items = document.querySelectorAll(".container ul li");
             if (items.length === 0) return;
             const columnCount = window.getComputedStyle(document.querySelector(".container ul")).gridTemplateColumns.split(" ").length;
-            items.forEach(item => item.style.height = "auto");
+            items.forEach(item => (item.style.height = "auto"));
             if (columnCount > 1) {
                 const maxHeight = Math.max(...Array.from(items, item => item.offsetHeight));
-                items.forEach(item => item.style.height = `${maxHeight}px`);
+                items.forEach(item => (item.style.height = `${maxHeight}px`));
             }
         }
-        function updateDisplayStyle(display_grid) {
+        function updateDisplayStyle(grid) {
             var classes = document.querySelector(".slide-container").classList;
-            if (classes.contains("single-column") == display_grid) {
+            if (classes.contains("single-column") === grid) {
                 document.getElementById("displayGrid").classList.toggle("active-display-button");
                 document.getElementById("displayList").classList.toggle("active-display-button");
-                if (display_grid) { classes.remove("single-column"); } else { classes.add("single-column"); }
+                if (grid) { classes.remove("single-column"); } else { classes.add("single-column"); }
                 updateListItemHeights();
             }
         }
