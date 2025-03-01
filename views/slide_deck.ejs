@@ -109,8 +109,15 @@
             document.getElementById("printPdfHelp").classList.toggle("hidden");
         });
         document.getElementById("applyPdfConfig").addEventListener("click", function() {
-            alert("TODO update reveal.js config");
-        })
+            const slideNotes = document.getElementById('printPdfSlideNotes').value;
+            const mergeFragments = document.getElementById('printPdfMergeFragments').checked;
+            const showSlideNumbers = document.getElementById('printPdfShowSlideNumbers').checked;
+            Reveal.configure({
+                showNotes: (slideNotes === "onSeparatePage") ? "separate-page" : (slideNotes === "onSlide"),
+                pdfSeparateFragments: !mergeFragments,
+                slideNumber: showSlideNumbers ? "c/t" : false
+            });
+        });
     </script>
 </body>
 </html>
