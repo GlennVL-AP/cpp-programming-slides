@@ -90,6 +90,11 @@
             });
         }
         Reveal.initialize(revealConfig);
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("printPdfSlideNotes").value = "onSlide";
+            document.getElementById("printPdfMergeFragments").checked = true;
+            document.getElementById("printPdfShowSlideNumbers").checked = false;
+        });
         document.getElementById("printPdfPrintBtn").addEventListener("click", function() {
             document.getElementById("printPdfConfig").classList.add("hidden");
             document.getElementById("printPdfHelp").classList.add("hidden");
