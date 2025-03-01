@@ -1,6 +1,6 @@
 {
 	"name": "node.js",
-	"image": "mcr.microsoft.com/devcontainers/typescript-node:16-bullseye",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:22-bullseye",
 	"postAttachCommand": "npm install",
 	"remoteUser": "node"
 }
