@@ -5,11 +5,23 @@ const path = require("path")
 const port = 8000
 const app = express()
 
+const noBreakWordList = ["C++"];
+const wrapNoBreak = text => {
+    return noBreakWordList.reduce((acc, word) => {
+        const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
+        return acc.replace(regex, `<span class="no-break">${word}</span>`);
+    }, text);
+};
+
+const slideMarkdownPath = slideDeck => path.join(__dirname, "slides", slideDeck, "index.md");
+const slideMetadataPath = slideDeck => path.join(__dirname, "slides", slideDeck, "metadata.json");
+const slideAssetPath = (slideDeck, asset) => path.join(__dirname, "slides", slideDeck, "assets", asset);
+
 const slideDecks = () => {
     return fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
         .filter(dirent => dirent.isDirectory())
         .map(dirent => {
-            const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json"), { encoding: "utf-8" }));
+            const metadata = JSON.parse(fs.readFileSync(slideMetadataPath(dirent.name), { encoding: "utf-8" }));
             return {
                 [dirent.name]: metadata
             };
@@ -20,32 +32,27 @@ const slideDecks = () => {
 app.set("view engine", "ejs");
 
 app.get("/slides/assets/:asset", (req, res, next) => {
-    const asset = req.params.asset;
-    const referer = req.headers.referer;
-    if (referer == undefined) {
+    if (req.headers.referer === undefined) {
         return next();
     }
-    const slide_deck = new URL(referer).pathname;
-    const asset_path = path.join(__dirname, slide_deck, "assets", asset);
-    if (slideDecks().map((([slide_deck]) => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
-        res.sendFile(asset_path);
+    const slideDeckEntry = slideDecks().find(([slideDeck]) => "/slides/" + slideDeck === new URL(req.headers.referer).pathname);
+    if (slideDeckEntry && fs.existsSync(slideAssetPath(slideDeckEntry[0], req.params.asset))) {
+        res.sendFile(slideAssetPath(slideDeckEntry[0], req.params.asset));
     } else {
         next();
     }
 });
 
 app.get('/slides/:slide_deck', (req, res, next) => {
-    const slide_deck = req.params.slide_deck;
-    const slide_deck_entry = slideDecks().find(([name]) => name === slide_deck);
-    if (!slide_deck_entry) {
+    const slideDeckEntry = slideDecks().find(([slideDeck]) => slideDeck === req.params.slide_deck);
+    if (!slideDeckEntry) {
         return next();
     }
-    const [, metadata] = slide_deck_entry;
-    const markdown_file = path.join(__dirname, "slides", slide_deck, "index.md");
-    const markdown_content = fs.readFileSync(markdown_file, { encoding: "utf-8" });
+    const [, metadata] = slideDeckEntry;
+    const markdownContent = fs.readFileSync(slideMarkdownPath(req.params.slide_deck), { encoding: "utf-8" });
     res.render(
         "slide_deck",
-        { slidedeck_title: metadata.title, slidedeck_content_markdown: markdown_content },
+        { slidedeck_title: metadata.title, slidedeck_content_markdown: markdownContent },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -54,23 +61,16 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get('/', (req, res, next) => {
-    const words_to_prevent_break = ["C++"];
-    function wrap_no_break(text) {
-        return words_to_prevent_break.reduce((acc, word) => {
-            const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
-            return acc.replace(regex, `<span class="no-break">${word}</span>`);
-        }, text);
-    }
-    const slide_decks_metadata = slideDecks()
-        .filter(([slide_deck, metadata]) => !(metadata.hidden && metadata.hidden === true))
-        .map(([slide_deck, metadata]) => ({
-            location: "/slides/" + slide_deck,
-            title: wrap_no_break(metadata.title),
-            description: wrap_no_break(metadata.description)
+    const slideDecksMetadata = slideDecks()
+        .filter(([slideDeck, metadata]) => !(metadata.hidden && metadata.hidden === true))
+        .map(([slideDeck, metadata]) => ({
+            location: "/slides/" + slideDeck,
+            title: wrapNoBreak(metadata.title),
+            description: wrapNoBreak(metadata.description)
         }));
     res.render(
         "index",
-        { slide_decks: slide_decks_metadata },
+        { slide_decks: slideDecksMetadata },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
