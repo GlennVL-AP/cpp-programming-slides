@@ -108,6 +108,18 @@
 #printPdfSection #applyPdfConfig {
     margin-top: 15px;
 }
+#printPdfSection #printPdfConfig .print-pdf-config-item {
+    margin-bottom: 10px;
+}
+#printPdfSection #printPdfConfig label {
+    display: inline-block;
+    font-weight: bold;
+}
+#printPdfSection #printPdfConfig select,
+#printPdfSection #printPdfConfig input[type="checkbox"]  {
+    margin-top: 5px;
+    font-size: 14px;
+}
 @media print {
     #printPdfSection {
         display: none !important;

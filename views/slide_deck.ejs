@@ -25,10 +25,27 @@
         </section>
         <section id="printPdfConfig" class="print-pdf-section hidden">
             <h1>Slides configuration</h1>
-            <p>TODO</p>
-            <button id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
-                <span>Apply</span>
-            </button>
+            <form id="pdfConfigForm">
+                <div class="print-pdf-config-item">
+                    <label for="printPdfSlideNotes">Slide Notes:</label>
+                    <select id="printPdfSlideNotes" name="slideNotes">
+                        <option value="hide">Hide</option>
+                        <option value="onSlide" selected>On Slide</option>
+                        <option value="onSeparatePage">On Separate Page</option>
+                    </select>
+                </div>
+                <div class="print-pdf-config-item">
+                    <input type="checkbox" id="printPdfMergeFragments" name="mergeFragments" value="true" checked>
+                    <label for="printPdfMergeFragments">Merge Fragments</label>
+                </div>
+                <div class="print-pdf-config-item">
+                    <input type="checkbox" id="printPdfShowSlideNumbers" name="showSlideNumbers" value="true">
+                    <label for="printPdfShowSlideNumbers">Show Slide Numbers</label>
+                </div>
+                <button type="button" id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
+                    <span>Apply</span>
+                </button>
+            </form>
         </section>
         <section id="printPdfHelp" class="print-pdf-section hidden">
             <h1>How to save slides as pdf?</h1>
