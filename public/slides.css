@@ -9,11 +9,11 @@
     display: block;
     margin: 0 auto;
 }
-#printPdfSection .hidden {
+#printPdfSection.hidden, #printPdfSection .hidden {
     display: none !important;
 }
 #printPdfSection {
-    z-index: 65535 !important;
+    z-index: 10;
     position: fixed;
     right: 10px;
     top: 10px;
