@@ -5,15 +5,17 @@ const path = require("path")
 const port = 8000
 const app = express()
 
-const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => {
-        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json"), { encoding: "utf-8" }));
-        return {
-            [dirent.name]: metadata
-        };
-    })
-    .flatMap(Object.entries);
+const slideDecks = () => {
+    return fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => {
+            const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json"), { encoding: "utf-8" }));
+            return {
+                [dirent.name]: metadata
+            };
+        })
+        .flatMap(Object.entries);
+};
 
 app.set("view engine", "ejs");
 
@@ -25,7 +27,7 @@ app.get("/slides/assets/:asset", (req, res, next) => {
     }
     const slide_deck = new URL(referer).pathname;
     const asset_path = path.join(__dirname, slide_deck, "assets", asset);
-    if (slide_decks.map((([slide_deck]) => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
+    if (slideDecks().map((([slide_deck]) => "/slides/" + slide_deck)).includes(slide_deck) && fs.existsSync(asset_path)) {
         res.sendFile(asset_path);
     } else {
         next();
@@ -34,7 +36,7 @@ app.get("/slides/assets/:asset", (req, res, next) => {
 
 app.get('/slides/:slide_deck', (req, res, next) => {
     const slide_deck = req.params.slide_deck;
-    const slide_deck_entry = slide_decks.find(([name]) => name === slide_deck);
+    const slide_deck_entry = slideDecks().find(([name]) => name === slide_deck);
     if (!slide_deck_entry) {
         return next();
     }
@@ -59,7 +61,7 @@ app.get('/', (req, res, next) => {
             return acc.replace(regex, `<span class="no-break">${word}</span>`);
         }, text);
     }
-    const slide_decks_metadata = slide_decks
+    const slide_decks_metadata = slideDecks()
         .filter(([slide_deck, metadata]) => !(metadata.hidden && metadata.hidden === true))
         .map(([slide_deck, metadata]) => ({
             location: "/slides/" + slide_deck,
