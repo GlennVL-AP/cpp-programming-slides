@@ -79,61 +79,65 @@
     <script src="/reveal.js/plugin/highlight/highlight.js"></script>
     <script src="/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.js"></script>
     <script>
+        const pdfConfigKey = "print-pdf-config";
+        const defaultConfig = { showNotes: true, pdfSeparateFragments: false, slideNumber: false };
+
+        const getConfig = () => JSON.parse(localStorage.getItem(pdfConfigKey)) || defaultConfig;
+        const setConfig = config => localStorage.setItem(pdfConfigKey, JSON.stringify(config));
+
         var revealConfig = {
             hash: true,
             mermaid: {'theme': 'dark', 'themeVariables': { 'darkMode': true }},
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid]
         };
+
         if (new URLSearchParams(window.location.search).has("print-pdf")) {
-            document.getElementById("printPdfSection").classList.remove("hidden");
-            const savedConfig = localStorage.getItem("revealPdfConfig");
-            Object.assign(revealConfig, savedConfig ? JSON.parse(savedConfig) : {
-                pdfMaxPagesPerSlide: 1,
-                showNotes: true,
-                pdfSeparateFragments: false,
-                slideNumber: false
-            });
+            document.getElementById("printPdfSection").classList.toggle("hidden");
+            Object.assign(revealConfig, getConfig());
         }
+
         Reveal.initialize(revealConfig);
-        document.addEventListener("DOMContentLoaded", function () {
-            const config = Reveal.getConfig();
-            document.getElementById("printPdfSlideNotes").value = (config.showNotes === "separate-page") ?
-                "onSeparatePage" : (config.showNotes === true) ? "onSlide" : "hide";
-            document.getElementById("printPdfMergeFragments").checked = config.pdfSeparateFragments === false;
-            document.getElementById("printPdfShowSlideNumbers").checked = config.slideNumber === "c/t";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const { showNotes, pdfSeparateFragments, slideNumber } = getConfig();
+            document.getElementById("printPdfSlideNotes").value = showNotes === "separate-page" ? "onSeparatePage" : showNotes ? "onSlide" : "hide";
+            document.getElementById("printPdfMergeFragments").checked = !pdfSeparateFragments;
+            document.getElementById("printPdfShowSlideNumbers").checked = slideNumber === "c/t";
         });
-        document.getElementById("printPdfPrintBtn").addEventListener("click", function () {
-            document.getElementById("printPdfConfig").classList.add("hidden");
-            document.getElementById("printPdfHelp").classList.add("hidden");
-            window.print();
-        });
-        document.getElementById("printPdfConfigBtn").addEventListener("click", function () {
-            document.getElementById("printPdfConfig").classList.toggle("hidden");
-            document.getElementById("printPdfHelp").classList.add("hidden");
-        });
-        document.getElementById("printPdfHelpBtn").addEventListener("click", function () {
-            document.getElementById("printPdfConfig").classList.add("hidden");
-            document.getElementById("printPdfHelp").classList.toggle("hidden");
-        });
-        document.getElementById("applyPdfConfig").addEventListener("click", function () {
-            const slideNotes = document.getElementById('printPdfSlideNotes').value;
-            const mergeFragments = document.getElementById('printPdfMergeFragments').checked;
-            const showSlideNumbers = document.getElementById('printPdfShowSlideNumbers').checked;
-            const newConfig = {
-                showNotes: (slideNotes === "onSeparatePage") ? "separate-page" : (slideNotes === "onSlide"),
-                pdfSeparateFragments: !mergeFragments,
-                slideNumber: showSlideNumbers ? "c/t" : false
-            };
-            localStorage.setItem("revealPdfConfig", JSON.stringify(newConfig));
+
+        const toggleSection = sectionId => {
+            document.querySelector(".print-pdf-buttons").querySelectorAll(".print-pdf-button").forEach(el => {
+                if (el.id === `${sectionId}Btn`) {
+                    el.classList.toggle("active-print-pdf-button");
+                } else {
+                    el.classList.remove("active-print-pdf-button");
+                }
+            });
+            document.querySelectorAll(".print-pdf-section").forEach(el => {
+                if (el.id === sectionId) {
+                    el.classList.toggle("hidden");
+                } else {
+                    el.classList.add("hidden");
+                }
+            });
+        };
+
+        document.getElementById("printPdfPrintBtn").addEventListener("click", () => window.print());
+        document.getElementById("printPdfConfigBtn").addEventListener("click", () => toggleSection("printPdfConfig"));
+        document.getElementById("printPdfHelpBtn").addEventListener("click", () => toggleSection("printPdfHelp"));
+
+        document.getElementById("applyPdfConfig").addEventListener("click", () => {
+            const showNotesValue = document.getElementById("printPdfSlideNotes").value;
+            setConfig({
+                showNotes: showNotesValue === "onSeparatePage" ? "separate-page" : showNotesValue === "onSlide",
+                pdfSeparateFragments: !document.getElementById("printPdfMergeFragments").checked,
+                slideNumber: document.getElementById("printPdfShowSlideNumbers").checked ? "c/t" : false
+            });
             window.location.reload();
         });
-        document.getElementById("resetPdfConfig").addEventListener("click", function () {
-            const defaultConfig = {
-                showNotes: true,
-                pdfSeparateFragments: false,
-                slideNumber: false
-            };
-            localStorage.setItem("revealPdfConfig", JSON.stringify(defaultConfig));
+
+        document.getElementById("resetPdfConfig").addEventListener("click", () => {
+            setConfig(defaultConfig);
             window.location.reload();
         });
     </script>

@@ -88,12 +88,12 @@
         }
         document.addEventListener("DOMContentLoaded", updateListItemHeights);
         window.addEventListener("resize", updateListItemHeights);
-        document.getElementById("displayGrid").addEventListener("click", function() { updateDisplayStyle(true); });
-        document.getElementById("displayList").addEventListener("click", function() { updateDisplayStyle(false); });
-        document.getElementById("togglePdf").addEventListener("click", function() {
-            this.classList.toggle("active-display-button");
+        document.getElementById("displayGrid").addEventListener("click", () => updateDisplayStyle(true));
+        document.getElementById("displayList").addEventListener("click", () => updateDisplayStyle(false));
+        document.getElementById("togglePdf").addEventListener("click", event => {
+            event.currentTarget.classList.toggle("active-display-button");
             document.querySelectorAll(".print-to-pdf").forEach(item => item.classList.toggle("hidden"));
-         });
+        });
     </script>
 </body>
 </html>

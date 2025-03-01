@@ -33,6 +33,10 @@
     padding: 0;
     font-size: 24px;
 }
+#printPdfSection .print-pdf-img-button img {
+    width: 24px;
+    height: 24px;
+}
 #printPdfSection .print-pdf-txt-button {
     padding: 5px;
     font-size: 18px;
@@ -53,9 +57,12 @@
     color: #ffffff;
     border-color: #666;
 }
-#printPdfSection .print-pdf-button img {
-    width: 24px;
-    height: 24px;
+#printPdfSection .active-print-pdf-button {
+    border: none;
+    background: #666;
+}
+#printPdfSection .active-print-pdf-button:hover {
+    background: #666;
 }
 #printPdfSection .print-pdf-section::before {
     content: "";
