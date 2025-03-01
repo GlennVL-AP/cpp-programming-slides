@@ -13,14 +13,18 @@
     display: none !important;
 }
 #printPdfSection {
+    z-index: 65535 !important;
     position: fixed;
     right: 10px;
     top: 10px;
+    font-family: Arial, sans-serif;
+    color: #e0e0e0;
 }
-#printPdfSection .print-pdf-container {
+#printPdfSection .print-pdf-buttons {
     display: flex;
     gap: 5px;
-    z-index: 10;
+    text-align: right;
+    position: relative;
 }
 #printPdfSection .print-pdf-button {
     display: inline-flex;
@@ -31,7 +35,7 @@
     height: 36px;
     cursor: pointer;
     padding: 0;
-    background: #2c2c2c;
+    background: rgba(44, 44, 44, .6);
     color: #d0d0d0;
     transition: all 0.3s ease;
     border: 1px solid #444;
@@ -39,13 +43,61 @@
     font-weight: bold;
 }
 #printPdfSection .print-pdf-button:hover {
-    background: #444;
+    background: rgba(68, 68, 68, .6);
     color: #ffffff;
     border-color: #666;
 }
 #printPdfSection .print-pdf-button img {
     width: 24px;
     height: 24px;
+}
+#printPdfSection .print-pdf-section::before {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-image: url('/public/pdf_icon.png');
+    background-repeat: no-repeat;
+    background-size: 64px;
+    width: 64px;
+    height: 64px;
+    opacity: 0.3;
+}
+#printPdfSection .print-pdf-section {
+    margin: 5px auto;
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 10px;
+    background: rgba(31, 31, 31, .6);
+    position: relative;
+    text-align: left;
+    position: absolute;
+    right: 0;
+    min-width: 360px;
+    min-height: 64px;
+}
+#printPdfSection .print-pdf-section h1 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #40a9ff;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px solid #40a9ff;
+    padding-bottom: 5px;
+}
+#printPdfSection .print-pdf-section ol {
+    padding-left: 0;
+    margin-left: 20px;
+}
+#printPdfSection .print-pdf-section li {
+    margin-bottom: 10px;
+}
+#printPdfSection .print-pdf-section li:last-child {
+    margin-bottom: 0px;
+}
+#printPdfSection span.print-pdf-highlight {
+    font-weight: bold;
+    color: #40a9ff;
 }
 @media print {
     #printPdfSection {

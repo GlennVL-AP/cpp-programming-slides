@@ -12,7 +12,7 @@
 </head>
 <body>
     <section id="printPdfSection" class="hidden">
-        <section class="print-pdf-container">
+        <section class="print-pdf-buttons">
             <button id="printPdfPrintBtn" class="print-pdf-button">
                 <img src="/public/printer_icon.png" alt="Print PDF" />
             </button>
@@ -23,11 +23,20 @@
                 <span>?</span>
             </button>
         </section>
-        <section id="printPdfConfig" class="hidden">
-            <p>config config config</p>
+        <section id="printPdfConfig" class="print-pdf-section hidden">
+            <h1>Slides configuration</h1>
+            <p>TODO</p>
         </section>
-        <section id="printPdfHelp" class="hidden">
-            <p>help help help</p>
+        <section id="printPdfHelp" class="print-pdf-section hidden">
+            <h1>How to save slides as pdf?</h1>
+            <ol>
+                <li>Open the print dialog</li>
+                <li>Change <span class="print-pdf-highlight">Destination</span> to <span class="print-pdf-highlight">Save to PDF</span>.</li>
+                <li>Change <span class="print-pdf-highlight">Layout</span> to <span class="print-pdf-highlight">Landscape</span>.</li>
+                <li>Change <span class="print-pdf-highlight">Margins</span> to <span class="print-pdf-highlight">None</span>.</li>
+                <li>Enable <span class="print-pdf-highlight">Print backgrounds</span> option.</li>
+                <li>Click the <span class="print-pdf-highlight">Save</span> button.</li>
+            </ol>
         </section>
     </section>
     <div class="reveal">
@@ -59,11 +68,13 @@
         }
         Reveal.initialize(revealConfig);
         document.getElementById("printPdfPrintBtn").addEventListener("click", function() {
+            document.getElementById("printPdfConfig").classList.add("hidden");
+            document.getElementById("printPdfHelp").classList.add("hidden");
             window.print();
         });
         document.getElementById("printPdfConfigBtn").addEventListener("click", function() {
-            document.getElementById("printPdfHelp").classList.add("hidden");
             document.getElementById("printPdfConfig").classList.toggle("hidden");
+            document.getElementById("printPdfHelp").classList.add("hidden");
         });
         document.getElementById("printPdfHelpBtn").addEventListener("click", function() {
             document.getElementById("printPdfConfig").classList.add("hidden");
