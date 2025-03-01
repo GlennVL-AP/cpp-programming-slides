@@ -8,7 +8,7 @@ const app = express()
 const slide_decks = fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
     .map(dirent => {
-        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json")));
+        const metadata = JSON.parse(fs.readFileSync(path.join(__dirname, "slides", dirent.name, "metadata.json"), { encoding: "utf-8" }));
         return {
             [dirent.name]: metadata
         };
