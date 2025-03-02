@@ -32,12 +32,7 @@ const slideDecks = () => {
 app.set("view engine", "ejs");
 
 app.get("/slides/:slide_deck/assets/:asset", (req, res, next) => {
-    const assetPath = slideAssetPath(req.params.slide_deck, req.params.asset);
-    if (fs.existsSync(assetPath)) {
-        res.sendFile(assetPath);
-    } else {
-        next();
-    }
+    res.sendFile(slideAssetPath(req.params.slide_deck, req.params.asset));
 });
 
 app.get('/slides/:slide_deck', (req, res, next) => {
