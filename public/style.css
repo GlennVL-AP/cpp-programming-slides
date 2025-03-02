@@ -7,7 +7,7 @@ body {
 }
 h1 {
     font-size: 3em;
-    color: #ffffff;
+    color: #fff;
     text-align: center;
     margin-top: 50px;
 }
@@ -70,7 +70,7 @@ h1 {
 }
 .error-container p {
     font-size: 1.2em;
-    color: #bbbbbb;
+    color: #bbb;
     margin-bottom: 20px;
 }
 .link {
@@ -84,7 +84,7 @@ h1 {
 }
 .link:hover {
     background: #444;
-    color: #ffffff;
+    color: #fff;
     border-color: #666;
 }
 .slide-link {
