@@ -1,6 +1,6 @@
 {
-    "name": "cpp-programming-slides",
-    "description": "Cpp Programming Slides",
+    "name": "reveal-js-slides",
+    "description": "Reveal.js Slides",
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
