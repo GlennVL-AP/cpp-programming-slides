@@ -5,20 +5,16 @@ const path = require("path")
 const port = 8000
 const app = express()
 
-const noBreakWordList = ["C++"];
-const wrapNoBreak = text => {
-    return noBreakWordList.reduce((acc, word) => {
-        const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
-        return acc.replace(regex, `<span class="no-break">${word}</span>`);
-    }, text);
-};
-
-const slideMarkdownPath = slideDeck => path.join(__dirname, "slides", slideDeck, "index.md");
-const slideMetadataPath = slideDeck => path.join(__dirname, "slides", slideDeck, "metadata.json");
-const slideAssetPath = (slideDeck, asset) => path.join(__dirname, "slides", slideDeck, "assets", asset);
+const slidesPath = path.join(__dirname, "slides");
+const slideMarkdownPath = slideDeck => path.join(slidesPath, slideDeck, "index.md");
+const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadata.json");
+const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
+const courseMetadataPath = path.join(slidesPath, "metadata.json");
+const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath));
+const courseIconPath = () => path.join(slidesPath, courseMetadata().icon);
 
 const slideDecks = () => {
-    return fs.readdirSync(path.join(__dirname, "slides"), { withFileTypes: true })
+    return fs.readdirSync(slidesPath, { withFileTypes: true })
         .filter(dirent => dirent.isDirectory())
         .map(dirent => {
             const metadata = JSON.parse(fs.readFileSync(slideMetadataPath(dirent.name), { encoding: "utf-8" }));
@@ -27,6 +23,13 @@ const slideDecks = () => {
             };
         })
         .flatMap(Object.entries);
+};
+
+const wrapNoBreak = text => {
+    return (courseMetadata().noBreakWords || []).reduce((acc, word) => {
+        const regex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "g");
+        return acc.replace(regex, `<span class="no-break">${word}</span>`);
+    }, text);
 };
 
 app.set("view engine", "ejs");
@@ -53,7 +56,12 @@ app.get('/slides/:slide_deck', (req, res, next) => {
     );
 });
 
+app.get("/favicon.ico", (req, res, next) => {
+    res.sendFile(courseIconPath());
+});
+
 app.get('/', (req, res, next) => {
+    const metadata = courseMetadata();
     const slideDecksMetadata = slideDecks()
         .filter(([slideDeck, metadata]) => !(metadata.hidden && metadata.hidden === true))
         .map(([slideDeck, metadata]) => ({
@@ -63,7 +71,14 @@ app.get('/', (req, res, next) => {
         }));
     res.render(
         "index",
-        { slide_decks: slideDecksMetadata },
+        {
+            course: {
+                title_raw: metadata.title,
+                title: wrapNoBreak(metadata.title),
+                description: wrapNoBreak(metadata.description || "")
+            },
+            slide_decks: slideDecksMetadata
+        },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -72,7 +87,6 @@ app.get('/', (req, res, next) => {
 });
 
 app.use("/public", express.static(path.join(__dirname, "public")));
-app.use("/favicon.ico", express.static(path.join(__dirname, "public", "iso_cpp_logo.svg")));
 app.use("/reveal.js", express.static(path.join(__dirname, "node_modules", "reveal.js")));
 app.use("/reveal.js-mermaid-plugin", express.static(path.join(__dirname, "node_modules", "reveal.js-mermaid-plugin")));
 
