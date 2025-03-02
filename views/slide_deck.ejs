@@ -23,46 +23,48 @@
                 <span>?</span>
             </button>
         </div>
-        <section id="printPdfConfig" class="print-pdf-section hidden">
-            <h1>Slides configuration</h1>
-            <form id="pdfConfigForm">
-                <div class="print-pdf-config-item">
-                    <label for="printPdfSlideNotes">Slide Notes:</label>
-                    <select id="printPdfSlideNotes" name="slideNotes">
-                        <option value="hide">Hide</option>
-                        <option value="onSlide">On Slide</option>
-                        <option value="onSeparatePage">On Separate Page</option>
-                    </select>
-                </div>
-                <div class="print-pdf-config-item">
-                    <input type="checkbox" id="printPdfMergeFragments" name="mergeFragments" value="true">
-                    <label for="printPdfMergeFragments">Merge Fragments</label>
-                </div>
-                <div class="print-pdf-config-item">
-                    <input type="checkbox" id="printPdfShowSlideNumbers" name="showSlideNumbers" value="true">
-                    <label for="printPdfShowSlideNumbers">Show Slide Numbers</label>
-                </div>
-                <button type="button" id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
-                    <span>Apply</span>
-                </button>
-                <button type="button" id="resetPdfConfig" class="print-pdf-button print-pdf-txt-button">
-                    <span>Reset</span>
-                </button>
-            </form>
-        </section>
-        <section id="printPdfHelp" class="print-pdf-section hidden">
-            <h1>How to save slides as pdf?</h1>
-            <ol>
-                <li>Open the print dialog.</li>
-                <li>Change <span class="print-pdf-highlight">Destination</span> to <span class="print-pdf-highlight">Save to PDF</span>.</li>
-                <li>Change <span class="print-pdf-highlight">Layout</span> to <span class="print-pdf-highlight">Landscape</span>.</li>
-                <li>Change <span class="print-pdf-highlight">Margins</span> to <span class="print-pdf-highlight">None</span>.</li>
-                <li>Disable <span class="print-pdf-highlight">Print headers and footers</span> option.</li>
-                <li>Enable <span class="print-pdf-highlight">Print backgrounds</span> option.</li>
-                <li>Click the <span class="print-pdf-highlight">Save</span> button.</li>
-                <li>Choose a filename and destination.</li>
-            </ol>
-        </section>
+        <div class="print-pdf-sections">
+            <section id="printPdfConfig" class="print-pdf-section hidden">
+                <h1>Slides configuration</h1>
+                <form id="pdfConfigForm">
+                    <div class="print-pdf-config-item">
+                        <label for="printPdfSlideNotes">Slide Notes:</label>
+                        <select id="printPdfSlideNotes" name="slideNotes">
+                            <option value="hide">Hide</option>
+                            <option value="onSlide">On Slide</option>
+                            <option value="onSeparatePage">On Separate Page</option>
+                        </select>
+                    </div>
+                    <div class="print-pdf-config-item">
+                        <input type="checkbox" id="printPdfMergeFragments" name="mergeFragments" value="true">
+                        <label for="printPdfMergeFragments">Merge Fragments</label>
+                    </div>
+                    <div class="print-pdf-config-item">
+                        <input type="checkbox" id="printPdfShowSlideNumbers" name="showSlideNumbers" value="true">
+                        <label for="printPdfShowSlideNumbers">Show Slide Numbers</label>
+                    </div>
+                    <button type="button" id="applyPdfConfig" class="print-pdf-button print-pdf-txt-button">
+                        <span>Apply</span>
+                    </button>
+                    <button type="button" id="resetPdfConfig" class="print-pdf-button print-pdf-txt-button">
+                        <span>Reset</span>
+                    </button>
+                </form>
+            </section>
+            <section id="printPdfHelp" class="print-pdf-section hidden">
+                <h1>How to save slides as pdf?</h1>
+                <ol>
+                    <li>Open the print dialog.</li>
+                    <li>Change <span class="print-pdf-highlight">Destination</span> to <span class="print-pdf-highlight">Save to PDF</span>.</li>
+                    <li>Change <span class="print-pdf-highlight">Layout</span> to <span class="print-pdf-highlight">Landscape</span>.</li>
+                    <li>Change <span class="print-pdf-highlight">Margins</span> to <span class="print-pdf-highlight">None</span>.</li>
+                    <li>Disable <span class="print-pdf-highlight">Print headers and footers</span> option.</li>
+                    <li>Enable <span class="print-pdf-highlight">Print backgrounds</span> option.</li>
+                    <li>Click the <span class="print-pdf-highlight">Save</span> button.</li>
+                    <li>Choose a filename and destination.</li>
+                </ol>
+            </section>
+        </div>
     </div>
     <div class="reveal">
         <div class="slides">
@@ -106,20 +108,8 @@
         });
 
         const toggleSection = sectionId => {
-            document.querySelector(".print-pdf-buttons").querySelectorAll(".print-pdf-button").forEach(el => {
-                if (el.id === `${sectionId}Btn`) {
-                    el.classList.toggle("active-print-pdf-button");
-                } else {
-                    el.classList.remove("active-print-pdf-button");
-                }
-            });
-            document.querySelectorAll(".print-pdf-section").forEach(el => {
-                if (el.id === sectionId) {
-                    el.classList.toggle("hidden");
-                } else {
-                    el.classList.add("hidden");
-                }
-            });
+            document.getElementById(`${sectionId}Btn`).classList.toggle("active-print-pdf-button");
+            document.getElementById(sectionId).classList.toggle("hidden");
         };
 
         document.getElementById("printPdfPrintBtn").addEventListener("click", () => window.print());

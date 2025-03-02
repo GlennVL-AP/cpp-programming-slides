@@ -24,7 +24,9 @@
     display: flex;
     gap: 5px;
     text-align: right;
-    position: relative;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 #printPdfSection .print-pdf-img-button {
     display: inline-flex;
@@ -64,6 +66,13 @@
 #printPdfSection .active-print-pdf-button:hover {
     background: #666;
 }
+#printPdfSection .print-pdf-sections {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    margin-top: 41px;
+}
 #printPdfSection .print-pdf-section::before {
     content: "";
     position: absolute;
@@ -77,14 +86,13 @@
     opacity: 0.3;
 }
 #printPdfSection .print-pdf-section {
-    margin: 5px auto;
+    margin: 0 auto;
     padding: 20px;
     border: 1px solid #444;
     border-radius: 10px;
     background: rgba(31, 31, 31, .6);
     position: relative;
     text-align: left;
-    position: absolute;
     right: 0;
     min-width: 360px;
     min-height: 64px;
