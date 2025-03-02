@@ -31,13 +31,10 @@ const slideDecks = () => {
 
 app.set("view engine", "ejs");
 
-app.get("/slides/assets/:asset", (req, res, next) => {
-    if (req.headers.referer === undefined) {
-        return next();
-    }
-    const slideDeckEntry = slideDecks().find(([slideDeck]) => "/slides/" + slideDeck === new URL(req.headers.referer).pathname);
-    if (slideDeckEntry && fs.existsSync(slideAssetPath(slideDeckEntry[0], req.params.asset))) {
-        res.sendFile(slideAssetPath(slideDeckEntry[0], req.params.asset));
+app.get("/slides/:slide_deck/assets/:asset", (req, res, next) => {
+    const assetPath = slideAssetPath(req.params.slide_deck, req.params.asset);
+    if (fs.existsSync(assetPath)) {
+        res.sendFile(assetPath);
     } else {
         next();
     }
@@ -49,7 +46,8 @@ app.get('/slides/:slide_deck', (req, res, next) => {
         return next();
     }
     const [, metadata] = slideDeckEntry;
-    const markdownContent = fs.readFileSync(slideMarkdownPath(req.params.slide_deck), { encoding: "utf-8" });
+    const markdownContent = fs.readFileSync(slideMarkdownPath(req.params.slide_deck), { encoding: "utf-8" })
+        .replace(/\.\/assets\//g, `/slides/${req.params.slide_deck}/assets/`);
     res.render(
         "slide_deck",
         { slidedeck_title: metadata.title, slidedeck_content_markdown: markdownContent },
