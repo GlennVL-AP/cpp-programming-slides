@@ -60,7 +60,19 @@ const sendImageWithMimeType = (res, imagePath) => {
 app.set("view engine", "ejs");
 
 app.get("/slides/:slide_deck/assets/:asset", (req, res, next) => {
-    res.sendFile(slideAssetPath(req.params.slide_deck, req.params.asset));
+    const requestedPath = path.normalize(slideAssetPath(req.params.slide_deck, req.params.asset));
+
+    if (!requestedPath.startsWith(slidesPath)) {
+        var err = new Error("Forbidden: Invalid asset path");
+        err.status = 403;
+        return next(err);
+    }
+
+    if (!fs.existsSync(requestedPath)) {
+        return next();
+    }
+
+    res.sendFile(requestedPath);
 });
 
 app.get('/slides/:slide_deck', (req, res, next) => {
@@ -68,9 +80,11 @@ app.get('/slides/:slide_deck', (req, res, next) => {
     if (!slideDeckEntry) {
         return next();
     }
+
     const [, metadata] = slideDeckEntry;
     const markdownContent = fs.readFileSync(slideMarkdownPath(req.params.slide_deck), { encoding: "utf-8" })
         .replace(/\.\/assets\//g, `/slides/${req.params.slide_deck}/assets/`);
+
     res.render(
         "slide_deck",
         { slidedeck_title: metadata.title, slidedeck_content_markdown: markdownContent },
@@ -93,6 +107,7 @@ app.get("/course-logo", (req, res, next) => {
 
 app.get('/', (req, res, next) => {
     const metadata = courseMetadata();
+
     const slideDecksMetadata = slideDecks()
         .filter(([slideDeck, metadata]) => !(metadata.hidden && metadata.hidden === true))
         .map(([slideDeck, metadata]) => ({
@@ -100,6 +115,7 @@ app.get('/', (req, res, next) => {
             title: wrapNoBreak(metadata.title),
             description: wrapNoBreak(metadata.description)
         }));
+
     res.render(
         "index",
         {
