@@ -11,7 +11,8 @@ const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadat
 const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
 const courseMetadataPath = path.join(slidesPath, "metadata.json");
 const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath));
-const courseIconPath = () => path.join(slidesPath, courseMetadata().icon);
+const courseFavIconPath = () => path.join(slidesPath, courseMetadata().favIcon);
+const courseBgLogoPath = () => path.join(slidesPath, courseMetadata().bgLogo);
 
 const slideDecks = () => {
     return fs.readdirSync(slidesPath, { withFileTypes: true })
@@ -58,6 +59,10 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 
 app.get("/favicon.ico", (req, res, next) => {
     res.sendFile(courseIconPath());
+});
+
+app.get("/course-logo", (req, res, next) => {
+    res.sendFile(courseBgLogoPath());
 });
 
 app.get('/', (req, res, next) => {
