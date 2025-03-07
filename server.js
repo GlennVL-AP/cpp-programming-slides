@@ -33,6 +33,26 @@ const wrapNoBreak = text => {
     }, text);
 };
 
+const sendImageWithMimeType = (res, next, imagePath) => {
+    if (!fs.existsSync(imagePath)) {
+        return next();
+    }
+
+    const mimeTypes = {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".svg": "image/svg+xml",
+        ".ico": "image/x-icon"
+    };
+
+    const ext = path.extname(imagePath).toLowerCase();
+    const contentType = mimeTypes[ext] || "application/octet-stream";
+
+    res.setHeader("Content-Type", contentType);
+    res.sendFile(imagePath);
+};
+
 app.set("view engine", "ejs");
 
 app.get("/slides/:slide_deck/assets/:asset", (req, res, next) => {
@@ -58,11 +78,11 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get("/favicon.ico", (req, res, next) => {
-    res.sendFile(courseIconPath());
+    sendImageWithMimeType(res, next, courseFavIconPath())
 });
 
 app.get("/course-logo", (req, res, next) => {
-    res.sendFile(courseBgLogoPath());
+    sendImageWithMimeType(res, next, courseBgLogoPath())
 });
 
 app.get('/', (req, res, next) => {
