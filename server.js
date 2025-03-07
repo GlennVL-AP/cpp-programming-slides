@@ -11,8 +11,16 @@ const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadat
 const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
 const courseMetadataPath = path.join(slidesPath, "metadata.json");
 const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath));
-const courseFavIconPath = () => path.join(slidesPath, courseMetadata().favIcon);
-const courseBgLogoPath = () => path.join(slidesPath, courseMetadata().bgLogo);
+const courseFavIconPath = () => {
+    const metadata = courseMetadata();
+    return metadata.favIcon ? path.join(slidesPath, metadata.favIcon) : null;
+};
+const courseBgLogoPath = () => {
+    const metadata = courseMetadata();
+    return metadata.bgLogo ? path.join(slidesPath, metadata.bgLogo) : null;
+};
+const defaultFavIcon = path.join(__dirname, "public", "default_favicon.ico");
+const defaultBgLogo = path.join(__dirname, "public", "default_bglogo.png");
 
 const slideDecks = () => {
     return fs.readdirSync(slidesPath, { withFileTypes: true })
@@ -33,11 +41,7 @@ const wrapNoBreak = text => {
     }, text);
 };
 
-const sendImageWithMimeType = (res, next, imagePath) => {
-    if (!fs.existsSync(imagePath)) {
-        return next();
-    }
-
+const sendImageWithMimeType = (res, imagePath) => {
     const mimeTypes = {
         ".png": "image/png",
         ".jpg": "image/jpeg",
@@ -78,11 +82,13 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 });
 
 app.get("/favicon.ico", (req, res, next) => {
-    sendImageWithMimeType(res, next, courseFavIconPath())
+    const favIconPath = courseFavIconPath();
+    sendImageWithMimeType(res, favIconPath && fs.existsSync(favIconPath) ? favIconPath : defaultFavIcon);
 });
 
 app.get("/course-logo", (req, res, next) => {
-    sendImageWithMimeType(res, next, courseBgLogoPath())
+    const bgLogoPath = courseBgLogoPath();
+    sendImageWithMimeType(res, bgLogoPath && fs.existsSync(bgLogoPath) ? bgLogoPath : defaultBgLogo);
 });
 
 app.get('/', (req, res, next) => {
