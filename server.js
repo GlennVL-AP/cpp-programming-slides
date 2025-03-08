@@ -106,6 +106,11 @@ app.get("/course-logo", (req, res, next) => {
 
 app.get('/', (req, res, next) => {
     const metadata = courseMetadata();
+    const courseInfo = {
+        title_raw: metadata.title,
+        title: wrapNoBreak(metadata.title),
+        description: wrapNoBreak(metadata.description || "")
+    };
 
     const slideDecksMetadata = slideDecks()
         .filter(([, metadata]) => !(metadata.hidden && metadata.hidden === true))
@@ -117,14 +122,7 @@ app.get('/', (req, res, next) => {
 
     res.render(
         "index",
-        {
-            course: {
-                title_raw: metadata.title,
-                title: wrapNoBreak(metadata.title),
-                description: wrapNoBreak(metadata.description || "")
-            },
-            slide_decks: slideDecksMetadata
-        },
+        { course: courseInfo, slide_decks: slideDecksMetadata },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
