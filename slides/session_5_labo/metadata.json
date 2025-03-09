@@ -1,4 +1,4 @@
 {
     "title": "Labo 5: Solutions and Polymorfisms",
-    "description": "Solutions Labo 1-4. Exercises runtime polymorfisms. See digitap for exercise assignments."
+    "description": "Solutions Labo 1-4. Static constexpr, std::size_t, static_cast, std::optional, designated initializers. Exercises runtime polymorfisms. See digitap for exercise assignments."
 }
