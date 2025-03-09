@@ -230,6 +230,65 @@ Note:
 ---
 ### std::optional
 ---
+Sometimes a function may or may not return a value.
+---
+```c++
+// look for needle in haystack, return index if found else -1
+int my_search(std::vector<int> const& haystack, int needle)
+{
+    for (int index{0}; auto const& value : haystack)
+    {
+        if (value == needle)
+        {
+            return index;
+        }
+
+        ++index;
+    }
+
+    return -1; // -1 for not found??
+}
+```
+What if the needle is not found in the haystack?
+---
+```c++
+// look for needle in haystack, return index if found
+std::optional<int> my_search(std::vector<int> const& haystack, int needle)
+{
+    for (int index{0}; auto const& value : haystack)
+    {
+        if (value == needle)
+        {
+            return index;
+        }
+
+        ++index;
+    }
+
+    return {};
+}
+```
+Much more expressive!
+---
+```c++
+std::optional<int> my_search(std::vector<int> const& haystack, int needle)
+```
+```c++
+std::vector my_vec{1, 2, 3, 4, 5};
+if (auto const result = my_search(my_vec, 5))
+{
+    std::println("Found at index {}!", *result);
+}
+else
+{
+    std::println("Not found!");
+}
+```
+Use in simple if construction.
+
+Note:
+* <https://compiler-explorer.com/z/3x7srx7fe>
+---
 ### designated initializers
 ---
 ## Exercises Runtime Polymorfisms
