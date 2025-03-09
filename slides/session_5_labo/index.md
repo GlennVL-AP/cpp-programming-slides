@@ -291,6 +291,36 @@ Note:
 ---
 ### designated initializers
 ---
+```c++
+struct MyType
+{
+    int first;
+    int second;
+};
+```
+```c++
+MyType my_value{1, 2};
+```
+```c++
+std::println("{}", my_value.first);  // prints 1
+std::println("{}", my_value.second); // prints 2
+```
+What we used so far.
+---
+```c++
+struct MyType
+{
+    int first;
+    int second;
+};
+```
+```c++
+MyType my_value{ .first = 1, .second = 2 };
+```
+Designated initializers.
+---
+Be expressive, use designated initializers!
+---
 ## Exercises Runtime Polymorfisms
 ---
 ### Devcontainer
