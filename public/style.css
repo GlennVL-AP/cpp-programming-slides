@@ -23,6 +23,21 @@ body {
 .header p:empty {
     display: none;
 }
+.header a.ap-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #e30614;
+    transition: transform 0.3s ease;
+}
+.header a.ap-link:hover {
+    transform: scale(1.2);
+}
+.header a.ap-link img.ap-logo {
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: -1px;
+    vertical-align: bottom;
+}
 .no-break {
     white-space: nowrap !important;
 }
@@ -192,6 +207,7 @@ body {
     text-decoration: none;
     font-size: 24px;
     color: #f7f4f4;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .footer a:hover {
     opacity: 1;
@@ -199,7 +215,6 @@ body {
 }
 .footer .reveal-logo {
     width: 120px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .footer .express-logo {
     font-family: "Helvetica Neue", "Open Sans", sans-serif;
