@@ -4,8 +4,7 @@
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
-        "test": "echo \"Naugthy dev didn't write tests...\" && exit 1"
+        "start": "node server.js"
     },
     "dependencies": {
         "reveal.js": "^5.1.0",
