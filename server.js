@@ -108,7 +108,7 @@ app.get('/', (req, res, next) => {
     const metadata = courseMetadata();
 
     const slideDecksMetadata = slideDecks()
-        .filter(([slideDeck, metadata]) => !(metadata.hidden && metadata.hidden === true))
+        .filter(([, metadata]) => !(metadata.hidden && metadata.hidden === true))
         .map(([slideDeck, metadata]) => ({
             location: "/slides/" + slideDeck,
             title: wrapNoBreak(metadata.title),
