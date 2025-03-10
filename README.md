@@ -18,7 +18,7 @@ The slides can be rendered in the browser using the `reveal.js` node package.
 7. In the vscode terminal execute the following command
 
    ```bash
-   npm run start
+   npm start
    ```
 
 8. Navigate to the following page in your preferred browser
