@@ -27,11 +27,8 @@ const slideDecks = () => {
         .filter(dirent => dirent.isDirectory())
         .map(dirent => {
             const metadata = JSON.parse(fs.readFileSync(slideMetadataPath(dirent.name), { encoding: "utf-8" }));
-            return {
-                [dirent.name]: metadata
-            };
-        })
-        .flatMap(Object.entries);
+            return [dirent.name, metadata];
+        });
 };
 
 const wrapNoBreak = text => {
