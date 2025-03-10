@@ -17,6 +17,11 @@ kanban
 ---
 <https://gitlab.apstudent.be/cpp-programming/cpp-programming-solutions>
 ---
+A few new features are used in the solutions...
+
+Note:
+* Solutions use some stuff we haven't covered yet.
+---
 * static constexpr
 * std::size_t
 * static_cast
@@ -114,12 +119,14 @@ private:
 ```c++
 // not in function or class, no static!
 constexpr double pi{3.14};
-
+```
+```c++
 double circle_area(double radius)
 {
     return pi * radius * radius;
 }
-
+```
+```c++
 double circle_circumference(double radius)
 {
     return 2 * pi * radius;
@@ -131,7 +138,7 @@ double circle_circumference(double radius)
 std::size_t is used in the STL as index for operator[] and as result of the .size() member function of containers.
 ---
 ```c++
-std::vector my_vec{1, 2, 3, 4, 5};
+std::vector const my_vec{1, 2, 3, 4, 5};
 ```
 ```c++
 auto vec_size = my_vec.size();      // type is std::size_t
@@ -154,10 +161,10 @@ Note:
 * What is the issue with this code?
 * Infinite loop: -1 does not exist, instead wraps around to largest positive number.
 ---
-Best practice: Always use int for arithmetic.
+Always use int for arithmetic!
 ---
 ```c++
-std::vector my_vec{1, 2, 3, 4, 5};
+std::vector const my_vec{1, 2, 3, 4, 5};
 ```
 ```c++
 for (int i{my_vec.size()}; i >= 0; --i) // compiler warning
@@ -168,7 +175,8 @@ for (int i{my_vec.size()}; i >= 0; --i) // compiler warning
 
 Note:
 * my_vec.size() returns std::size_t
-* my_vec[] expectd std::size_t
+* my_vec[] expects std::size_t
+* Warning because of narrowing conversions.
 ---
 STL existed long before best practice of always using int was introduced.
 ---
@@ -181,20 +189,23 @@ Note:
 Best practice
 ---
 * Always use int for arithmetic.
-* Use std::ssize(container) to get container size.
-* Avoid operator[] if possible (use algorithms).
+* Use std::ssize(container) to get container size. <!-- .element: class="fragment " data-fragment-index="1" -->
+* Avoid operator[] if possible (use algorithms). <!-- .element: class="fragment " data-fragment-index="2" -->
 ---
 ```c++
-std::vector my_vec{1, 2, 3, 4, 5};
+std::vector const my_vec{1, 2, 3, 4, 5};
 ```
 ```c++
 // print items in reverse
-for (auto const& value : std::ranges::reverse(my_vec))
+for (auto const& value : std::views::reverse(my_vec))
 {
     std::println("{}", value);
 }
 ```
-No direct indexing required.
+No direct indexing required!
+
+Note:
+* <https://compiler-explorer.com/z/jWWa9ax4q>
 ---
 But what if I have to use direct indexing?
 ---
@@ -203,11 +214,11 @@ But what if I have to use direct indexing?
 Convert from one type to another without checking.
 ---
 ```c++
-std::vector my_vec{1, 2, 3, 4, 5};
+std::vector const my_vec{1, 2, 3, 4, 5};
 ```
 ```c++
 // print items in reverse
-for (int i{std::ssize(my_vec)}; i >= 0; --i)
+for (auto i{std::ssize(my_vec)}; i >= 0; --i)
 {
     std::println("{}", my_vec[static_cast<std::size_t>(i)]);
 }
@@ -219,9 +230,11 @@ Don't do this unless you are absolutely certain it is.
 ---
 ```c++
 int my_int{-1};
-```
-```c++
 auto my_index = static_cast<std::size_t>(my_int);
+std::println("my_index = {}", my_index);
+```
+```text
+my_index = 18446744073709551615
 ```
 The compiler won't complain!
 
@@ -240,7 +253,7 @@ int my_search(std::vector<int> const& haystack, int needle)
     {
         if (value == needle)
         {
-            return index;
+            return index; // found! return index
         }
 
         ++index;
@@ -259,13 +272,13 @@ std::optional<int> my_search(std::vector<int> const& haystack, int needle)
     {
         if (value == needle)
         {
-            return index;
+            return index; // found! return index
         }
 
         ++index;
     }
 
-    return {};
+    return {}; // not found! return nothing
 }
 ```
 Much more expressive!
@@ -274,7 +287,7 @@ Much more expressive!
 std::optional<int> my_search(std::vector<int> const& haystack, int needle)
 ```
 ```c++
-std::vector my_vec{1, 2, 3, 4, 5};
+std::vector const my_vec{1, 2, 3, 4, 5};
 if (auto const result = my_search(my_vec, 5))
 {
     std::println("Found at index {}!", *result);
@@ -288,6 +301,10 @@ Use in simple if construction.
 
 Note:
 * <https://compiler-explorer.com/z/3x7srx7fe>
+* Use `*` to get the value.
+* Using `*` is only allowed if the optional is not empty!
+---
+Use std::optional if a function may or may not have a value to return!
 ---
 ### designated initializers
 ---
@@ -299,7 +316,7 @@ struct MyType
 };
 ```
 ```c++
-MyType my_value{1, 2};
+MyType const my_value{1, 2};
 ```
 ```c++
 std::println("{}", my_value.first);  // prints 1
@@ -315,16 +332,33 @@ struct MyType
 };
 ```
 ```c++
-MyType my_value{ .first = 1, .second = 2 };
+MyType const my_value{ .first = 1, .second = 2 };
 ```
 Designated initializers.
 ---
-Be expressive, use designated initializers!
+Be explicit, use designated initializers!
+
+Note:
+* Always aim to make your code as expressive as possible.
+---
+### Best practices
+---
+* Add static to constexpr in functions and classes.
+* Always use int for arithmetic. <!-- .element: class="fragment " data-fragment-index="1" -->
+* Prefer algorithms over direct indexing. <!-- .element: class="fragment " data-fragment-index="2" -->
+* Ensure conversion is safe when using static_cast. <!-- .element: class="fragment " data-fragment-index="3" -->
+* Be expressive: std::optional, designated initializers. <!-- .element: class="fragment " data-fragment-index="4" -->
+
+note:
+* Avoid static_cast unless really necessary.
 ---
 ## Exercises Runtime Polymorfisms
 ---
 ### Devcontainer
-TODO
+<https://gitlab.apstudent.be/cpp-programming/devcontainer-labo-4>
+
+Note:
+* Reuse labo 4 devcontainer.
 ---
 ### Exercises
 See digitap.
