@@ -10,7 +10,7 @@ const slideMarkdownPath = slideDeck => path.join(slidesPath, slideDeck, "index.m
 const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadata.json");
 const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
 const courseMetadataPath = path.join(slidesPath, "metadata.json");
-const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath));
+const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath, { encoding: "utf-8" }));
 const courseFavIconPath = () => {
     const metadata = courseMetadata();
     return metadata.favIcon ? path.join(slidesPath, metadata.favIcon) : null;
