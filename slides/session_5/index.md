@@ -181,7 +181,7 @@ Note:
 * The reference will accept any class that implements the abstract class.
 * <https://compiler-explorer.com/z/axo4bMs1M>
 ---
-## Rule-of-5
+### Rule-of-5
 ---
 Classes with a virtual function also need a virtual destructor!
 ---
@@ -228,10 +228,119 @@ private:
 ---
 It (almost) never makes sense to implement copy when polymorfisms are involved!
 ---
-Best practices
+### Best practices
 ---
 Need a virtual function?
 * Also add a virtual destructor.
 * Disable copy and move operators.
 ---
+Make sure your hierarchies make sense.
+* A cat, dog, ... are animals.
+* A book is not, don't create a Book class that implements Animal.
+---
 ## Dependency Inversion
+A common usecase for polymorfisms.
+---
+```c++
+class PayPal {
+public:
+    void process_payment(std::string recipient, double amount) { /*...*/ }
+};
+```
+```c++
+class PaymentService {
+public:
+    void pay(std::string recipient, double amount) {
+        paypal_.process_payment(recipient, amount);
+    }
+
+private:
+    PayPal paypal_;
+};
+```
+
+Note:
+* Is this a good design?
+* Good: Payment implementation detail in PayPal class.
+* Bad: What if we want to add Payconiq?
+* Bad: What if we want to test the PaymentService class?
+---
+### Good
+* Implementation details in the PayPal class.
+---
+### Bad
+* Hard dependency of PaymentService on PayPal.
+* Difficult to test the PaymentService class.
+* Hard to support different payment methods.
+---
+Depend on abstractions instead!
+---
+Create an interface for the payment method.
+---
+```c++
+class PaymentProcessor
+{
+public:
+    virtual ~PaymentProcessor() = default;
+
+    PaymentProcessor(PaymentProcessor const&) = delete;
+    PaymentProcessor& operator=(PaymentProcessor const&) = delete;
+    PaymentProcessor(PaymentProcessor&&) = delete;
+    PaymentProcessor& operator=(PaymentProcessor&&) = delete;
+
+    virtual void process_payment(std::string recipient, double amount) = 0;
+};
+```
+```c++
+class PayPal : public PaymentProcessor
+{
+public:
+    void process_payment(std::string recipient, double amount) override { /*...*/ }
+};
+```
+
+Note:
+* PaymentProcessor only has pure virtual functions, so it is an interface.
+* PayPal implements the interface.
+* We can now also create Payconiq, ... classes that implement the interface.
+---
+```c++
+class PaymentService
+{
+public:
+    PaymentService(PaymentProcessor& processor) : processor_{processor} {}
+
+    void pay(std::string recipient, double amount)
+    {
+        processor_.get().process_payment(recipient, amount);
+    }
+
+private:
+    std::reference_wrapper<PaymentProcessor> processor_;
+};
+```
+```c++
+PayPal paypal{};
+PaymentService service{paypal};
+service.pay("me", 1'000'000'000);
+```
+
+Note:
+* Why std::reference_wrapper?
+* A reference is a constant, it cannot be changed.
+* This would make PaymentService not copy-able and move-able.
+* We want to avoid constant members.
+* std::reference_wrapper makes all this possible again.
+---
+PaymentService now depends on PaymentProcessor (an abstraction) instead of PayPal (a concrete class). This is called dependency inversion.
+---
+Dependency inversion makes it easy to...
+---
+Implement new types of payment processors. For example Payconiq.
+---
+Test the PaymentService class by creating a fake PaymentProcessor we can manipulate in the unittests.
+---
+## Best practices
+---
+* Depend on abstractions instead of concrete classes.
+* Avoid const members in classes.
