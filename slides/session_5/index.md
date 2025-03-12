@@ -8,9 +8,11 @@ kanban
     task2[Pure virtual functions]
     task3[Virtual destructors]
     task4[Overriding functions]
-    task5[Copy and Move]
+    task5[Copy in class hierarchy]
   column2[Dependency Inversion]
     task6[Interfaces]
+    task7[Extensibility]
+    task8[Testability]
 ```
 ---
 ## Polymorfisms
@@ -19,7 +21,7 @@ kanban
 class Animal
 {
 public:
-    Animal(std::string name) : name_{std::move(name)} {}
+    Animal(std::string name) : name_{name} {}
 
     void speak() const
     {
@@ -49,7 +51,7 @@ Different animals make different sounds.
 ```c++
 class Animal {
 public:
-    Animal(std::string name) : name_{std::move(name)} {}
+    Animal(std::string name) : name_{name} {}
     virtual ~Animal() = default;
 
     void speak() const {
@@ -62,6 +64,11 @@ private:
     virtual std::string speak_impl() const = 0;
 };
 ```
+
+Note:
+* Virtual keyword to indicate this is a method that can be modified by subclasses.
+* `= 0` since we don't provide a default implementation, subclasses have to implement the method.
+* Private because it should not be possible to call the speak_impl() method on an Animal.
 ---
 ```c++
 Animal dog{"dog"}; // error
@@ -89,6 +96,10 @@ private:
     }
 };
 ```
+
+Note:
+* Override keyword makes it explicit we want to implement the speak_impl method.
+* If speak_impl was not virtual in Animal, this would cause a compiler error.
 ---
 ```c++
 class Cat : public Animal
@@ -198,7 +209,7 @@ Should we allow copying Animal objects?
 Cat cat{};
 Dog dog{cat}; // uses copy constructor from Animal
 ```
-No, that would open the possibility to assign Cats to Dogs etc, which does not make sense.
+No, that would make it possible to assign cats to dogs, which does not make sense.
 ---
 So we disable the special member functions!
 ---
@@ -206,7 +217,7 @@ So we disable the special member functions!
 class Animal
 {
 public:
-    Animal(std::string name) : name_{std::move(name)} {}
+    Animal(std::string name) : name_{name} {}
     virtual ~Animal() = default;
 
     Animal(Animal const&) = delete;
@@ -226,15 +237,15 @@ private:
 };
 ```
 ---
-It (almost) never makes sense to implement copy when polymorfisms are involved!
+It never makes sense to implement copy in an inheritance hierarchy!
 ---
 ### Best practices
 ---
-Need a virtual function?
-* Also add a virtual destructor.
-* Disable copy and move operators.
+#### Need a virtual function?
+* Add a virtual destructor.
+* Disable copy and move.
 ---
-Make sure your hierarchies make sense.
+#### Make sure your hierarchies make sense.
 * A cat, dog, ... are animals.
 * A book is not, don't create a Book class that implements Animal.
 ---
@@ -272,6 +283,10 @@ Note:
 * Hard dependency of PaymentService on PayPal.
 * Difficult to test the PaymentService class.
 * Hard to support different payment methods.
+
+Note:
+* We can't unittest the PaymentService class in isolation.
+* We would need to use the development PayPal server and test PaymentService and PayPal together.
 ---
 Depend on abstractions instead!
 ---
@@ -319,11 +334,6 @@ private:
     std::reference_wrapper<PaymentProcessor> processor_;
 };
 ```
-```c++
-PayPal paypal{};
-PaymentService service{paypal};
-service.pay("me", 1'000'000'000);
-```
 
 Note:
 * Why std::reference_wrapper?
@@ -331,6 +341,17 @@ Note:
 * This would make PaymentService not copy-able and move-able.
 * We want to avoid constant members.
 * std::reference_wrapper makes all this possible again.
+---
+![Dr. Evil](./assets/austin_powers_dr_evil.jpg)
+
+```c++
+PayPal paypal{};
+PaymentService service{paypal};
+service.pay("me", 100'000'000'000);
+```
+
+Note:
+* We could've just as easily created a Payconiq object and inject it into the payment service.
 ---
 PaymentService now depends on PaymentProcessor (an abstraction) instead of PayPal (a concrete class). This is called dependency inversion.
 ---
@@ -344,3 +365,5 @@ Test the PaymentService class by creating a fake PaymentProcessor we can manipul
 ---
 * Depend on abstractions instead of concrete classes.
 * Avoid const members in classes.
+---
+## Exercises!
