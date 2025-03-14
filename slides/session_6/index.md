@@ -3,9 +3,20 @@
 ---
 ```mermaid
 kanban
-  column1[TODO]
-    task1[TODO]
+  column1[Vector of animals]
+    task1[Slicing]
+    task2[References]
+    task3[Lifetime]
+  column2[Stack and Heap]
+    task4[Call stack]
+    task5[Local variables]
+    task6[Heap]
+  column3[Dynamic memory]
+    task7[Unique pointers]
+    task8[Shared pointers]
 ```
+---
+## The previous session...
 ---
 We created a polymorfistic animal hierarchy.
 ---
@@ -68,6 +79,8 @@ speak(dog);
 speak(cat);
 ```
 And used these concrete classes as argument for a function that expects a reference to the base class.
+---
+## Vector of Animals
 ---
 Let's make a list of animals.
 ---
@@ -543,3 +556,540 @@ for (auto const& animal : animals)
 <!-- .element: class="fragment" data-fragment-index="2" -->
 ---
 I want animal objects that don't go out of scope!
+---
+Where are variables stored anyway? 🤔
+---
+## Stack vs. Heap
+---
+### The call stack
+---
+
+<div style="display: flex;">
+
+```c++ [14]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 0"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 0"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-10]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 0"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,5]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    argi["int i = x = 5"]
+    retb["return address of b()"]
+    space
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 0"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,5-6]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    argi["int i = 5"]
+    retb["return address of b()"]
+    space
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = i * 2 = 10"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,7]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 10"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,1]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    argj["int j = RAX = 10"]
+    argk["int k = x = 5"]
+    retc["return address of c()"]
+    space
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 10"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,1-2]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    argj["int j = 10"]
+    argk["int k = 5"]
+    retc["return address of c()"]
+    space
+    resb["int result_b = 0"]
+    intx["int x = 0"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = j + k = 15"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11,3]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 15"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,9-11]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    intx["int x = 5"]
+    reta["return address of a()"]
+    space
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 15"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [14-15,12]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    retm["return address of main()"]
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 15"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
+
+---
+
+<div style="display: flex;">
+
+```c++ [16]
+int c(int j, int k) {
+    return j + k;
+}
+
+int b(int i) {
+    return i * 2;
+}
+
+int a() {
+    int x{5};
+    return c(b(x), x);
+}
+
+int main() {
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  block
+    columns 1
+    space
+    callstack(["Call Stack"])
+  end
+  block
+    columns 1
+    retval["RAX = 15"]
+    space
+    registers(["Registers"])
+  end
+```
+
+</div>
