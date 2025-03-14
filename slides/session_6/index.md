@@ -417,3 +417,127 @@ hamster says squeak.
 bear says roar.
 ```
 Phew, finally something that works!
+---
+But what if we don't know which animal to create at compile-time?
+
+Note:
+* For example we ask the user which animal to create.
+---
+```c++
+std::string animal{};
+std::print("Which animal do you want to create? ");
+std::cin >> animal;
+```
+---
+```c++
+std::vector<std::reference_wrapper<Animal>> animals{};
+```
+```c++
+if (animal == "dog")
+{
+    Dog dog{};
+    animals.push_back(dog);
+}
+```
+```c++
+if (animal == "cat")
+{
+    Cat cat{};
+    animals.push_back(cat);
+}
+```
+```c++
+// bear, hamster, ...
+```
+Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
+
+Note:
+* Vector holds references, but animal objects go out-of-scope when if block ends!
+* <https://compiler-explorer.com/z/jPEbeGdsT>
+---
+```sh [2]
+=================================================================
+==1==ERROR: AddressSanitizer: stack-use-after-scope on address 0x73c7e0309140 at pc 0x633f823d35c8 bp 0x7fff294cced0 sp 0x7fff294ccec8
+READ of size 8 at 0x73c7e0309140 thread T0
+    #0 0x633f823d35c7 in Animal::speak() const /app/example.cpp:20:44
+    #1 0x633f823d35c7 in main /app/example.cpp:113:22
+    #2 0x73c7e2029d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #3 0x73c7e2029e3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #4 0x633f822f2524 in _start (/app/output.s+0x2e524)
+
+Address 0x73c7e0309140 is located in stack of thread T0 at offset 320 in frame
+    #0 0x633f823d2ebf in main /app/example.cpp:78
+
+  This frame has 6 object(s):
+    [32, 64) 'ref.tmp.i' (line 20)
+    [96, 128) 'animal' (line 79)
+    [160, 200) 'dog' (line 88)
+    [240, 280) 'cat' (line 93)
+    [320, 360) 'bear' (line 98) <== Memory access at offset 320 is inside this variable
+    [400, 440) 'hamster' (line 103)
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope /app/example.cpp:20:44 in Animal::speak() const
+Shadow bytes around the buggy address:
+  0x73c7e0308e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73c7e0308f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73c7e0308f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x73c7e0309000: f1 f1 f1 f1 00 00 00 00 f2 f2 f2 f2 00 00 00 00
+  0x73c7e0309080: f2 f2 f2 f2 f8 f8 f8 f8 f8 f2 f2 f2 f2 f2 f8 f8
+=>0x73c7e0309100: f8 f8 f8 f2 f2 f2 f2 f2[f8]f8 f8 f8 f8 f2 f2 f2
+  0x73c7e0309180: f2 f2 f8 f8 f8 f8 f8 f3 f3 f3 f3 f3 00 00 00 00
+  0x73c7e0309200: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+  0x73c7e0309280: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+  0x73c7e0309300: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+  0x73c7e0309380: f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5 f5
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==1==ABORTING
+```
+No, it does not work!
+
+Note:
+* Address sanitizer detects this!
+* Enable by adding compiler option `-fsanitize=address`.
+---
+```c++
+// vector of references to animal objects
+std::vector<std::reference_wrapper<Animal const>> animals{};
+```
+
+```c++
+// create the right type of animal
+if (animal == "dog")
+{
+    Dog dog{};              // create dog object
+    animals.push_back(dog); // store reference to dog object
+}                           // dog object ceases to exist
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// walk through the list
+for (auto const& animal : animals)
+{
+    animal.get().speak();   // oops, try to access object
+                            // that no longer exists
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
