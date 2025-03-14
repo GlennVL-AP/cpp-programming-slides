@@ -154,8 +154,8 @@ struct B : A { int b; } // inherits int a from A
 B b{1, 2};              // int a = 1, int b = 2
 A a = b;                // only A part copied
 ```
-* Concrete classes are larger than base classes.
 * This is called slicing.
+* Another reason to disable copy. 😉 <!-- .element: class="fragment" data-fragment-index="1" -->
 ---
 ```c++
 Dog dog{};
@@ -416,9 +416,9 @@ dog says bark.
 hamster says squeak.
 bear says roar.
 ```
-Phew, finally something that works!
+Phew, finally something that works! 🥳
 ---
-But what if we don't know which animal to create at compile-time?
+But what if we don't know which animal to create at compile-time? 🤔
 
 Note:
 * For example we ask the user which animal to create.
@@ -430,7 +430,7 @@ std::cin >> animal;
 ```
 ---
 ```c++
-std::vector<std::reference_wrapper<Animal>> animals{};
+std::vector<std::reference_wrapper<Animal const>> animals{};
 ```
 ```c++
 if (animal == "dog")
@@ -528,7 +528,7 @@ if (animal == "dog")
 {
     Dog dog{};              // create dog object
     animals.push_back(dog); // store reference to dog object
-}                           // dog object ceases to exist
+}                           // ‼️dog object ceases to exist‼️
 ```
 <!-- .element: class="fragment" data-fragment-index="1" -->
 
@@ -536,8 +536,10 @@ if (animal == "dog")
 // walk through the list
 for (auto const& animal : animals)
 {
-    animal.get().speak();   // oops, try to access object
-                            // that no longer exists
+    animal.get().speak();   // oops, attempt to access object
+                            // that no longer exists 💥
 }
 ```
 <!-- .element: class="fragment" data-fragment-index="2" -->
+---
+I want animal objects that don't go out of scope!
