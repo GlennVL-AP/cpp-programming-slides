@@ -467,10 +467,10 @@ Note:
 ---
 
 * Add static to constexpr in functions and classes.
-* Always use int for arithmetic. <!-- .element: class="fragment " data-fragment-index="1" -->
-* Prefer algorithms over direct indexing. <!-- .element: class="fragment " data-fragment-index="2" -->
-* Ensure conversion is safe when using static_cast. <!-- .element: class="fragment " data-fragment-index="3" -->
-* Be expressive: std::optional, designated initializers. <!-- .element: class="fragment " data-fragment-index="4" -->
+* Always use int for arithmetic. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Prefer algorithms over direct indexing. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Ensure conversion is safe when using static_cast. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Be expressive: std::optional, designated initializers. <!-- .element: class="fragment" data-fragment-index="4" -->
 
 note:
 
