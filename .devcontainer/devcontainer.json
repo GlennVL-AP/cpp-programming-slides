@@ -2,5 +2,20 @@
 	"name": "node.js",
 	"image": "mcr.microsoft.com/devcontainers/typescript-node",
 	"postAttachCommand": "npm install",
-	"remoteUser": "node"
+	"remoteUser": "node",
+	"customizations": {
+        "vscode": {
+            "settings": {
+				"markdownlint.config": {
+					"default": true,
+					"no-duplicate-heading": {
+						"siblings_only": true
+					}
+				}
+            },
+            "extensions": [
+                "DavidAnson.vscode-markdownlint"
+            ]
+        }
+    }
 }
