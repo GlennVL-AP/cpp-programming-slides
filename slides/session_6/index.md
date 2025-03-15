@@ -563,8 +563,6 @@ Where are variables stored anyway? 🤔
 ---
 ### The call stack
 ---
-<!-- intentially empty slide because of transitions -->
----
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -635,7 +633,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -706,7 +704,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -777,7 +775,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -848,7 +846,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -919,7 +917,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -990,7 +988,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1061,7 +1059,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1132,7 +1130,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1203,7 +1201,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1274,7 +1272,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1345,7 +1343,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1416,7 +1414,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1487,7 +1485,7 @@ block-beta
 
 </div>
 
----
+--
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1557,6 +1555,3 @@ block-beta
 ```
 
 </div>
-
----
-<!-- intentially empty slide because of transitions -->
