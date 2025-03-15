@@ -2039,3 +2039,36 @@ Note:
 * Its return address is removed from the stack and assigned to the program counter.
 * The startup code will terminate the application.
 
+---
+
+#### TODO
+
+* Data structure (LIFO: last in, first out)
+* Stack size (few 100 of bytes embedded, 8 MB linux)
+* Stack is small, so can't store large objects there
+* Heap is meant for large objects
+
+---
+
+### The Heap
+
+---
+
+#### TODO
+
+* Large (uses RAM memory)
+* Ask for memory, return it when no longer needed
+* Fragmentation risk!
+
+---
+
+## Using dynamic memory
+
+---
+
+### TODO
+
+* Manual allocation is possible, but prone to memory leaks (forget to free, double free)
+* Use RAII types instead
+  * std::unique_ptr
+  * std::shared_ptr?
