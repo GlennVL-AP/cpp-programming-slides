@@ -1,4 +1,4 @@
 {
     "title": "Session 6: Stack and Heap",
-    "description": "TODO"
+    "description": "Creating a vector of references to store polymorfistic objects. What are the call stack and the heap? Memory fragmentation. Working safely with dynamic memory by using std::unique_ptr and std::shared_ptr."
 }
