@@ -1,14 +1,3 @@
-.reveal .slides pre.code-wrapper:has(> code.mermaid) {
-    box-shadow: none !important;
-}
-.reveal .slides .mermaid {
-    background: none !important;
-    max-height: 100vh;
-}
-.reveal .slides .mermaid svg {
-    display: block;
-    margin: 0 auto;
-}
 #printPdfSection.hidden, #printPdfSection .hidden {
     display: none !important;
 }
