@@ -654,7 +654,7 @@ Where are variables stored anyway? 🤔
 
 <div style="display: flex; justify-content: space-evenly;">
 
-```c++ [17]
+```c++ []
 int c(int j, int k)
 {
     return j + k;
@@ -704,21 +704,107 @@ block-beta
   frame11[" "]:2
   addr12["0x13C0"]:1
   frame12[" "]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x13C0"]:2
-  reg2["RAX"]:1
-  regval2[" "]:2
+  reg1["PC"]:1
+  regval1["address of call to main()"]:2
+  reg2["SP"]:1
+  regval2["0x13C0"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The main function is called from startup code.
+* The stack pointer register (SP) keeps track of where we are. It points to the top of the stack.
+* The program counter register (PC) keeps track of which instruction we are executing. It points to the current instruction in the assembly code.
+* The RAX register is used to store function return values. They are not stored on the stack.
+* When the end of a function is reached, its stack frame is removed from the stack. The return value (if any) is set in RAX. And the program counter is updated to the return address that was stored on the stack.
+* We use line numbers here for the program counter. In reality it hold the address of the current instruction in the assembly code.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [17]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12["return address for main()"]:2
+  space:3
+  space callstack("Call Stack") space
+  space:3
+  space:3
+  reg1["PC"]:1
+  regval1["address of call to main()"]:2
+  reg2["SP"]:1
+  regval2["0x1380"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
+  space:3
+  space registers("Registers") space
+```
+
+</div>
+
+Note:
+
+* After the main function ends, code in the startup function should resume.
+* The address of the next instruction in that startup function is the return address for main() that is stored on the stack.
 
 --
 
@@ -773,24 +859,29 @@ block-beta
   addr10["0x1340"]:1
   frame10[" "]:2
   addr11["0x1380"]:1
-  frame11[" "]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1380"]:2
-  reg2["RAX"]:1
-  regval2[" "]:2
+  reg1["PC"]:1
+  regval1["line 19, a()"]:2
+  reg2["SP"]:1
+  regval2["0x1340"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* Call function a().
+* Its return address (address of return instruction on line 19) is stored on the stack.
 
 --
 
@@ -843,26 +934,31 @@ block-beta
   addr9["0x1300"]:1
   frame9[" "]:2
   addr10["0x1340"]:1
-  frame10[" "]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1340"]:2
-  reg2["RAX"]:1
-  regval2[" "]:2
+  reg1["PC"]:1
+  regval1["line 13, x = 5"]:2
+  reg2["SP"]:1
+  regval2["0x1300"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* A local variable x is created in function a.
+* Local variables are stored on the stack!
 
 --
 
@@ -913,28 +1009,34 @@ block-beta
   addr8["0x12C0"]:1
   frame8[" "]:2
   addr9["0x1300"]:1
-  frame9[" "]:2
+  frame9["return address for b()"]:2
   addr10["0x1340"]:1
-  frame10["return address for b()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1300"]:2
-  reg2["RAX"]:1
-  regval2[" "]:2
+  reg1["PC"]:1
+  regval1["line 14, b(x)"]:2
+  reg2["SP"]:1
+  regval2["0x12C0"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* Before c() can be invoked, we need to call b() first.
+* Put the return address for b() on the stack.
+* That return address will be the address of the call c() instruction on line 14.
 
 --
 
@@ -983,30 +1085,111 @@ block-beta
   addr7["0x1280"]:1
   frame7[" "]:2
   addr8["0x12C0"]:1
-  frame8[" "]:2
+  frame8["int i = x = 5"]:2
   addr9["0x1300"]:1
-  frame9["int i = x = 5"]:2
+  frame9["return address for b()"]:2
   addr10["0x1340"]:1
-  frame10["return address for b()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x12C0"]:2
-  reg2["RAX"]:1
-  regval2[" "]:2
+  reg1["PC"]:1
+  regval1["line 14, b(x)"]:2
+  reg2["SP"]:1
+  regval2["0x1280"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* b() takes an integer as argument.
+* Function arguments are stored on the stack!
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [8]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8["int i = 5"]:2
+  addr9["0x1300"]:1
+  frame9["return address for b()"]:2
+  addr10["0x1340"]:1
+  frame10["int x = 5"]:2
+  addr11["0x1380"]:1
+  frame11["return address for a()"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for main()"]:2
+  space:3
+  space callstack("Call Stack") space
+  space:3
+  space:3
+  reg1["PC"]:1
+  regval1["line 8, i * 2"]:2
+  reg2["SP"]:1
+  regval2["0x1280"]:2
+  reg3["RAX"]:1
+  regval3[" "]:2
+  space:3
+  space registers("Registers") space
+```
+
+</div>
+
+Note:
+
+* The next step is to calculate the value of i * 2.
 
 --
 
@@ -1057,28 +1240,33 @@ block-beta
   addr8["0x12C0"]:1
   frame8[" "]:2
   addr9["0x1300"]:1
-  frame9["int i = 5"]:2
+  frame9["return address for b()"]:2
   addr10["0x1340"]:1
-  frame10["return address for b()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1300"]:2
-  reg2["RAX"]:1
-  regval2["i * 2 = 10"]:2
+  reg1["PC"]:1
+  regval1["line 8, return"]:2
+  reg2["SP"]:1
+  regval2["0x12C0"]:2
+  reg3["RAX"]:1
+  regval3["i * 2 = 10"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* After the calculation is done, i is no longer needed. It is removed from the stack.
+* The return instruction is next. The calculated value is stored in register RAX.
 
 --
 
@@ -1131,26 +1319,31 @@ block-beta
   addr9["0x1300"]:1
   frame9[" "]:2
   addr10["0x1340"]:1
-  frame10[" "]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1340"]:2
-  reg2["RAX"]:1
-  regval2["10"]:2
+  reg1["PC"]:1
+  regval1["line 14, c()"]:2
+  reg2["SP"]:1
+  regval2["0x1300"]:2
+  reg3["RAX"]:1
+  regval3["10"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The end of function b() is reached.
+* Its return address is removed from the stack and assigned to the program counter.
 
 --
 
@@ -1201,28 +1394,33 @@ block-beta
   addr8["0x12C0"]:1
   frame8[" "]:2
   addr9["0x1300"]:1
-  frame9[" "]:2
+  frame9["return address for c()"]:2
   addr10["0x1340"]:1
-  frame10["return address for c()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1300"]:2
-  reg2["RAX"]:1
-  regval2["10"]:2
+  reg1["PC"]:1
+  regval1["line 14, c()"]:2
+  reg2["SP"]:1
+  regval2["0x12C0"]:2
+  reg3["RAX"]:1
+  regval3["10"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The next step is to invoke c().
+* Its return address (address of the return instruction on line 14) is stored on the stack.
 
 --
 
@@ -1269,32 +1467,113 @@ block-beta
   addr6["0x1240"]:1
   frame6[" "]:2
   addr7["0x1280"]:1
-  frame7[" "]:2
+  frame7["int k = x = 5"]:2
   addr8["0x12C0"]:1
-  frame8["int k = x = 5"]:2
+  frame8["int j = RAX = 10"]:2
   addr9["0x1300"]:1
-  frame9["int j = RAX = 10"]:2
+  frame9["return address for c()"]:2
   addr10["0x1340"]:1
-  frame10["return address for c()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1280"]:2
-  reg2["RAX"]:1
-  regval2["10"]:2
+  reg1["PC"]:1
+  regval1["line 14, c()"]:2
+  reg2["SP"]:1
+  regval2["0x1240"]:2
+  reg3["RAX"]:1
+  regval3["10"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* c() takes two arguments.
+* Both are stored on the stack.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [3]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7["int k = x = 5"]:2
+  addr8["0x12C0"]:1
+  frame8["int j = RAX = 10"]:2
+  addr9["0x1300"]:1
+  frame9["return address for c()"]:2
+  addr10["0x1340"]:1
+  frame10["int x = 5"]:2
+  addr11["0x1380"]:1
+  frame11["return address for a()"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for main()"]:2
+  space:3
+  space callstack("Call Stack") space
+  space:3
+  space:3
+  reg1["PC"]:1
+  regval1["line 3, j + k"]:2
+  reg2["SP"]:1
+  regval2["0x1240"]:2
+  reg3["RAX"]:1
+  regval3["10"]:2
+  space:3
+  space registers("Registers") space
+```
+
+</div>
+
+Note:
+
+* Calculate the result of j + k.
 
 --
 
@@ -1343,30 +1622,35 @@ block-beta
   addr7["0x1280"]:1
   frame7[" "]:2
   addr8["0x12C0"]:1
-  frame8["int k = x = 5"]:2
+  frame8[" "]:2
   addr9["0x1300"]:1
-  frame9["int j = RAX = 10"]:2
+  frame9["return address for c()"]:2
   addr10["0x1340"]:1
-  frame10["return address for c()"]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1280"]:2
-  reg2["RAX"]:1
-  regval2["j + k = 15"]:2
+  reg1["PC"]:1
+  regval1["line 3, return"]:2
+  reg2["SP"]:1
+  regval2["0x12C0"]:2
+  reg3["RAX"]:1
+  regval3["j + k = 15"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The variables j and k are no longer needed, they are removed from the stack.
+* The return instruction is executed, the result of j + k is assigned to RAX.
 
 --
 
@@ -1419,26 +1703,31 @@ block-beta
   addr9["0x1300"]:1
   frame9[" "]:2
   addr10["0x1340"]:1
-  frame10[" "]:2
+  frame10["int x = 5"]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1340"]:2
-  reg2["RAX"]:1
-  regval2["15"]:2
+  reg1["PC"]:1
+  regval1["line 14, return"]:2
+  reg2["SP"]:1
+  regval2["0x1300"]:2
+  reg3["RAX"]:1
+  regval3["15"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The end of the c() function is reached.
+* Its return address is removed from the stack and assigned to the program counter.
 
 --
 
@@ -1493,24 +1782,30 @@ block-beta
   addr10["0x1340"]:1
   frame10[" "]:2
   addr11["0x1380"]:1
-  frame11["int x = 5"]:2
+  frame11["return address for a()"]:2
   addr12["0x13C0"]:1
-  frame12["return address for a()"]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x1340"]:2
-  reg2["RAX"]:1
-  regval2["15"]:2
+  reg1["PC"]:1
+  regval1["line 14, return"]:2
+  reg2["SP"]:1
+  regval2["0x1340"]:2
+  reg3["RAX"]:1
+  regval3["15"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The return instruction on line 14 is the next instruction to execute.
+* Local variable x is no longer needed and is removed from the stack.
+* The result of the call to c() is assigned to the RAX register.
 
 --
 
@@ -1567,22 +1862,27 @@ block-beta
   addr11["0x1380"]:1
   frame11[" "]:2
   addr12["0x13C0"]:1
-  frame12[" "]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x13C0"]:2
-  reg2["RAX"]:1
-  regval2["15"]:2
+  reg1["PC"]:1
+  regval1["line 19, return"]:2
+  reg2["SP"]:1
+  regval2["0x1380"]:2
+  reg3["RAX"]:1
+  regval3["15"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The end of a() is reached.
+* Its return address is removed from the stack and assigned to the program counter.
 
 --
 
@@ -1639,19 +1939,103 @@ block-beta
   addr11["0x1380"]:1
   frame11[" "]:2
   addr12["0x13C0"]:1
-  frame12[" "]:2
-  addr13["0x1400"]:1
-  frame13["return address for main()"]:2
+  frame12["return address for main()"]:2
   space:3
   space callstack("Call Stack") space
   space:3
   space:3
-  reg1["SP"]:1
-  regval1["0x13C0"]:2
-  reg2["RAX"]:1
-  regval2["15"]:2
+  reg1["PC"]:1
+  regval1["line 19, return"]:2
+  reg2["SP"]:1
+  regval2["0x1380"]:2
+  reg3["RAX"]:1
+  regval3["15"]:2
   space:3
   space registers("Registers") space
 ```
 
 </div>
+
+Note:
+
+* The final instruction in the demo program is the return instruction on line 19.
+* The result of invoking a() is stored in the RAX register.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [20]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12[" "]:2
+  space:3
+  space callstack("Call Stack") space
+  space:3
+  space:3
+  reg1["PC"]:1
+  regval1["return address for main()"]:2
+  reg2["SP"]:1
+  regval2["0x13C0"]:2
+  reg3["RAX"]:1
+  regval3["15"]:2
+  space:3
+  space registers("Registers") space
+```
+
+</div>
+
+Note:
+
+* The end of the main() function is reached.
+* Its return address is removed from the stack and assigned to the program counter.
+* The startup code will terminate the application.
+
