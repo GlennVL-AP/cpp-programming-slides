@@ -80,9 +80,9 @@ speak(cat);
 ```
 And used these concrete classes as argument for a function that expects a reference to the base class.
 ---
-## Vector of Animals
----
 Let's make a list of animals.
+---
+## Vector of Animals
 ---
 ```c++
 // make a list of animals
@@ -566,530 +566,978 @@ Where are variables stored anyway? 🤔
 
 <div style="display: flex;">
 
+```c++ [17]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12[" "]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x13C0"]:2
+  reg2["RAX"]:1
+  regval2[" "]:2
+  space:3
+  registers(["Registers"]):3
+```
+
+</div>
+
+---
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [19]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1380"]:2
+  reg2["RAX"]:1
+  regval2[" "]:2
+  space:3
+  registers(["Registers"]):3
+```
+
+</div>
+
+---
+
+<div style="display: flex; justify-content: space-evenly;">
+
+```c++ [13]
+int c(int j, int k)
+{
+    return j + k;
+}
+
+int b(int i)
+{
+    return i * 2;
+}
+
+int a()
+{
+    int x{5};
+    return c(b(x), x);
+}
+
+int main()
+{
+    return a();
+}
+```
+
+```mermaid
+block-beta
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1340"]:2
+  reg2["RAX"]:1
+  regval2[" "]:2
+  space:3
+  registers(["Registers"]):3
+```
+
+</div>
+
+---
+
+<div style="display: flex; justify-content: space-evenly;">
+
 ```c++ [14]
-int c(int j, int k) {
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 0"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10["return address for b()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1300"]:2
+  reg2["RAX"]:1
+  regval2[" "]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9]
-int c(int j, int k) {
+```c++ [14,6]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 0"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9["int i = x = 5"]:2
+  addr10["0x1340"]:1
+  frame10["return address for b()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x12C0"]:2
+  reg2["RAX"]:1
+  regval2[" "]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-10]
-int c(int j, int k) {
+```c++ [8]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 0"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9["int i = 5"]:2
+  addr10["0x1340"]:1
+  frame10["return address for b()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1300"]:2
+  reg2["RAX"]:1
+  regval2["i * 2 = 10"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,5]
-int c(int j, int k) {
+```c++ [9]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    argi["int i = x = 5"]
-    retb["return address of b()"]
-    space
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 0"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1340"]:2
+  reg2["RAX"]:1
+  regval2["10"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,5-6]
-int c(int j, int k) {
+```c++ [14]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    argi["int i = 5"]
-    retb["return address of b()"]
-    space
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = i * 2 = 10"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10["return address for c()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1300"]:2
+  reg2["RAX"]:1
+  regval2["10"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,7]
-int c(int j, int k) {
+```c++ [14,1]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 10"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8["int k = x = 5"]:2
+  addr9["0x1300"]:1
+  frame9["int j = RAX = 10"]:2
+  addr10["0x1340"]:1
+  frame10["return address for c()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1280"]:2
+  reg2["RAX"]:1
+  regval2["10"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,1]
-int c(int j, int k) {
+```c++ [3]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    argj["int j = RAX = 10"]
-    argk["int k = x = 5"]
-    retc["return address of c()"]
-    space
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 10"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8["int k = x = 5"]:2
+  addr9["0x1300"]:1
+  frame9["int j = RAX = 10"]:2
+  addr10["0x1340"]:1
+  frame10["return address for c()"]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1280"]:2
+  reg2["RAX"]:1
+  regval2["j + k = 15"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,1-2]
-int c(int j, int k) {
+```c++ [4]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    argj["int j = 10"]
-    argk["int k = 5"]
-    retc["return address of c()"]
-    space
-    resb["int result_b = 0"]
-    intx["int x = 0"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = j + k = 15"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1340"]:2
+  reg2["RAX"]:1
+  regval2["15"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11,3]
-int c(int j, int k) {
+```c++ [14]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 15"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11["int x = 5"]:2
+  addr12["0x13C0"]:1
+  frame12["return address for a()"]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x1340"]:2
+  reg2["RAX"]:1
+  regval2["15"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,9-11]
-int c(int j, int k) {
+```c++ [15]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    intx["int x = 5"]
-    reta["return address of a()"]
-    space
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 15"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12[" "]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x13C0"]:2
+  reg2["RAX"]:1
+  regval2["15"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
 
 ---
 
-<div style="display: flex;">
+<div style="display: flex; justify-content: space-evenly;">
 
-```c++ [14-15,12]
-int c(int j, int k) {
+```c++ [19]
+int c(int j, int k)
+{
     return j + k;
 }
 
-int b(int i) {
+int b(int i)
+{
     return i * 2;
 }
 
-int a() {
+int a()
+{
     int x{5};
     return c(b(x), x);
 }
 
-int main() {
+int main()
+{
     return a();
 }
 ```
 
 ```mermaid
 block-beta
-  block
-    columns 1
-    retm["return address of main()"]
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 15"]
-    space
-    registers(["Registers"])
-  end
-```
-
-</div>
-
----
-
-<div style="display: flex;">
-
-```c++ [16]
-int c(int j, int k) {
-    return j + k;
-}
-
-int b(int i) {
-    return i * 2;
-}
-
-int a() {
-    int x{5};
-    return c(b(x), x);
-}
-
-int main() {
-    return a();
-}
-```
-
-```mermaid
-block-beta
-  block
-    columns 1
-    space
-    callstack(["Call Stack"])
-  end
-  block
-    columns 1
-    retval["RAX = 15"]
-    space
-    registers(["Registers"])
-  end
+  columns 3
+  addr1["0x1000"]:1
+  frame1[" "]:2
+  addr2["0x1040"]:1
+  frame2[" "]:2
+  addr3["0x1080"]:1
+  frame3[" "]:2
+  addr4["0x10C0"]:1
+  frame4[" "]:2
+  addr5["0x1200"]:1
+  frame5[" "]:2
+  addr6["0x1240"]:1
+  frame6[" "]:2
+  addr7["0x1280"]:1
+  frame7[" "]:2
+  addr8["0x12C0"]:1
+  frame8[" "]:2
+  addr9["0x1300"]:1
+  frame9[" "]:2
+  addr10["0x1340"]:1
+  frame10[" "]:2
+  addr11["0x1380"]:1
+  frame11[" "]:2
+  addr12["0x13C0"]:1
+  frame12[" "]:2
+  addr13["0x1400"]:1
+  frame13["return address for main()"]:2
+  space:3
+  callstack(["Call Stack"]):3
+  space:3
+  space:3
+  reg1["SP"]:1
+  regval1["0x13C0"]:2
+  reg2["RAX"]:1
+  regval2["15"]:2
+  space:3
+  registers(["Registers"]):3
 ```
 
 </div>
