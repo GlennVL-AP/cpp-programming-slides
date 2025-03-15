@@ -1,6 +1,9 @@
 # C/C++ Programming
+
 ## Labo 6
+
 ---
+
 ```mermaid
 kanban
   column1[TODO]

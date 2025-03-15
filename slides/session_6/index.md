@@ -1,6 +1,9 @@
 # C/C++ Programming
+
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
+
 ---
+
 ```mermaid
 kanban
   column1[Vector of animals]
@@ -15,11 +18,17 @@ kanban
     task7[Unique pointers]
     task8[Shared pointers]
 ```
+
 ---
-## The previous session...
+
+## The previous session
+
 ---
+
 We created a polymorfistic animal hierarchy.
+
 ---
+
 ```c++
 class Animal
 {
@@ -43,8 +52,11 @@ private:
     virtual std::string speak_impl() const = 0;
 };
 ```
+
 With an Animal abstract base class.
+
 ---
+
 ```c++
 class Dog : public Animal
 {
@@ -58,19 +70,24 @@ private:
     }
 };
 ```
+
 ```c++
 class Cat     : public Animal { /*...*/ };
 class Bear    : public Animal { /*...*/ };
 class Hamster : public Animal { /*...*/ };
 ```
+
 And concrete classes that implement it.
+
 ---
+
 ```c++
 void speak(Animal const& animal)
 {
     animal.speak();
 }
 ```
+
 ```c++
 Dog dog{};
 Cat cat{};
@@ -78,12 +95,19 @@ Cat cat{};
 speak(dog);
 speak(cat);
 ```
+
 And used these concrete classes as argument for a function that expects a reference to the base class.
+
 ---
+
 Let's make a list of animals.
+
 ---
+
 ## Vector of Animals
+
 ---
+
 ```c++
 // make a list of animals
 std::vector<Animal> animals{
@@ -96,6 +120,7 @@ std::vector<Animal> animals{
     Bear{}
 };
 ```
+
 ```c++
 // walk through the list
 for (auto const& animal : animals)
@@ -103,11 +128,15 @@ for (auto const& animal : animals)
     animal.get().speak();
 }
 ```
+
 Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
+
 * <https://compiler-explorer.com/z/YKde8oP7v>
+
 ---
+
 ```sh []
 <source>:79:9: error: call to deleted constructor of 'const Animal'
    79 |         Dog{},
@@ -157,32 +186,46 @@ Note:
 7 errors generated.
 Compiler returned: 1
 ```
+
 No, it does not work!
+
 ---
+
 ```c++
 struct A     { int a; }
 struct B : A { int b; } // inherits int a from A
 ```
+
 ```c++
 B b{1, 2};              // int a = 1, int b = 2
 A a = b;                // only A part copied
 ```
+
 * This is called slicing.
 * Another reason to disable copy. 😉 <!-- .element: class="fragment" data-fragment-index="1" -->
+
 ---
+
 ```c++
 Dog dog{};
 ```
+
 ```c++
 Animal const& animal = dog;
 ```
+
 ```c++
 animal.speak();
 ```
+
 Use references!
+
 ---
+
 Let's make a vector of references to animal objects.
+
 ---
+
 ```c++
 // create some animals
 Dog d1{};
@@ -213,8 +256,11 @@ for (auto const& animal : animals)
 Does this work? <!-- .element: class="fragment" data-fragment-index="3" -->
 
 Note:
+
 * <https://compiler-explorer.com/z/j6coWEeqe>
+
 ---
+
 ```sh []
 In file included from <source>:1:
 In file included from /opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu/14.2.0/../../../../include/c++/14.2.0/print:41:
@@ -375,19 +421,28 @@ In file included from /opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu
 12 errors generated.
 Compiler returned: 1
 ```
+
 No, it does not work!
+
 ---
+
 We can't store references in a vector. 😕
 
 Note:
+
 * Same reason a why we don't want to use references for class members.
 * They are an alias. We can't assign something new to them.
+
 ---
+
 But we can use std::reference_wrapper! 👍
 
 Note:
+
 * We already used them to store a reference in a class for dependency inversion!
+
 ---
+
 ```c++
 // create some animals
 Dog d1{};
@@ -417,9 +472,12 @@ for (auto const& animal : animals)
 <!-- .element: class="fragment" data-fragment-index="2" -->
 
 Note:
+
 * Need std::reference_wrapper to store references in a vector.
 * <https://compiler-explorer.com/z/Kqsbva33G>
+
 ---
+
 ```text
 dog says bark.
 bear says roar.
@@ -429,22 +487,31 @@ dog says bark.
 hamster says squeak.
 bear says roar.
 ```
-Phew, finally something that works! 🥳
+
+Phew, finally something that works! 🎉
+
 ---
+
 But what if we don't know which animal to create at compile-time? 🤔
 
 Note:
+
 * For example we ask the user which animal to create.
+
 ---
+
 ```c++
 std::string animal{};
 std::print("Which animal do you want to create? ");
 std::cin >> animal;
 ```
+
 ---
+
 ```c++
 std::vector<std::reference_wrapper<Animal const>> animals{};
 ```
+
 ```c++
 if (animal == "dog")
 {
@@ -452,6 +519,7 @@ if (animal == "dog")
     animals.push_back(dog);
 }
 ```
+
 ```c++
 if (animal == "cat")
 {
@@ -459,15 +527,20 @@ if (animal == "cat")
     animals.push_back(cat);
 }
 ```
+
 ```c++
 // bear, hamster, ...
 ```
+
 Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
+
 * Vector holds references, but animal objects go out-of-scope when if block ends!
 * <https://compiler-explorer.com/z/jPEbeGdsT>
+
 ---
+
 ```sh [2]
 =================================================================
 ==1==ERROR: AddressSanitizer: stack-use-after-scope on address 0x73c7e0309140 at pc 0x633f823d35c8 bp 0x7fff294cced0 sp 0x7fff294ccec8
@@ -524,12 +597,16 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Right alloca redzone:    cb
 ==1==ABORTING
 ```
+
 No, it does not work!
 
 Note:
+
 * Address sanitizer detects this!
 * Enable by adding compiler option `-fsanitize=address`.
+
 ---
+
 ```c++
 // vector of references to animal objects
 std::vector<std::reference_wrapper<Animal const>> animals{};
@@ -550,19 +627,29 @@ if (animal == "dog")
 for (auto const& animal : animals)
 {
     animal.get().speak();   // oops, attempt to access object
-                            // that no longer exists 💥
+                            // that no longer exists 💣
 }
 ```
 <!-- .element: class="fragment" data-fragment-index="2" -->
+
 ---
+
 I want animal objects that don't go out of scope!
+
 ---
+
 Where are variables stored anyway? 🤔
+
 ---
+
 ## Stack vs. Heap
+
 ---
+
 ### The call stack
+
 ---
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -634,6 +721,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -705,6 +793,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -776,6 +865,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -847,6 +937,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -918,6 +1009,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -989,6 +1081,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1060,6 +1153,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1131,6 +1225,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1202,6 +1297,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1273,6 +1369,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1344,6 +1441,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1415,6 +1513,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
@@ -1486,6 +1585,7 @@ block-beta
 </div>
 
 --
+
 <!-- .slide: data-transition="none" -->
 
 <div style="display: flex; justify-content: space-evenly;">
