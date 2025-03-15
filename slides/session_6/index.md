@@ -622,7 +622,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -630,7 +630,7 @@ block-beta
   reg2["RAX"]:1
   regval2[" "]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -693,7 +693,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -701,7 +701,7 @@ block-beta
   reg2["RAX"]:1
   regval2[" "]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -764,7 +764,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -772,7 +772,7 @@ block-beta
   reg2["RAX"]:1
   regval2[" "]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -835,7 +835,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -843,7 +843,7 @@ block-beta
   reg2["RAX"]:1
   regval2[" "]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -906,7 +906,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -914,7 +914,7 @@ block-beta
   reg2["RAX"]:1
   regval2[" "]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -977,7 +977,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -985,7 +985,7 @@ block-beta
   reg2["RAX"]:1
   regval2["i * 2 = 10"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1048,7 +1048,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1056,7 +1056,7 @@ block-beta
   reg2["RAX"]:1
   regval2["10"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1119,7 +1119,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1127,7 +1127,7 @@ block-beta
   reg2["RAX"]:1
   regval2["10"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1190,7 +1190,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1198,7 +1198,7 @@ block-beta
   reg2["RAX"]:1
   regval2["10"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1261,7 +1261,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1269,7 +1269,7 @@ block-beta
   reg2["RAX"]:1
   regval2["j + k = 15"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1332,7 +1332,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1340,7 +1340,7 @@ block-beta
   reg2["RAX"]:1
   regval2["15"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1403,7 +1403,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1411,7 +1411,7 @@ block-beta
   reg2["RAX"]:1
   regval2["15"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1474,7 +1474,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1482,7 +1482,7 @@ block-beta
   reg2["RAX"]:1
   regval2["15"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
@@ -1545,7 +1545,7 @@ block-beta
   addr13["0x1400"]:1
   frame13["return address for main()"]:2
   space:3
-  callstack(["Call Stack"]):3
+  space callstack("Call Stack") space
   space:3
   space:3
   reg1["SP"]:1
@@ -1553,7 +1553,7 @@ block-beta
   reg2["RAX"]:1
   regval2["15"]:2
   space:3
-  registers(["Registers"]):3
+  space registers("Registers") space
 ```
 
 </div>
