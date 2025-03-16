@@ -376,7 +376,7 @@ Note:
 
 ### function overloading
 
----
+--
 
 ```c++
 void my_func(int a)    { std::println("f1"); }
@@ -400,7 +400,7 @@ Note:
 * No conversion from a string literal to either an int or a double.
 * No viable functions found.
 
----
+--
 
 ```c++
 void my_func(int a)            { std::println("f1"); }
@@ -423,7 +423,7 @@ Note:
 
 * Exact match found.
 
----
+--
 
 ```c++
 void my_func(int a)            { std::println("f1"); }
@@ -447,7 +447,7 @@ Note:
 * Call to my_func is ambiguous.
 * Both functions are viable candidates.
 
----
+--
 
 ```c++
 void my_func(std::string& a)       { std::println("f1"); }
@@ -470,7 +470,7 @@ Note:
 
 * String literal promoted to std::string. Literal cannot be modified, so const.
 
----
+--
 
 ```c++
 void my_func(std::string& a)       { std::println("f1"); }
@@ -1293,7 +1293,7 @@ The build-in subscript expression where the array is an rvalue.
 
 ### value categories
 
----
+--
 
 ```c++ []
 import std;
@@ -1317,7 +1317,7 @@ Note:
 
 * std::move always turns its argument into an xvalue.
 
----
+--
 
 ```c++ []
 import std;
@@ -1341,7 +1341,7 @@ Note:
 
 * All non-string literals are prvalues.
 
----
+--
 
 ```c++ []
 import std;
@@ -1365,7 +1365,7 @@ Note:
 
 * Function names are lvalues.
 
----
+--
 
 ```c++ []
 void some_function(std::string&& x)
@@ -1387,7 +1387,7 @@ Note:
 * std::string&& is an rvalue reference to an std::string.
 * But the rvalue reference itself has a name x, so it is an lvalue.
 
----
+--
 
 ```c++
 std::string const& some_function(std::string const& str)
@@ -1484,7 +1484,7 @@ Note:
 
 * <https://compiler-explorer.com/z/caoPha635>
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
@@ -1508,7 +1508,7 @@ Note:
 
 * temporary std::string is created from string literal.
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
@@ -1532,7 +1532,7 @@ Note:
 
 * temporary string is created by the programmer
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
@@ -1557,7 +1557,7 @@ Note:
 
 * Only const option is const&.
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
@@ -1583,7 +1583,7 @@ Note:
 * str is an lvalue.
 * Overload resolution picks & over const&.
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
@@ -1609,7 +1609,7 @@ Note:
 * Explicitly convert str to a constant.
 * Only const option is const&.
 
----
+--
 
 ```c++
 void my_func(std::string&& str)      { std::println("f1"); }
