@@ -2072,3 +2072,53 @@ Note:
 * Use RAII types instead
   * std::unique_ptr
   * std::shared_ptr?
+* Need for virtual destructor
+  * Storing pointer to concrete class in pointer to base class
+
+---
+
+### Vector of Animals
+
+---
+
+Animal objects should stay alive as long as the vector.
+
+---
+
+Make vector the owner of animal objects.
+
+---
+
+```c++
+std::vector<std::unique_ptr<Animal>> animals{};
+```
+
+```c++
+if (animal == "dog")
+{
+    animals.push_back(std::make_unique<Dog>());
+}
+
+if (animal == "cat")
+{
+    animals.push_back(std::make_unique<Cat>());
+}
+
+// bear, hamster, ...
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& animal : animals)
+{
+    animal->speak();
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* <https://compiler-explorer.com/z/1xacj6Kb9>
+* We store pointers to concrete objects in pointers to the abstract base clase.
+* This is why a virtual destructor is important!
+* <https://compiler-explorer.com/z/c4ef9GaTs>
