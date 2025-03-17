@@ -2345,3 +2345,7 @@ Note:
 * We store pointers to concrete objects in pointers to the abstract base clase.
 * This is why a virtual destructor is important!
 * <https://compiler-explorer.com/z/c4ef9GaTs>
+
+---
+
+## Exercises
