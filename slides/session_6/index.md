@@ -2279,9 +2279,108 @@ Note:
 
 ---
 
-#### TODO
+<!-- .slide: data-transition="none" -->
 
-* Fragmentation risk!
+Heap can get fragmented!
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-31: "Free Space (32 Bytes)"
+```
+
+Start with empty heap.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Block 1 (16 Bytes)"
+16-31: "Free Space (16 Bytes)"
+```
+
+Allocate 16 bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Block 1 (16 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 8 bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Free Space (16 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Free Block 1.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-15: "Free Space (12 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 4 bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-7: "Block 4 (4 Bytes)"
+8-15: "Free Space (8 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 4 bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-7: "Block 4 (4 Bytes)"
+8-15: "Free Space (8 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 12 bytes. <!-- .element: class="fragment highlight-red" data-fragment-index="1" -->
+
+Note:
+
+* There's still 16 bytes free space on the heap.
+* But it's fragmented. Into two block of 8 bytes.
+* We can't allocate 12 bytes.
 
 ---
 
