@@ -2178,12 +2178,109 @@ The call stack is not a suitable place to store large amounts of data!
 
 ### The Heap
 
+AKA the free store.
+
+---
+
+The heap is a region of memory for dynamic memory allocation. It allows programs to allocate memory at runtime.
+
+---
+
+Heap memory is limited only by system resources (available RAM).
+
+---
+
+The heap is not automatically managed. Memory is allocated and deallocated explicitly by the program.
+
+---
+
+A memory leak occurs when a program does not deallocate memory it has allocated.
+
+---
+
+Luckily C++ has RAII to automatically manage resources!
+
+---
+
+```c++ []
+using std;
+
+int main()
+{
+    auto int_on_the_heap = std::make_unique<int>(5);
+
+    std::println("Heap says hello {}!", *int_on_the_heap);
+
+    *int_on_the_heap = 10;
+
+    std::println("New value is {}", *int_on_the_heap);
+}
+```
+
+```text
+Heap says hello 5
+New value is 10
+```
+
+Note:
+
+* std::make_unique creates a std::unique_ptr.
+* std::unique_ptr automatically frees its memory when it goes out of scope.
+* The arguments passed to std::make_unique are forwarded to the constructor. In this case an int with value 5 is created.
+* Access the underlying value using the dereference operator `*`.
+* <https://compiler-explorer.com/z/18WGxq98M>
+
+---
+
+```c++
+// create an array of 10 million doubles
+auto a_lot_of_numbers =
+  std::make_unique<std::array<double, 10'000'000>>();
+```
+
+```c++
+// set all the items to pi
+std::ranges::fill(*a_lot_of_numbers, std::numbers::pi);
+```
+
+```c++
+// print the array
+for (auto const& number : *a_lot_of_numbers)
+{
+    std::print("{} ", number);
+}
+```
+
+Note:
+
+* Plenty of room in RAM to allocate 80 MB worth of doubles.
+* <https://compiler-explorer.com/z/oKd8aYdze>
+
+---
+
+```c++
+std::vector<double> a_lot_of_numbers(
+    10'000'000, std::numbers::pi
+);
+```
+
+```c++
+for (auto const& number : a_lot_of_numbers)
+{
+    std::print("{} ", number);
+}
+```
+
+Or use a container such as std::vector!
+
+Note:
+
+* Previous slide and this slide are pretty much the same.
+
 ---
 
 #### TODO
 
-* Large (uses RAM memory)
-* Ask for memory, return it when no longer needed
 * Fragmentation risk!
 
 ---
