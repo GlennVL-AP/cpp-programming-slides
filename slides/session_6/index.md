@@ -646,7 +646,32 @@ Where are variables stored anyway? 🤔
 
 ---
 
+* Where are variables stored?
+* Where are function arguments stored? <!-- .element: class="fragment" data-fragment-index="1" -->
+* How does the program know where to return when a function ends? <!-- .element: class="fragment" data-fragment-index="2" -->
+
+---
+
 ### The call stack
+
+---
+
+A stack is a LIFO data structure.
+
+Note:
+
+* LIFO = Last In First Out
+* New items are added to the top.
+* The most recent item is removed first.
+
+---
+
+#### How does the call stack work?
+
+Note:
+
+* Next slide has an example.
+* Students try to understand this themselves and explain it to eachother.
 
 ---
 
@@ -727,7 +752,7 @@ Note:
 * The program counter register (PC) keeps track of which instruction we are executing. It points to the current instruction in the assembly code.
 * The RAX register is used to store function return values. They are not stored on the stack.
 * When the end of a function is reached, its stack frame is removed from the stack. The return value (if any) is set in RAX. And the program counter is updated to the return address that was stored on the stack.
-* We use line numbers here for the program counter. In reality it hold the address of the current instruction in the assembly code.
+* We use line numbers here for the program counter. In reality it holds the address of the current instruction in the assembly code.
 
 --
 
@@ -2041,12 +2066,113 @@ Note:
 
 ---
 
-#### TODO
+A **stack frame** for a function is the portion of the stack that belongs to that function.
 
-* Data structure (LIFO: last in, first out)
-* Stack size (few 100 of bytes embedded, 8 MB linux)
-* Stack is small, so can't store large objects there
-* Heap is meant for large objects
+---
+
+A stack frame typically contains:
+
+* Return address.
+* Function arguments.
+* Local variables.
+* (Saved registers.)
+
+---
+
+When a function is called, a new stack frame is pushed onto the stack.
+
+---
+
+When the function exits, its stack frame is popped off, restoring the previous function's context.
+
+---
+
+Only a limited amount of memory is reserved for the call stack.
+
+---
+
+| Platform    | Stack size    |
+|:------------|--------------:|
+| Linux/macOS | 8 MiB         |
+| Windows     | 4 MiB         |
+| Android     | 1 MiB         |
+| FreeRTOS    | 128 B - 8 KiB |
+
+Note:
+
+* Typical stack sizes.
+* Can be configured in the os or using a compiler flag.
+
+---
+
+A **stack overflow** occurs when the stack runs out of memory.
+
+---
+
+```c++ []
+int fibonacci(int n)
+{
+    if (n <= 1) { return n; }
+    return fibonacci(n-1) + fibonacci(n-2);
+}
+
+int main()
+{
+    return fibonacci(100'000);
+}
+```
+
+```sh [3]
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==4609==ERROR: AddressSanitizer: stack-overflow on address 0x7fff7a319ff0 (pc 0x56499fbc3d0c bp 0x7fff7a31a010 sp 0x7fff7a319fc0 T0)
+```
+
+Note:
+
+* Stack overflow because of deep recursion.
+* So many stack frames that it no longers fits in the stack memory.
+* <https://compiler-explorer.com/z/3KGG4d88r>
+
+---
+
+```c++ []
+using std;
+
+int main()
+{
+    std::array<double, 10'000'000> a_lot_of_numbers{};
+
+    for (auto const& number : a_lot_of_numbers)
+    {
+        std::println("{}", number);
+    }
+}
+```
+
+```sh [3]
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==1==ERROR: AddressSanitizer: stack-overflow on address 0x7ffd339b8108 (pc 0x5617600a805d bp 0x000000000001 sp 0x7ffd339b8110 T0)
+    #0 0x5617600a805d in main /app/example.cpp:6:36
+    #1 0x774586829d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #2 0x774586829e3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #3 0x56175ffc0534 in _start (/app/output.s+0x2f534)
+
+SUMMARY: AddressSanitizer: stack-overflow /app/example.cpp:6:36 in main
+==1==ABORTING
+```
+
+Note:
+
+* Stack overflow because of large amount of data.
+* One huge stack frame that does not fit.
+* 10.000.000 * sizeof(double) = 80MB
+* <https://compiler-explorer.com/z/n8qbs9vd8>
+
+---
+
+The call stack is not a suitable place to store large amounts of data!
 
 ---
 
