@@ -16,7 +16,7 @@ kanban
     task6[Heap]
   column3[Dynamic memory]
     task7[Unique pointers]
-    task8[Shared pointers]
+    task8[Ownership]
 ```
 
 ---
@@ -2740,8 +2740,228 @@ for (auto const& animal : animals)
 Note:
 
 * <https://compiler-explorer.com/z/1xacj6Kb9>
-* We store pointers to concrete objects in pointers to the abstract base clase.
-* This is why a virtual destructor is important!
+
+---
+
+```c++
+void speak(❓ animal)
+{
+    animal->speak();
+}
+```
+
+```c++
+std::vector<std::unique_ptr<Animal>> animals{};
+```
+
+```c++
+for (auto const& animal : animals)
+{
+    speak(/* animal */);
+}
+```
+
+What if I want to call a function instead?
+
+---
+
+```c++
+void speak(std::unique_ptr<Animal> animal)
+{
+    animal->speak();
+}
+```
+
+```c++
+for (auto const& animal : animals)
+{
+    speak(animal);
+}
+```
+
+Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+```sh []
+<source>:115:15: error: call to deleted constructor of 'std::unique_ptr<Animal>'
+  115 |         speak(animal);
+      |               ^~~~~~
+/opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu/14.2.0/../../../../include/c++/14.2.0/bits/unique_ptr.h:516:7: note: 'unique_ptr' has been explicitly marked deleted here
+  516 |       unique_ptr(const unique_ptr&) = delete;
+      |       ^
+<source>:78:36: note: passing argument to parameter 'animal' here
+   78 | void speak(std::unique_ptr<Animal> animal)
+      |                                    ^
+1 error generated.
+Compiler returned: 1
+```
+
+No it does not work!
+
+Note:
+
+* We are trying to make a copy of the unique pointer.
+* It would not have been unique if it were possible to make a copy!
+* <https://compiler-explorer.com/z/sjhcP3zbc>
+
+---
+
+A unique_ptr would not be unique if it can be copied!
+
+---
+
+```c++
+void speak(std::unique_ptr<Animal> animal)
+{
+    animal->speak();
+}
+```
+
+```c++
+for (auto&& animal : animals)
+{
+    speak(std::move(animal)); // transfer ownership
+}
+```
+
+Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+```sh []
+ASM generation compiler returned: 0
+Execution build compiler returned: 0
+Program returned: 0
+  Which animal do you want to create?
+  bear says roar.
+```
+
+It appears to...
+
+Note:
+
+* <https://compiler-explorer.com/z/hrvrfajf9>
+
+---
+
+```c++
+void speak(std::unique_ptr<Animal> animal)
+{
+    animal->speak();
+}
+```
+
+```c++
+for (auto&& animal : animals)
+{
+    speak(std::move(animal)); // transfer ownership
+}
+```
+
+```c++
+// use animals again
+for (auto const& animal : animals)
+{
+    animal->speak();
+}
+```
+
+But how about this? <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+```sh [3]
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==1==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x624c8a2ca29f bp 0x7ffcab51e9f0 sp 0x7ffcab51e920 T0)
+==1==The signal is caused by a READ memory access.
+==1==Hint: address points to the zero page.
+    #0 0x624c8a2ca29f in Animal::speak() const /app/example.cpp:21:44
+    #1 0x624c8a2ca29f in main /app/example.cpp:120:17
+    #2 0x70d22e829d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #3 0x70d22e829e3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
+    #4 0x624c8a1e1534 in _start (/app/output.s+0x2f534)
+
+==1==Register values:
+rax = 0x0000000000000000  rbx = 0x00007ffcab51e920  rcx = 0x00000d9a45901200  rdx = 0x0000000000000002
+rdi = 0x00006cd22c809060  rsi = 0x000070d22e7e70d0  rbp = 0x00007ffcab51e9f0  rsp = 0x00007ffcab51e920
+ r8 = 0x0000000000000028   r9 = 0x00006f122da20000  r10 = 0x00007fffffffff01  r11 = 0x0000000000000001
+r12 = 0x00006cf22da20010  r13 = 0x0000000000000000  r14 = 0x00000d9ec5b3c002  r15 = 0x00006cf22da20010
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV /app/example.cpp:21:44 in Animal::speak() const
+==1==ABORTING
+```
+
+No it does not!
+
+Note:
+
+* <https://compiler-explorer.com/z/cYPqK71c9>
+
+---
+
+```c++
+void speak(std::unique_ptr<Animal> animal)
+{
+    animal->speak();
+} // unique_ptr goes out of scope, object destroyed
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+for (auto&& animal : animals)
+{
+    // transfer ownership to speak()
+    // replaced by empty unique_ptr in vector
+
+    speak(std::move(animal));
+}
+```
+
+```c++
+// use animals again
+for (auto const& animal : animals)
+{
+    animal->speak(); // dereference empty unique_ptr 💣
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+Vector should keep the ownership!
+
+---
+
+```c++
+void speak(Animal const& animal)
+{
+    animal.speak();
+}
+```
+
+```c++
+for (auto const& animal : animals)
+{
+    speak(*animal);
+}
+```
+
+Keep it simple. Pass by reference.
+
+Note:
+
+* <https://compiler-explorer.com/z/r1vq77ezP>
+
+---
+
+### Best practices
+
+---
+
+* If a function or class only needs to use the object, just pass it by reference.
+* Only use std::move() on std::unique_ptr<> to transfer ownership! <!-- .element: class="fragment" data-fragment-index="1" -->
 
 ---
 
