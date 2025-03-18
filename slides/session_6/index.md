@@ -2178,7 +2178,7 @@ The call stack is not a suitable place to store large amounts of data!
 
 ### The Heap
 
-AKA the free store.
+aka the free store
 
 ---
 
@@ -2279,9 +2279,18 @@ Note:
 
 ---
 
+It's possible for the heap to get fragmented!
+
+---
+
 <!-- .slide: data-transition="none" -->
 
-Heap can get fragmented!
+```mermaid
+packet-beta
+0-31: "Free Space (32 Bytes)"
+```
+
+Start with an empty heap of 32 Bytes.
 
 --
 
@@ -2292,7 +2301,7 @@ packet-beta
 0-31: "Free Space (32 Bytes)"
 ```
 
-Start with empty heap.
+Allocate 16 Bytes.
 
 --
 
@@ -2304,7 +2313,19 @@ packet-beta
 16-31: "Free Space (16 Bytes)"
 ```
 
-Allocate 16 bytes.
+16 Bytes used, 16 Bytes free
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Block 1 (16 Bytes)"
+16-31: "Free Space (16 Bytes)"
+```
+
+Allocate 8 Bytes.
 
 --
 
@@ -2317,7 +2338,20 @@ packet-beta
 24-31: "Free Space (8 Bytes)"
 ```
 
-Allocate 8 bytes.
+24 Bytes used, 8 Bytes free
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Block 1 (16 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Free Block 1.
 
 --
 
@@ -2330,7 +2364,20 @@ packet-beta
 24-31: "Free Space (8 Bytes)"
 ```
 
-Free Block 1.
+8 Bytes used, 24 Bytes free
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-15: "Free Space (16 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 4 Bytes.
 
 --
 
@@ -2344,7 +2391,21 @@ packet-beta
 24-31: "Free Space (8 Bytes)"
 ```
 
-Allocate 4 bytes.
+12 Bytes used, 20 Bytes free
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-15: "Free Space (12 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+Allocate 4 Bytes.
 
 --
 
@@ -2359,7 +2420,7 @@ packet-beta
 24-31: "Free Space (8 Bytes)"
 ```
 
-Allocate 4 bytes.
+16 Bytes used, 16 Bytes free
 
 --
 
@@ -2374,13 +2435,72 @@ packet-beta
 24-31: "Free Space (8 Bytes)"
 ```
 
-Allocate 12 bytes. <!-- .element: class="fragment highlight-red" data-fragment-index="1" -->
+Allocate 12 Bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-7: "Block 4 (4 Bytes)"
+8-15: "Free Space (8 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+There's still 16 Bytes of free space on the heap.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-7: "Block 4 (4 Bytes)"
+8-15: "Free Space (8 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+But it's fragmented into two blocks of 8 Bytes.
+
+--
+
+<!-- .slide: data-transition="none" -->
+
+```mermaid
+packet-beta
+0-3: "Block 3 (4 Bytes)"
+4-7: "Block 4 (4 Bytes)"
+8-15: "Free Space (8 Bytes)"
+16-23: "Block 2 (8 Bytes)"
+24-31: "Free Space (8 Bytes)"
+```
+
+The allocation fails! <!-- .element: class="fragment highlight-red" data-fragment-index="1" -->
+
+---
+
+Be mindful about heap fragmentation!
+
+---
+
+The longer your program runs, the more fragmented memory will become.
+
+---
+
+It's probably not something to worry about when writing an application for a system with gigabytes of memory.
+
+---
+
+But it is a very real concern for embedded applications that keep running for many years on a microcontroller with only a few kilobytes of memory.
 
 Note:
 
-* There's still 16 bytes free space on the heap.
-* But it's fragmented. Into two block of 8 bytes.
-* We can't allocate 12 bytes.
+* And also the reason why in such applications the heap is often not used!
 
 ---
 
