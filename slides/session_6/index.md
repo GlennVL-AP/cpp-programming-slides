@@ -2504,22 +2504,201 @@ Note:
 
 ---
 
-## Using dynamic memory
+### Best practices
 
 ---
 
-### TODO
-
-* Manual allocation is possible, but prone to memory leaks (forget to free, double free)
-* Use RAII types instead
-  * std::unique_ptr
-  * std::shared_ptr?
-* Need for virtual destructor
-  * Storing pointer to concrete class in pointer to base class
+* Use the stack for small local variables.
+* Use the heap for large data and runtime variables. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Be careful when writing recursive functions. <!-- .element: class="fragment" data-fragment-index="2" -->
+* By mindful about heap fragmentation. <!-- .element: class="fragment" data-fragment-index="3" -->
 
 ---
 
-### Vector of Animals
+## Dynamic memory for polymorfisms
+
+Deciding at runtime which object to create.
+
+---
+
+```c++ []
+// Interface A
+struct A
+{
+    virtual ~A() = default;
+    virtual void print() const = 0;
+};
+
+// Implementations B and C
+struct B : A { void print() const override { std::println("B"); } };
+struct C : A { void print() const override { std::println("C"); } };
+```
+
+```c++ []
+std::unique_ptr<A> some_sort_of_a{}; // starts out empty!
+
+if (/*some runtime condition*/) {
+    some_sort_of_a = std::make_unique<B>();
+} else {
+    some_sort_of_a = std::make_unique<C>();
+}
+
+some_sort_of_a->print(); // prints B or prints C
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+Note:
+
+* A unique_ptr<> to concrete class can be stored in a unique_ptr<> to base class.
+* This is how we can use polymorfisms for objects created at runtime.
+* <https://compiler-explorer.com/z/G8vYKj9eb>
+* Be careful not to dereference some_sort_of_a if it is empty!
+
+```c++
+if (some_sort_of_a)
+{
+    // points to something valid
+    // it is safe to call the print() method
+}
+```
+
+---
+
+This is why virtual destructors are important! 😉
+
+---
+
+```c++
+struct A {
+    A() { std::println("A::A()"); }
+    ~A() { std::println("A::~A()"); }
+};
+struct B : A {
+    B() { std::println("B::B()"); }
+    ~B() { std::println("B::~B()"); }
+};
+```
+
+```c++
+int main() {
+    std::unique_ptr<A> ptr = std::make_unique<B>();
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```text
+A::A()
+B::B()
+A::~A()
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* We construct a B object (which first calls the parent constructor A() and then runs B's contructor).
+* When the object goes out-of-scope, we expect the destructor of B to be called (which should first run its own code and then call the ~A() destructor).
+* But since we call the destructor through a pointer to A and the A destructor is not virtual, only ~A() is called.
+* <https://compiler-explorer.com/z/8fzGvdxas>
+
+---
+
+```c++
+struct A {
+    A() { std::println("A::A()"); }
+    virtual ~A() { std::println("A::~A()"); }
+};
+struct B : A {
+    B() { std::println("B::B()"); }
+    ~B() { std::println("B::~B()"); }
+};
+```
+
+```c++
+int main() {
+    std::unique_ptr<A> ptr = std::make_unique<B>();
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```text
+A::A()
+B::B()
+B::~B()
+A::~A()
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* We added virtual to A's destructor.
+* B's destructor is now correctly called!
+* <https://compiler-explorer.com/z/18P1Kb918>
+* <https://compiler-explorer.com/z/c4ef9GaTs>
+
+---
+
+Don't forget to add a virtual destructor to base classes with at least one virtual method‼️
+
+---
+
+### Vector runtime Animal objects
+
+---
+
+```c++
+class Animal
+{
+public:
+    virtual ~Animal() = default;
+
+    void speak() const { /* uses speak_impl() */ }
+
+    // ...
+
+private:
+    virtual std::string speak_impl() const = 0;
+};
+```
+
+```c++
+class Dog     : public Animal { /*...*/ };
+class Cat     : public Animal { /*...*/ };
+class Bear    : public Animal { /*...*/ };
+class Hamster : public Animal { /*...*/ };
+```
+
+Note:
+
+* The example we were using.
+
+---
+
+```c++
+std::vector<❓> animals{};
+```
+
+```c++
+if (animal == "dog")
+{
+    // create dog object
+    animals.push_back(/*dog object*/);
+}
+```
+
+```c++
+// cat, bear, hamster, ...
+```
+
+```c++
+for (auto const& animal : animals)
+{
+    // call speak() on animal
+}
+```
+
+Note:
+
+* What we want to be able to do.
 
 ---
 
@@ -2563,7 +2742,6 @@ Note:
 * <https://compiler-explorer.com/z/1xacj6Kb9>
 * We store pointers to concrete objects in pointers to the abstract base clase.
 * This is why a virtual destructor is important!
-* <https://compiler-explorer.com/z/c4ef9GaTs>
 
 ---
 
