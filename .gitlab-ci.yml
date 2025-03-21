@@ -4,8 +4,12 @@ markdown-lint:
   script:
     - npm install -g markdownlint-cli2
     - markdownlint-cli2 "**/*.md" "#node_modules"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "never"'
 
 spell-check:
   script:
     - npm install -g cspell
     - cspell .
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "never"'
