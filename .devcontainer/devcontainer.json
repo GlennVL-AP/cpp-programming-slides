@@ -17,7 +17,7 @@
                     "customDictionaries": {
                         "course-specific-words": {
                             "name": "course-specific-words",
-                            "path": "${workspaceRoot}/slides/cspell-dict.txt",
+                            "path": "${workspaceRoot}/slides/course_metadata/cspell-dictionary.txt",
                             "description": "Words used in this slide set",
                             "addWords": true
                         },

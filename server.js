@@ -6,25 +6,27 @@ const port = 8000
 const app = express()
 
 const slidesPath = path.join(__dirname, "slides");
+const slidePath = slideDeck => path.join(slidesPath, slideDeck);
 const slideMarkdownPath = slideDeck => path.join(slidesPath, slideDeck, "index.md");
 const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadata.json");
 const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
-const courseMetadataPath = path.join(slidesPath, "metadata.json");
-const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataPath, { encoding: "utf-8" }));
+const courseMetadataPath = path.join(slidesPath, "course_metadata");
+const courseMetadataFile = path.join(courseMetadataPath, "metadata.json");
+const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataFile, { encoding: "utf-8" }));
 const courseFavIconPath = () => {
     const metadata = courseMetadata();
-    return metadata.favIcon ? path.join(slidesPath, metadata.favIcon) : null;
+    return metadata.favIcon ? path.join(courseMetadataPath, metadata.favIcon) : null;
 };
 const courseBgLogoPath = () => {
     const metadata = courseMetadata();
-    return metadata.bgLogo ? path.join(slidesPath, metadata.bgLogo) : null;
+    return metadata.bgLogo ? path.join(courseMetadataPath, metadata.bgLogo) : null;
 };
 const defaultFavIcon = path.join(__dirname, "public", "ap_favicon.ico");
 const defaultBgLogo = path.join(__dirname, "public", "ap_logo.png");
 
 const slideDecks = () => {
     return fs.readdirSync(slidesPath, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
+        .filter(dirent => dirent.isDirectory() && slidePath(dirent.name) !== courseMetadataPath)
         .map(dirent => {
             const metadata = JSON.parse(fs.readFileSync(slideMetadataPath(dirent.name), { encoding: "utf-8" }));
             return [dirent.name, metadata];
