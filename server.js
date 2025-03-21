@@ -19,8 +19,8 @@ const courseBgLogoPath = () => {
     const metadata = courseMetadata();
     return metadata.bgLogo ? path.join(slidesPath, metadata.bgLogo) : null;
 };
-const defaultFavIcon = path.join(__dirname, "public", "default_favicon.ico");
-const defaultBgLogo = path.join(__dirname, "public", "default_bglogo.png");
+const defaultFavIcon = path.join(__dirname, "public", "ap_favicon.ico");
+const defaultBgLogo = path.join(__dirname, "public", "ap_logo.png");
 
 const slideDecks = () => {
     return fs.readdirSync(slidesPath, { withFileTypes: true })
@@ -86,7 +86,7 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 
     res.render(
         "slide_deck",
-        { slidedeck_title: metadata.title, slidedeck_content_markdown: markdownContent },
+        { slide_deck_title: metadata.title, slide_deck_content_markdown: markdownContent },
         (err, str) => {
             if (err) return next(err);
             res.send(str);

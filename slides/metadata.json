@@ -1,6 +1,6 @@
 {
     "title": "C++ Programming Slides",
-    "description": "Slides for the C/C++ Programming course in the Bachelor's program for Electronics and ICT at <a href=\"https://www.ap.be\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Visit www.ap.be (opens in a new tab)\" class=\"ap-link\"><img src=\"/public/default_favicon.ico\" alt=\"ap logo\" class=\"ap-logo\"></a>.",
+    "description": "Slides for the C/C++ Programming course in the Bachelor's program for Electronics and ICT at <a href=\"https://www.ap.be\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Visit www.ap.be (opens in a new tab)\" class=\"ap-link\"><img src=\"/public/ap_favicon.ico\" alt=\"ap logo\" class=\"ap-logo\"></a>.",
     "favIcon": "iso_cpp_logo.svg",
     "bgLogo": "iso_cpp_logo.svg",
     "noBreakWords": ["C++"]
