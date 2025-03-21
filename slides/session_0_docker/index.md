@@ -1,7 +1,5 @@
 # Development Containers
 
-<!--- cSpell:ignore Wouter Peetermans --->
-
 Crash course docker and development containers.
 
 ---
@@ -300,4 +298,5 @@ Want to learn how to use docker without development containers?
 
 <https://cursus.hermans.casa/embedded-linux/embedded-linux-h4/>
 
+<!--- cSpell:disable-next-line --->
 Check out this slide deck by Wouter Peetermans.

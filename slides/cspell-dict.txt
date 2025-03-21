@@ -1,3 +1,11 @@
+Bjarne
+Stroustrup
+Sutter
+Healthineers
+Tiobe
+cfront
+simula
+Payconiq
 automagically
 RAII
 lvalue
@@ -22,3 +30,7 @@ digitap
 cpprog
 NOLINT
 bugprone
+Mieke
+Joske
+Marieke
+Jefke

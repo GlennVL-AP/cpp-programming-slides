@@ -1,7 +1,5 @@
 # C/C++ Programming
 
-<!--- cSpell:ignore Mieke Joske Marieke Jefke --->
-
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 
 ---
