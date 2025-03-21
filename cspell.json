@@ -5,16 +5,26 @@
         "automagically",
         "RAII",
         "lvalue",
+        "lvalues",
         "xvalue",
+        "xvalues",
         "rvalue",
+        "rvalues",
         "prvalue",
+        "prvalues",
         "println",
         "cout",
+        "cerr",
         "constexpr",
         "consteval",
+        "noexcept",
+        "nodiscard",
+        "chrono",
         "clion",
         "labo",
         "digitap",
-        "cpprog"
+        "cpprog",
+        "NOLINT",
+        "bugprone"
     ]
 }

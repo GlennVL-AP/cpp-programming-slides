@@ -42,8 +42,8 @@ int my_division(int numerator, int denominator)
 
 Note:
 
-* How to use the expect() function for preconditions?
-* See also hellocontracts example in devcontainer.
+* How to use the expect() function for pre-conditions?
+* See also hello-contracts example in devcontainer.
 
 ---
 

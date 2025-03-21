@@ -42,15 +42,15 @@ void my_func_2(std::string str)
 ---
 
 ```c++
-void my_func(std::vector<int> ints)
+void my_func(std::vector<int> integers)
 {
-    // use items in ints
+    // use items in integers
 }
 ```
 
 ```c++
-std::vector ints{1, 2, 3, 4, 5}; // imagine a huge list
-my_func(ints);
+std::vector integers{1, 2, 3, 4, 5}; // imagine a huge list
+my_func(integers);
 ```
 
 Creates a copy, expensive for large types.
@@ -58,15 +58,15 @@ Creates a copy, expensive for large types.
 ---
 
 ```c++
-void my_func(std::vector<int> const& ints)
+void my_func(std::vector<int> const& integers)
 {
-    // use items in ints
+    // use items in integers
 }
 ```
 
 ```c++
-std::vector ints{1, 2, 3, 4, 5}; // imagine a huge list
-my_func(ints);
+std::vector integers{1, 2, 3, 4, 5}; // imagine a huge list
+my_func(integers);
 ```
 
 * Pass the vector by const reference.
@@ -79,19 +79,19 @@ Note:
 ---
 
 ```c++
-void my_func(std::vector<int> ints)
+void my_func(std::vector<int> integers)
 {
-    ints.push_back(6); // only modifies local copy
+    integers.push_back(6); // only modifies local copy
 }
 ```
 
 ```c++
-std::vector ints{1, 2, 3, 4, 5};
-my_func(ints);
+std::vector integers{1, 2, 3, 4, 5};
+my_func(integers);
 ```
 
 ```c++
-// ints still {1, 2, 3, 4, 5}
+// integers still {1, 2, 3, 4, 5}
 ```
 
 Not possible to modify the original.
@@ -99,15 +99,15 @@ Not possible to modify the original.
 ---
 
 ```c++
-void my_func(std::vector<int>& ints)
+void my_func(std::vector<int>& integers)
 {
-    ints.push_back(6);
+    integers.push_back(6);
 }
 ```
 
 ```c++
-std::vector ints{1, 2, 3, 4, 5};
-my_func(ints);
+std::vector integers{1, 2, 3, 4, 5};
+my_func(integers);
 ```
 
 * Pass the vector by reference.
@@ -205,7 +205,7 @@ Note:
 
 * Since C++11 it is allowed to write the return type at the end.
 * Syntax: auto func() -> return_type
-* Useful in metaprogramming when return type depends on function arguments.
+* Useful in meta-programming when return type depends on function arguments.
 
 ---
 
@@ -259,7 +259,7 @@ void modify_func(std::span<int> writable_array)
 
 ```c++
 std::array my_array{1, 2, 3, 4, 5};
-read_func(my_aray);
+read_func(my_array);
 modify_func(my_array);
 ```
 
@@ -561,8 +561,8 @@ Note:
 * Make members private, so user can't access them directly.
 * Initialize private members.
 * Add constructor to initialize the object with the desired values.
-* Add precondition to constructor that date must be valid.
-* Good practice to default init private members with {}. Makes sure we can't end up with unitialized values. Constructor will overwrite these values.
+* Add pre-condition to constructor that date must be valid.
+* Good practice to default init private members with {}. Makes sure we can't end up with uninitialized values. Constructor will overwrite these values.
 
 ---
 
@@ -1072,7 +1072,7 @@ for class design
 * Keep interfaces as small as possible, but no smaller.
 * Provide constructors. <!-- .element: class="fragment" data-fragment-index="1" -->
 * Use types to provide good argument checking. <!-- .element: class="fragment" data-fragment-index="2" -->
-* Identify nonmodifying member functions. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Identify non-modifying member functions. <!-- .element: class="fragment" data-fragment-index="3" -->
 * Support copying (or disable it). <!-- .element: class="fragment" data-fragment-index="4" -->
 * Free all resources in the destructor. <!-- .element: class="fragment" data-fragment-index="5" -->
 
@@ -1541,8 +1541,8 @@ void my_func(std::string& str)       { std::println("f3"); }
 ```
 
 ```c++
-std::string const cstr{"hello"};
-my_func(cstr);
+std::string const c_str{"hello"};
+my_func(c_str);
 ```
 
 What will the program print?
@@ -1787,7 +1787,7 @@ for class design
 * Keep interfaces as small as possible, but no smaller. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
 * Provide constructors. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
 * Use types to provide good argument checking. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Identify nonmodifying member functions. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Identify non-modifying member functions. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
 * Support copying (or disable it). <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
 * Free all resources in the destructor. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
 * Respect the rule-of-5. <!-- .element: class="fragment highlight-current-blue" data-fragment-index="1" -->

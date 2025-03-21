@@ -226,7 +226,7 @@ Note:
 
 * std::map is a red-black tree
 * std::map: search, insert, delete all O(log n) (performance depends on the number of elements)
-* std::unoredered_map: search, insert, delete all O(1) (constant time: does not depend on the number of elements)
+* std::unordered_map: search, insert, delete all O(1) (constant time: does not depend on the number of elements)
 
 ---
 
@@ -308,7 +308,7 @@ Note:
 
 ---
 
-## Errors!
+## Errors
 
 ---
 
@@ -531,15 +531,15 @@ Think about debugging before you start writing code.
 
 ---
 
-A contract consists of preconditions, postconditions and invariants.
+A contract consists of pre-conditions, post-conditions and invariants.
 
 ---
 
-##### Preconditions
+##### Pre-conditions
 
 ---
 
-A precondition is a requirement of a function upon its arguments.
+A pre-condition is a requirement of a function upon its arguments.
 
 ---
 
@@ -551,7 +551,7 @@ int calculate_area(int length, int width)
 }
 ```
 
-What are the preconditions?
+What are the pre-conditions?
 
 Note:
 
@@ -561,23 +561,23 @@ Note:
 
 ---
 
-Types are a form of precondition that is enforced by the compiler.
+Types are a form of pre-condition that is enforced by the compiler.
 
 ---
 
-Some preconditions we can enforce by writing code.
+Some pre-conditions we can enforce by writing code.
 
 ---
 
-Some preconditions cannot be expressed as code, but can be added as a comment.
+Some pre-conditions cannot be expressed as code, but can be added as a comment.
 
 ---
 
-##### Postconditions
+##### Post-conditions
 
 ---
 
-A postcondition is a promise a function makes if and only if all preconditions are satisfied.
+A post-condition is a promise a function makes if and only if all pre-conditions are satisfied.
 
 ---
 
@@ -589,7 +589,7 @@ int calculate_area(int length, int width)
 }
 ```
 
-What are the postconditions?
+What are the post-conditions?
 
 Note:
 
@@ -619,13 +619,13 @@ Note:
 ```c++ []
 int calculate_area(int length, int width)
 {
-    // precondition
+    // pre-condition
     expect([&]{ return (length >= 0) && (width >= 0); },
            "length and width cannot be negative");
 
     int result{length * width};
 
-    // postcondition
+    // post-condition
     expect([&]{ return result >= 0; }, "area is positive");
 
     return result;
@@ -636,8 +636,8 @@ If you give me a positive length and width, I promise you that the area will als
 
 Note:
 
-* Preconditions are the most important!
-* Postcondition are not often added as code.
+* Pre-conditions are the most important!
+* Post-condition are not often added as code.
 * We are using lambdas here, a short way of writing functions.
 * []{} declares a lambda.
 * Between [] we say which variables we want to be available inside the lambda body {}.
@@ -652,7 +652,7 @@ But for now we are stuck with expect().
 
 Note:
 
-* New syntax is accepted for C++26 that will allow you to write preconditions and postconditions.
+* New syntax is accepted for C++26 that will allow you to write pre-conditions and post-conditions.
 
 ---
 

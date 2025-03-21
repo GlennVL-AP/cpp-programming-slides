@@ -1,7 +1,5 @@
 # C/C++ Programming
 
-<!--- cSpell:ignore NOLINT bugprone --->
-
 ## Labo 1
 
 ---
