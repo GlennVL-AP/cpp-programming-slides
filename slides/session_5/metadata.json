@@ -1,4 +1,4 @@
 {
-    "title": "Session 5: Runtime polymorfisms",
+    "title": "Session 5: Runtime polymorphisms",
     "description": "Abstract base classes and interfaces. Pure virtual functions. Virtual destructors. Overriding functions. Copy and Move in polymorphic inheritance hierarchies."
 }

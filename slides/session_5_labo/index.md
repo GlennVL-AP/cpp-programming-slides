@@ -1,5 +1,7 @@
 # C/C++ Programming
 
+<!--- cSpell: ignore ssize --->
+
 ## Labo 5
 
 ---
@@ -11,9 +13,9 @@ kanban
     task2[Labo 2]
     task3[Labo 3]
     task4[Labo 4]
-  colums2[Exercises]
+  column2[Exercises]
     task5[Labo 5 Devcontainer]
-    task6[Runtime Polymorfisms]
+    task6[Runtime Polymorphisms]
 ```
 
 ---
@@ -478,7 +480,7 @@ note:
 
 ---
 
-## Exercises Runtime Polymorfisms
+## Exercises Runtime Polymorphisms
 
 ---
 

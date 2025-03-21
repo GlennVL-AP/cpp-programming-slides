@@ -1,12 +1,14 @@
 # C/C++ Programming
 
+<!--- cSpell:ignore Payconiq --->
+
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 
 ---
 
 ```mermaid
 kanban
-  column1[Polymorfisms]
+  column1[Polymorphisms]
     task1[Abstract base classes]
     task2[Pure virtual functions]
     task3[Virtual destructors]
@@ -20,7 +22,7 @@ kanban
 
 ---
 
-## Polymorfisms
+## Polymorphisms
 
 ---
 
@@ -227,7 +229,7 @@ dog says bark.
 cat says meow.
 ```
 
-Polymorfism.
+Polymorphism.
 
 Note:
 
@@ -324,7 +326,7 @@ It never makes sense to implement copy in an inheritance hierarchy!
 
 ## Dependency Inversion
 
-A common usecase for polymorfisms.
+A common use-case for polymorphisms.
 
 ---
 
@@ -466,7 +468,7 @@ Implement new types of payment processors. For example Payconiq.
 
 ---
 
-Test the PaymentService class by creating a fake PaymentProcessor we can manipulate in the unittests.
+Test the PaymentService class by creating a fake PaymentProcessor we can manipulate in the unit-tests.
 
 ---
 
