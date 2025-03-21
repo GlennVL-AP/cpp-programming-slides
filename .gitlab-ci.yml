@@ -1,0 +1,11 @@
+image: node:latest
+
+markdown-lint:
+  script:
+    - npm install -g markdownlint-cli2
+    - markdownlint-cli2 "**/*.md" "#node_modules"
+
+spell-check:
+  script:
+    - npm install -g cspell
+    - cspell .
