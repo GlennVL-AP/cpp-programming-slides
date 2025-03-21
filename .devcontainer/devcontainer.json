@@ -13,14 +13,23 @@
                     },
                     "no-inline-html": false
                 },
-                "cSpell.customDictionaries": {
-                    "course-specific-words": {
-                        "name": "course-specific-words",
-                        "path": "${workspaceRoot}/slides/cspell-dict.txt",
-                        "description": "Words used in this slide set",
-                        "addWords": true
+                "cSpell": {
+                    "customDictionaries": {
+                        "course-specific-words": {
+                            "name": "course-specific-words",
+                            "path": "${workspaceRoot}/slides/cspell-dict.txt",
+                            "description": "Words used in this slide set",
+                            "addWords": true
+                        },
+                        "custom": true
                     },
-                    "custom": true
+                    "ignorePaths": [
+                        ".devcontainer",
+                        ".git",
+                        ".vscode",
+                        ".vscode-insiders",
+                        "package-lock.json"
+                    ]
                 }
             },
             "extensions": [
