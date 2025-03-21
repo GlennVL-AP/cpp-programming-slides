@@ -5,25 +5,6 @@
     "remoteUser": "node",
     "customizations": {
         "vscode": {
-            "settings": {
-                "cSpell": {
-                    "customDictionaries": {
-                        "course-specific-words": {
-                            "name": "course-specific-words",
-                            "path": "${workspaceRoot}/slides/course_metadata/cspell-dictionary.txt",
-                            "description": "Words used in this slide set",
-                            "addWords": true
-                        },
-                        "custom": true
-                    },
-                    "ignorePaths": [
-                        ".devcontainer",
-                        ".git",
-                        ".gitignore",
-                        "package-lock.json"
-                    ]
-                }
-            },
             "extensions": [
                 "DavidAnson.vscode-markdownlint",
                 "streetsidesoftware.code-spell-checker"

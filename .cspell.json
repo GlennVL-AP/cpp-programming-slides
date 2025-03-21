@@ -1,0 +1,17 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "dictionaryDefinitions": [
+        { "name": "course-specific-words", "path": "./slides/course_metadata/cspell-dictionary.txt" }
+    ],
+    "dictionaries": [
+        "course-specific-words"
+    ],
+    "ignorePaths": [
+        ".devcontainer",
+        ".git",
+        ".gitignore",
+        "package-lock.json",
+        "*.svg"
+    ]
+}
