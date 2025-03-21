@@ -246,9 +246,12 @@ References can be used anywhere.
 ---
 
 * Use pass-by-value to pass very small objects.
-* Use pass-by-const-reference to pass large objects you don't need to modify. <!-- .element: class="fragment" data-fragment-index="1" -->
-* Return a result rather than modifying an object through a reference argument. <!-- .element: class="fragment" data-fragment-index="2" -->
-* Use pass-by-reference only when you have to. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Use pass-by-const-reference to pass large objects you don't need to modify.
+  <!-- .element: class="fragment" data-fragment-index="1" -->
+* Return a result rather than modifying an object through a reference argument.
+  <!-- .element: class="fragment" data-fragment-index="2" -->
+* Use pass-by-reference only when you have to.
+  <!-- .element: class="fragment" data-fragment-index="3" -->
 
 ---
 
@@ -562,7 +565,8 @@ Note:
 * Initialize private members.
 * Add constructor to initialize the object with the desired values.
 * Add pre-condition to constructor that date must be valid.
-* Good practice to default init private members with {}. Makes sure we can't end up with uninitialized values. Constructor will overwrite these values.
+* Good practice to default init private members with {}. Makes sure we can't end up with uninitialized values. Constructor will
+  overwrite these values.
 
 ---
 
@@ -1784,13 +1788,20 @@ for class design
 
 ---
 
-* Keep interfaces as small as possible, but no smaller. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Provide constructors. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Use types to provide good argument checking. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Identify non-modifying member functions. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Support copying (or disable it). <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Free all resources in the destructor. <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
-* Respect the rule-of-5. <!-- .element: class="fragment highlight-current-blue" data-fragment-index="1" -->
+* Keep interfaces as small as possible, but no smaller.
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Provide constructors.
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Use types to provide good argument checking.
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Identify non-modifying member functions.
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Support copying (or disable it).
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Free all resources in the destructor.
+  <!-- .element: class="fragment semi-fade-out" data-fragment-index="1" -->
+* Respect the rule-of-5.
+  <!-- .element: class="fragment highlight-current-blue" data-fragment-index="1" -->
 
 ---
 

@@ -53,7 +53,8 @@ Note:
 
 ---
 
-Finds functions which may throw an exception directly or indirectly, but they should not. The functions which should not throw exceptions are the following:
+Finds functions which may throw an exception directly or indirectly, but they should not. The functions which should not throw
+exceptions are the following:
 
 Note:
 

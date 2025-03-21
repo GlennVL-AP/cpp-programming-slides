@@ -23,7 +23,8 @@ kanban
 
 * Same as labo 3 devcontainer.
 * Library with `datetime` module and partial implementation of `Date` class is included.
-* Extra option `DEPENDENCIES` to add libraries to an executable. See [README.md](https://gitlab.apstudent.be/cpp-programming/devcontainer-labo-4/-/blob/main/README.md) file in git repository.
+* Extra option `DEPENDENCIES` to add libraries to an executable. See
+  [README.md](https://gitlab.apstudent.be/cpp-programming/devcontainer-labo-4/-/blob/main/README.md) file in git repository.
 
 ---
 

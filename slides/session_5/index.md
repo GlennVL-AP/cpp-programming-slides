@@ -454,7 +454,8 @@ Note:
 
 ---
 
-PaymentService now depends on PaymentProcessor (an abstraction) instead of PayPal (a concrete class). This is called dependency inversion.
+PaymentService now depends on PaymentProcessor (an abstraction) instead of PayPal (a concrete class). This is called dependency
+inversion.
 
 ---
 

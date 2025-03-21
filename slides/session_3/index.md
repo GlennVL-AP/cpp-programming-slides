@@ -455,7 +455,8 @@ Aborted (core dumped)
 Note:
 
 * STL only does bounds checking in at() function, not in operator[]
-* We have enabled STL hardening mode to also check in operator[], this will cause an assertion error and abort instead of exception
+* We have enabled STL hardening mode to also check in operator[], this will cause an assertion error and abort instead of
+  exception
 
 ---
 

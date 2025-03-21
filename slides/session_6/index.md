@@ -137,6 +137,7 @@ Note:
 
 ---
 
+<!-- markdownlint-disable line-length -->
 ```sh []
 <source>:79:9: error: call to deleted constructor of 'const Animal'
    79 |         Dog{},
@@ -186,6 +187,7 @@ Note:
 7 errors generated.
 Compiler returned: 1
 ```
+<!-- markdownlint-enable line-length -->
 
 No, it does not work!
 
@@ -253,6 +255,7 @@ for (auto const& animal : animals)
 }
 ```
 <!-- .element: class="fragment" data-fragment-index="2" -->
+
 Does this work? <!-- .element: class="fragment" data-fragment-index="3" -->
 
 Note:
@@ -261,6 +264,7 @@ Note:
 
 ---
 
+<!-- markdownlint-disable line-length -->
 <!--- cSpell:disable --->
 ```sh []
 In file included from <source>:1:
@@ -423,6 +427,7 @@ In file included from /opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu
 Compiler returned: 1
 ```
 <!--- cSpell:enable --->
+<!-- markdownlint-enable line-length -->
 
 No, it does not work!
 
@@ -543,6 +548,7 @@ Note:
 
 ---
 
+<!-- markdownlint-disable line-length -->
 <!--- cSpell:disable --->
 ```sh [2]
 =================================================================
@@ -601,6 +607,7 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
 ==1==ABORTING
 ```
 <!--- cSpell:enable --->
+<!-- markdownlint-enable line-length -->
 
 No, it does not work!
 
@@ -753,10 +760,13 @@ Note:
 
 * The main function is called from startup code.
 * The stack pointer register (SP) keeps track of where we are. It points to the top of the stack.
-* The program counter register (PC) keeps track of which instruction we are executing. It points to the current instruction in the assembly code.
+* The program counter register (PC) keeps track of which instruction we are executing. It points to the current instruction in
+  the assembly code.
 * The RAX register is used to store function return values. They are not stored on the stack.
-* When the end of a function is reached, its stack frame is removed from the stack. The return value (if any) is set in RAX. And the program counter is updated to the return address that was stored on the stack.
-* We use line numbers here for the program counter. In reality it holds the address of the current instruction in the assembly code.
+* When the end of a function is reached, its stack frame is removed from the stack. The return value (if any) is set in RAX. And
+  the program counter is updated to the return address that was stored on the stack.
+* We use line numbers here for the program counter. In reality it holds the address of the current instruction in the assembly
+  code.
 
 --
 
@@ -2126,6 +2136,7 @@ int main()
 }
 ```
 
+<!-- markdownlint-disable line-length -->
 <!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
@@ -2133,6 +2144,7 @@ AddressSanitizer:DEADLYSIGNAL
 ==4609==ERROR: AddressSanitizer: stack-overflow on address 0x7fff7a319ff0 (pc 0x56499fbc3d0c bp 0x7fff7a31a010 sp 0x7fff7a319fc0 T0)
 ```
 <!--- cSpell:enable --->
+<!-- markdownlint-enable line-length -->
 
 Note:
 
@@ -2156,6 +2168,7 @@ int main()
 }
 ```
 
+<!-- markdownlint-disable line-length -->
 <!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
@@ -2170,6 +2183,7 @@ SUMMARY: AddressSanitizer: stack-overflow /app/example.cpp:6:36 in main
 ==1==ABORTING
 ```
 <!--- cSpell:enable --->
+<!-- markdownlint-enable line-length -->
 
 Note:
 
@@ -2504,7 +2518,8 @@ It's probably not something to worry about when writing an application for a sys
 
 ---
 
-But it is a very real concern for embedded applications that keep running for many years on a micro controller with only a few kilobytes of memory.
+But it is a very real concern for embedded applications that keep running for many years on a micro controller with only a few
+kilobytes of memory.
 
 Note:
 
@@ -2604,7 +2619,8 @@ A::~A()
 Note:
 
 * We construct a B object (which first calls the parent constructor A() and then runs B's constructor).
-* When the object goes out-of-scope, we expect the destructor of B to be called (which should first run its own code and then call the ~A() destructor).
+* When the object goes out-of-scope, we expect the destructor of B to be called (which should first run its own code and then
+  call the ~A() destructor).
 * But since we call the destructor through a pointer to A and the A destructor is not virtual, only ~A() is called.
 * <https://compiler-explorer.com/z/8fzGvdxas>
 
@@ -2791,6 +2807,7 @@ Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
 
 ---
 
+<!-- markdownlint-disable line-length -->
 ```sh []
 <source>:115:15: error: call to deleted constructor of 'std::unique_ptr<Animal>'
   115 |         speak(animal);
@@ -2804,6 +2821,7 @@ Does this work? <!-- .element: class="fragment" data-fragment-index="1" -->
 1 error generated.
 Compiler returned: 1
 ```
+<!-- markdownlint-enable line-length -->
 
 No it does not work!
 
@@ -2879,6 +2897,7 @@ But how about this? <!-- .element: class="fragment" data-fragment-index="1" -->
 
 ---
 
+<!-- markdownlint-disable line-length -->
 <!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
@@ -2902,6 +2921,7 @@ SUMMARY: AddressSanitizer: SEGV /app/example.cpp:21:44 in Animal::speak() const
 ==1==ABORTING
 ```
 <!--- cSpell:enable --->
+<!-- markdownlint-enable line-length -->
 
 No it does not!
 

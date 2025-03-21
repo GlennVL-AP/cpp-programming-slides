@@ -24,11 +24,13 @@ Black text on white background.
 
 <!-- .slide: data-background-gradient="linear-gradient(to bottom, #0a0a0a, #1a1a2e, #222222)" -->
 
+<!--- cSpell: disable --->
 ```css
 .reveal .slides pre.code-wrapper:not(:has(> code.mermaid)) > code {
     background: color-mix(in srgb, currentColor 10%, transparent) !important;
 }
 ```
+<!--- cSpell: enable --->
 
 Background gradient. Use the css above to make code segments semi transparent.
 

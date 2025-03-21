@@ -12,7 +12,8 @@ I work on many projects. Each of them have their own tool requirements. Some eve
 
 ---
 
-I have to figure out which tools I need. Download and install them. And use the right version for the right project. This is hard! ☹️
+I have to figure out which tools I need. Download and install them. And use the right version for the right project. This is
+hard! ☹️
 
 ---
 
@@ -109,7 +110,8 @@ Note:
 
 ---
 
-Add devcontainer.json file in .devcontainer directory to project. IDE will pick this up automatically, build the devcontainer and connect to it.
+Add devcontainer.json file in .devcontainer directory to project. IDE will pick this up automatically, build the devcontainer
+and connect to it.
 
 ---
 
