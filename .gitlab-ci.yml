@@ -1,15 +1,27 @@
-image: node:latest
+workflow:
+  rules:
+    - when: never
+
+stages:
+  - lint-slides
+  - lint-application
+
+default:
+  image: node:latest
+  before_script:
+    - npm install
 
 markdown-lint:
+  stage: lint-slides
   script:
-    - npm install -g markdownlint-cli2
-    - markdownlint-cli2 "**/*.md" "#node_modules"
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "never"'
+    - npx markdownlint-cli2 .
 
 spell-check:
+  stage: lint-slides
   script:
-    - npm install -g cspell
-    - cspell .
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "never"'
+    - npx cspell .
+
+eslint:
+  stage: lint-application
+  script:
+    - npx eslint .
