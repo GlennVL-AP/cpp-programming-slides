@@ -8,6 +8,7 @@
         "rvalue",
         "prvalue",
         "println",
+        "cout",
         "clion"
     ]
 }

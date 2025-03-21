@@ -1,5 +1,7 @@
 # C/C++ Programming
 
+<!--- cSpell:ignore Bjarne Stroustrup Sutter Healthineers Tiobe cfront simula --->
+
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 
 ---
@@ -86,7 +88,7 @@ pie title Programming languages by popularity
 
 Note:
 
-* Tiobe index as piechart.
+* Tiobe index as pie-chart.
 
 ---
 
