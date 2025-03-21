@@ -1,5 +1,7 @@
 # C/C++ Programming
 
+<!--- cSpell:ignore NOLINT bugprone --->
+
 ## Labo 1
 
 ---
@@ -89,16 +91,20 @@ int main()
 
 ### Hmmm... 🤔
 
+<!--- cSpell:disable --->
 ```bash
 clang++ -std=c++23 -stdlib=libc++ \
   -Wno-reserved-identifier -Wno-reserved-module-identifier \
   --precompile -o std.pcm /usr/lib/llvm-19/share/libc++/v1/std.cppm
 ```
+<!--- cSpell:enable --->
 
+<!--- cSpell:disable --->
 ```bash
 clang++ -std=c++23 -stdlib=libc++ \
   -fmodule-file=std=std.pcm -o helloworld main.cpp
 ```
+<!--- cSpell:enable --->
 
 * Build std module first
 * Then build main.cpp and link std module
@@ -148,6 +154,7 @@ int main()
 
 ### Ouch!? 😬
 
+<!--- cSpell:disable --->
 ```bash
 clang++ -std=c++23 -stdlib=libc++ \
   -Wno-reserved-identifier -Wno-reserved-module-identifier \
@@ -159,6 +166,7 @@ clang++ -std=c++23 -stdlib=libc++ \
 clang++ -std=c++23 -stdlib=libc++ \
   -fmodule-file=std=std.pcm -fmodule-file=helloworld=helloworld.pcm -o helloworld main.cpp
 ```
+<!--- cSpell:enable --->
 
 ```bash
 /usr/bin/ld: /tmp/main-2b3cf5.o: in function `main':
@@ -241,6 +249,7 @@ Note:
 
 ### CMakePresets.json
 
+<!--- cSpell:disable --->
 ```json
   "configurePresets": [
       {
@@ -256,6 +265,7 @@ Note:
       }
   ]
 ```
+<!--- cSpell:enable --->
 
 Note:
 
@@ -374,6 +384,7 @@ Enable all of them and treat them as errors!
 
 ---
 
+<!--- cSpell:disable --->
 ```cmake
 target_compile_options(hello_world PRIVATE
     "-Wall;-Wextra;-Wpedantic;-Wshadow;-Wconversion"
@@ -383,6 +394,7 @@ target_compile_options(hello_world PRIVATE
     "-Wimplicit-fallthrough;-Wformat=2;-Werror"
 )
 ```
+<!--- cSpell:enable --->
 
 Add to each target in `CMakeLists.txt`.
 

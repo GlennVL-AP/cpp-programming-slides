@@ -2,6 +2,7 @@
     "version": "0.2",
     "language": "en",
     "words": [
+        "automagically",
         "RAII",
         "lvalue",
         "xvalue",
@@ -9,6 +10,11 @@
         "prvalue",
         "println",
         "cout",
-        "clion"
+        "constexpr",
+        "consteval",
+        "clion",
+        "labo",
+        "digitap",
+        "cpprog"
     ]
 }

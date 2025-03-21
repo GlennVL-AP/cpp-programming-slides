@@ -1,5 +1,7 @@
 # C/C++ Programming
 
+<!--- cSpell:ignore Mieke Joske Marieke Jefke --->
+
 ![iso_cpp_logo](./assets/iso_cpp_logo.png)
 
 ---
@@ -351,14 +353,14 @@ Note:
 
 * Copying a primitive type is cheap
 * Copying long strings is expensive!
-* Lexicographical comparision = dictionary ordering
+* Lexicographical comparison = dictionary ordering
 * char(33) is `!`
 
 ---
 
 * Can compare strings: ==, !=, <=, <, >=, >
 * Can add strings together with +
-* Cannot substract strings
+* Cannot subtract strings
 * Available operations depend on type
 
 <https://en.cppreference.com/w/cpp/string/basic_string>
@@ -394,6 +396,7 @@ Always initialize your variables!
 
 ---
 
+<!--- cSpell:disable --->
 ```text
 [build] main.cpp:4:33: error: variable 'x' is uninitialized
         when used here [-Werror,-Wuninitialized]
@@ -406,6 +409,7 @@ Always initialize your variables!
 [build]       |             = 0.0
 [build] 1 error generated.
 ```
+<!--- cSpell:enable --->
 
 Luckily we have compiler warnings enabled. 😉
 
@@ -485,6 +489,7 @@ No compiler warnings when assignment operator is used. ☹️
 
 ---
 
+<!--- cSpell:disable --->
 ```txt
 [build] main.cpp:4:14: error: narrowing conversion from 'int'
         to signed type 'char' is implementation-defined
@@ -493,6 +498,7 @@ No compiler warnings when assignment operator is used. ☹️
 [build]     4 |     char c = x;
 [build]       |              ^
 ```
+<!--- cSpell:enable --->
 
 clang-tidy finds these problems!
 
@@ -512,7 +518,7 @@ int x2{7.8};    // illegal, {} does not allow narrowing
 int x3 = {7.8}; // illegal, {} does not allow narrowing
 ```
 
-Mutiple ways to initialize variables.
+Multiple ways to initialize variables.
 
 Note:
 
@@ -1005,7 +1011,7 @@ int n{};
 std::cin >> n;
 
 // illegal, value of n is not known at compile-time
-constexpr int doesnt_work{max + n};
+constexpr int does_not_work{max + n};
 ```
 
 ---
@@ -1084,7 +1090,7 @@ A vector is a dynamic array. It can store multiple values of the same type.
 ---
 
 ```c++
-// create a vector of ints
+// create a vector of integers
 std::vector<int> v1{3, 5, 2, 4, 1};
 // append another int at the end
 v1.push_back(6);
@@ -1094,7 +1100,7 @@ std::println("{}", v1[1]);
 
 ```c++
 // create a vector of strings
-std::vector<std::string> v2{"mieke","joske","marieke","jefke"};
+std::vector<std::string> v2{"Mieke","Joske","Marieke","Jefke"};
 // sort it
 std::ranges::sort(v2);
 ```
