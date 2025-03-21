@@ -3,6 +3,11 @@
     "language": "en",
     "words": [
         "RAII",
-        "println"
+        "lvalue",
+        "xvalue",
+        "rvalue",
+        "prvalue",
+        "println",
+        "clion"
     ]
 }

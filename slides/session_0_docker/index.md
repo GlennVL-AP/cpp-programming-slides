@@ -1,6 +1,6 @@
-# Devcontainers
+# Development Containers
 
-Crash course docker and devcontainers
+Crash course docker and development containers.
 
 ---
 
@@ -56,6 +56,7 @@ Build virtual machines from a text file with the required tools.
 
 ---
 
+<!--- cSpell:disable --->
 ```dockerfile
 # Pick operating system for virtual machine
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-24.04
@@ -66,6 +67,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
                           build-essential cmake valgrind \
                           clang lldb llvm gdb
 ```
+<!--- cSpell:enable --->
 
 ### Dockerfile
 
@@ -89,7 +91,7 @@ But I'm still not happy...
 
 ---
 
-### Dev(elopment) Containers!
+### Development Containers
 
 Note:
 
@@ -103,7 +105,7 @@ Note:
 
 Note:
 
-* Picture borrowed from xebia.com
+* Picture borrowed from <https://xebia.com>
 
 ---
 
@@ -111,6 +113,7 @@ Add devcontainer.json file in .devcontainer directory to project. IDE will pick 
 
 ---
 
+<!--- cSpell:disable --->
 ```json
 {
     "name": "My fancy C++ container",
@@ -127,6 +130,7 @@ Add devcontainer.json file in .devcontainer directory to project. IDE will pick 
     "remoteUser": "vscode"
 }
 ```
+<!--- cSpell:enable --->
 
 #### devcontainer.json
 
@@ -148,7 +152,7 @@ Now I'm happy! 😁
 
 ---
 
-## Crash course devcontainers
+## Crash course development containers
 
 ---
 
@@ -187,7 +191,7 @@ Note:
 
 ![vscode devcontainer connected](./assets/vscode_devcontainer_connected.png)
 
-#### Step 4: Happy coding!
+#### Step 4: Happy coding 😁
 
 ---
 
@@ -195,6 +199,7 @@ Note:
 
 ---
 
+<!--- cSpell:disable --->
 ```json
 {
     "name": "C++",
@@ -230,11 +235,13 @@ Note:
     "remoteUser": "vscode"
 }
 ```
+<!--- cSpell:enable --->
 
 Example devcontainer.json using Dockerfile
 
 ---
 
+<!--- cSpell:disable --->
 ```json
 {
     "name": "node.js",
@@ -243,6 +250,7 @@ Example devcontainer.json using Dockerfile
     "remoteUser": "node"
 }
 ```
+<!--- cSpell:enable --->
 
 Example devcontainer.json using existing image
 
@@ -262,7 +270,7 @@ For a full reference of the devcontainer.json file, see <https://containers.dev/
 
 ---
 
-Using devcontainers will leave a bunch of docker containers on your system that can take up quite a bit of disk space.
+Using development containers will leave a bunch of docker containers on your system that can take up quite a bit of disk space.
 
 ---
 
@@ -284,10 +292,11 @@ docker system prune -af
 
 ---
 
-Want to learn how to use docker without devcontainers?
+Want to learn how to use docker without development containers?
 
 ---
 
 <https://cursus.hermans.casa/embedded-linux/embedded-linux-h4/>
 
+<!--- cSpell:ignore Wouter Peetermans --->
 Check out this slide deck by Wouter Peetermans.
