@@ -15,7 +15,8 @@
                 }
             },
             "extensions": [
-                "DavidAnson.vscode-markdownlint"
+                "DavidAnson.vscode-markdownlint",
+                "streetsidesoftware.code-spell-checker"
             ]
         }
     }
