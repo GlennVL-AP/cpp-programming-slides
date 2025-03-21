@@ -25,7 +25,7 @@ kanban
 
 ---
 
-We created a polymorfistic animal hierarchy.
+We created a polymorphic animal hierarchy.
 
 ---
 
@@ -261,6 +261,7 @@ Note:
 
 ---
 
+<!--- cSpell:disable --->
 ```sh []
 In file included from <source>:1:
 In file included from /opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu/14.2.0/../../../../include/c++/14.2.0/print:41:
@@ -421,6 +422,7 @@ In file included from /opt/compiler-explorer/gcc-14.2.0/lib/gcc/x86_64-linux-gnu
 12 errors generated.
 Compiler returned: 1
 ```
+<!--- cSpell:enable --->
 
 No, it does not work!
 
@@ -541,6 +543,7 @@ Note:
 
 ---
 
+<!--- cSpell:disable --->
 ```sh [2]
 =================================================================
 ==1==ERROR: AddressSanitizer: stack-use-after-scope on address 0x73c7e0309140 at pc 0x633f823d35c8 bp 0x7fff294cced0 sp 0x7fff294ccec8
@@ -597,13 +600,14 @@ Shadow byte legend (one shadow byte represents 8 application bytes):
   Right alloca redzone:    cb
 ==1==ABORTING
 ```
+<!--- cSpell:enable --->
 
 No, it does not work!
 
 Note:
 
 * Address sanitizer detects this!
-* Enable by adding compiler option `-fsanitize=address`.
+* Enable by adding compiler option `-f` `sanitize=address`.
 
 ---
 
@@ -671,7 +675,7 @@ Note:
 Note:
 
 * Next slide has an example.
-* Students try to understand this themselves and explain it to eachother.
+* Students try to understand this themselves and explain it to each other.
 
 ---
 
@@ -734,11 +738,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["address of call to main()"]:2
+  val1["address of call to main()"]:2
   reg2["SP"]:1
-  regval2["0x13C0"]:2
+  val2["0x13C0"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -815,11 +819,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["address of call to main()"]:2
+  val1["address of call to main()"]:2
   reg2["SP"]:1
-  regval2["0x1380"]:2
+  val2["0x1380"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -892,11 +896,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 19, a()"]:2
+  val1["line 19, a()"]:2
   reg2["SP"]:1
-  regval2["0x1340"]:2
+  val2["0x1340"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -969,11 +973,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 13, x = 5"]:2
+  val1["line 13, x = 5"]:2
   reg2["SP"]:1
-  regval2["0x1300"]:2
+  val2["0x1300"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -1046,11 +1050,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, b(x)"]:2
+  val1["line 14, b(x)"]:2
   reg2["SP"]:1
-  regval2["0x12C0"]:2
+  val2["0x12C0"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -1124,11 +1128,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, b(x)"]:2
+  val1["line 14, b(x)"]:2
   reg2["SP"]:1
-  regval2["0x1280"]:2
+  val2["0x1280"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -1201,11 +1205,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 8, i * 2"]:2
+  val1["line 8, i * 2"]:2
   reg2["SP"]:1
-  regval2["0x1280"]:2
+  val2["0x1280"]:2
   reg3["RAX"]:1
-  regval3[" "]:2
+  val3[" "]:2
   space:3
   space registers("Registers") space
 ```
@@ -1277,11 +1281,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 8, return"]:2
+  val1["line 8, return"]:2
   reg2["SP"]:1
-  regval2["0x12C0"]:2
+  val2["0x12C0"]:2
   reg3["RAX"]:1
-  regval3["i * 2 = 10"]:2
+  val3["i * 2 = 10"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1354,11 +1358,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, c()"]:2
+  val1["line 14, c()"]:2
   reg2["SP"]:1
-  regval2["0x1300"]:2
+  val2["0x1300"]:2
   reg3["RAX"]:1
-  regval3["10"]:2
+  val3["10"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1431,11 +1435,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, c()"]:2
+  val1["line 14, c()"]:2
   reg2["SP"]:1
-  regval2["0x12C0"]:2
+  val2["0x12C0"]:2
   reg3["RAX"]:1
-  regval3["10"]:2
+  val3["10"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1508,11 +1512,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, c()"]:2
+  val1["line 14, c()"]:2
   reg2["SP"]:1
-  regval2["0x1240"]:2
+  val2["0x1240"]:2
   reg3["RAX"]:1
-  regval3["10"]:2
+  val3["10"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1585,11 +1589,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 3, j + k"]:2
+  val1["line 3, j + k"]:2
   reg2["SP"]:1
-  regval2["0x1240"]:2
+  val2["0x1240"]:2
   reg3["RAX"]:1
-  regval3["10"]:2
+  val3["10"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1661,11 +1665,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 3, return"]:2
+  val1["line 3, return"]:2
   reg2["SP"]:1
-  regval2["0x12C0"]:2
+  val2["0x12C0"]:2
   reg3["RAX"]:1
-  regval3["j + k = 15"]:2
+  val3["j + k = 15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1738,11 +1742,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, return"]:2
+  val1["line 14, return"]:2
   reg2["SP"]:1
-  regval2["0x1300"]:2
+  val2["0x1300"]:2
   reg3["RAX"]:1
-  regval3["15"]:2
+  val3["15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1815,11 +1819,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 14, return"]:2
+  val1["line 14, return"]:2
   reg2["SP"]:1
-  regval2["0x1340"]:2
+  val2["0x1340"]:2
   reg3["RAX"]:1
-  regval3["15"]:2
+  val3["15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1893,11 +1897,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 19, return"]:2
+  val1["line 19, return"]:2
   reg2["SP"]:1
-  regval2["0x1380"]:2
+  val2["0x1380"]:2
   reg3["RAX"]:1
-  regval3["15"]:2
+  val3["15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -1970,11 +1974,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["line 19, return"]:2
+  val1["line 19, return"]:2
   reg2["SP"]:1
-  regval2["0x1380"]:2
+  val2["0x1380"]:2
   reg3["RAX"]:1
-  regval3["15"]:2
+  val3["15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -2047,11 +2051,11 @@ block-beta
   space:3
   space:3
   reg1["PC"]:1
-  regval1["return address for main()"]:2
+  val1["return address for main()"]:2
   reg2["SP"]:1
-  regval2["0x13C0"]:2
+  val2["0x13C0"]:2
   reg3["RAX"]:1
-  regval3["15"]:2
+  val3["15"]:2
   space:3
   space registers("Registers") space
 ```
@@ -2122,11 +2126,13 @@ int main()
 }
 ```
 
+<!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
 =================================================================
 ==4609==ERROR: AddressSanitizer: stack-overflow on address 0x7fff7a319ff0 (pc 0x56499fbc3d0c bp 0x7fff7a31a010 sp 0x7fff7a319fc0 T0)
 ```
+<!--- cSpell:enable --->
 
 Note:
 
@@ -2150,6 +2156,7 @@ int main()
 }
 ```
 
+<!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
 =================================================================
@@ -2162,6 +2169,7 @@ AddressSanitizer:DEADLYSIGNAL
 SUMMARY: AddressSanitizer: stack-overflow /app/example.cpp:6:36 in main
 ==1==ABORTING
 ```
+<!--- cSpell:enable --->
 
 Note:
 
@@ -2496,7 +2504,7 @@ It's probably not something to worry about when writing an application for a sys
 
 ---
 
-But it is a very real concern for embedded applications that keep running for many years on a microcontroller with only a few kilobytes of memory.
+But it is a very real concern for embedded applications that keep running for many years on a micro controller with only a few kilobytes of memory.
 
 Note:
 
@@ -2515,7 +2523,7 @@ Note:
 
 ---
 
-## Dynamic memory for polymorfisms
+## Dynamic memory for polymorphisms
 
 Deciding at runtime which object to create.
 
@@ -2550,7 +2558,7 @@ some_sort_of_a->print(); // prints B or prints C
 Note:
 
 * A unique_ptr<> to concrete class can be stored in a unique_ptr<> to base class.
-* This is how we can use polymorfisms for objects created at runtime.
+* This is how we can use polymorphisms for objects created at runtime.
 * <https://compiler-explorer.com/z/G8vYKj9eb>
 * Be careful not to dereference some_sort_of_a if it is empty!
 
@@ -2595,7 +2603,7 @@ A::~A()
 
 Note:
 
-* We construct a B object (which first calls the parent constructor A() and then runs B's contructor).
+* We construct a B object (which first calls the parent constructor A() and then runs B's constructor).
 * When the object goes out-of-scope, we expect the destructor of B to be called (which should first run its own code and then call the ~A() destructor).
 * But since we call the destructor through a pointer to A and the A destructor is not virtual, only ~A() is called.
 * <https://compiler-explorer.com/z/8fzGvdxas>
@@ -2871,6 +2879,7 @@ But how about this? <!-- .element: class="fragment" data-fragment-index="1" -->
 
 ---
 
+<!--- cSpell:disable --->
 ```sh [3]
 AddressSanitizer:DEADLYSIGNAL
 =================================================================
@@ -2892,6 +2901,7 @@ AddressSanitizer can not provide additional info.
 SUMMARY: AddressSanitizer: SEGV /app/example.cpp:21:44 in Animal::speak() const
 ==1==ABORTING
 ```
+<!--- cSpell:enable --->
 
 No it does not!
 
