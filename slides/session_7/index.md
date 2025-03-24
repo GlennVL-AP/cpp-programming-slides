@@ -6,47 +6,15 @@
 
 ```mermaid
 kanban
-  column1[Algorithms and Ranges]
-    task1[Algorithms]
-    task2[Views]
-  column2[Lambdas]
-    task3[Function Objects]
-    task4[Lambdas]
-    task5[Capture List]
+  column1[Lambdas]
+    task1[Function Objects]
+    task2[Lambdas]
+    task3[Mutability]
+  column2[Algorithms]
+    task4[Algorithms]
+    task5[Ranges]
+    task6[Views]
 ```
-
----
-
-## Algorithms and Ranges
-
-<https://en.cppreference.com/w/cpp/algorithm>
-
----
-
-The algorithms library defines functions for a variety of purposes that operate on ranges of elements.
-
----
-
-* Searching
-* Sorting
-* Counting
-* Manipulating
-* ...
-
----
-
-### Best practices
-
----
-
-* Don't reinvent the wheel, use the algorithms library!
-* Prefer algorithms in the std::ranges namespace! <!-- .element: class="fragment" data-fragment-index="1" -->
-
----
-
-## Views
-
-<https://en.cppreference.com/w/cpp/ranges>
 
 ---
 
@@ -222,6 +190,8 @@ But a rather large amount of code to write... 🧐
 
 ## Lambdas
 
+aka closures
+
 ---
 
 A concise way of writing function objects!
@@ -308,6 +278,16 @@ private:
 };
 ```
 
+Note:
+
+* Writing the return type at the end with an arrow is called a trailing return type.
+* It is also allowed to use a trailing return type for regular functions.
+
+```c++
+int five() { return 5; }
+auto five() -> int { return 5; }
+```
+
 ---
 
 ```c++
@@ -375,6 +355,32 @@ auto f6 = [&e=a] { /* e is a reference to a */             };
 auto f7 = [e=a*5]{ /* e is an int with value a * 5 */      };
 ```
 <!-- .element: class="fragment" data-fragment-index="7" -->
+
+```c++
+auto f8 = [this] { /* capture the this pointer */          };
+```
+<!-- .element: class="fragment" data-fragment-index="8" -->
+
+Note:
+
+* Only variables that are actually used will be captured in the generated function object.
+* Since lambdas are objects, the this pointer points to the lambda object by default.
+
+```c++
+class MyClass
+{
+public:
+    int some_func(int x)
+    {
+        // need to capture this to access int_
+        auto f = [this, &x]{ return x + int_; };
+        return f();
+    }
+
+private:
+    int int_{5};
+};
+```
 
 ---
 
@@ -521,6 +527,39 @@ Note:
 * It can be made mutable. <!-- .element: class="fragment" data-fragment-index="3" -->
 * The return type is deduced by default. <!-- .element: class="fragment" data-fragment-index="4" -->
 * Adding an explicit return type is allowed. <!-- .element: class="fragment" data-fragment-index="5" -->
+
+---
+
+## Algorithms and Ranges
+
+<https://en.cppreference.com/w/cpp/algorithm>
+
+---
+
+The algorithms library defines functions for a variety of purposes that operate on ranges of elements.
+
+---
+
+* Searching
+* Sorting
+* Counting
+* Manipulating
+* ...
+
+---
+
+### Best practices
+
+---
+
+* Don't reinvent the wheel, use the algorithms library!
+* Prefer algorithms in the std::ranges namespace! <!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+## Views
+
+<https://en.cppreference.com/w/cpp/ranges>
 
 ---
 
