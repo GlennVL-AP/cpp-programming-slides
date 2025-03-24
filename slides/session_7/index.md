@@ -364,9 +364,10 @@ auto f8 = [this] { /* capture the this pointer */          };
 Note:
 
 * Only variables that are actually used will be captured in the generated function object.
-* Since lambdas are objects, the this pointer points to the lambda object by default.
 
-```c++
+---
+
+```c++ [6,7,12]
 class MyClass
 {
 public:
@@ -381,6 +382,13 @@ private:
     int int_{5};
 };
 ```
+
+Capturing the this pointer.
+
+Note:
+
+* Just a toy example.
+* Since lambdas are objects, the this pointer points to the lambda object by default.
 
 ---
 
