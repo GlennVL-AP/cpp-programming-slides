@@ -291,12 +291,12 @@ auto five() -> int { return 5; }
 ---
 
 ```c++
-auto f1 = [](int x, int y){ /* arguments x, y */ };
+auto f1 = [](int x, int y) { /* arguments x, y */ };
 ```
 
 ```c++
-auto f2 = [](){ /* no function arguments */ };
-auto f3 = []  { /* no function arguments */ };
+auto f2 = []() { /* no function arguments */ };
+auto f3 = []   { /* no function arguments */ };
 ```
 
 The argument list is optional.
@@ -374,7 +374,7 @@ public:
     int some_func(int x)
     {
         // need to capture this to access int_
-        auto f = [this, &x]{ return x + int_; };
+        auto f = [&, this] { return x + int_; };
         return f();
     }
 
@@ -540,7 +540,8 @@ Note:
 
 ## Algorithms
 
-<https://en.cppreference.com/w/cpp/algorithm>
+* <https://en.cppreference.com/w/cpp/algorithm>
+* <https://en.cppreference.com/w/cpp/iterator>
 
 ---
 
@@ -806,6 +807,93 @@ Note:
   accumulate the remainder of the list.
 * This makes it possible to only have a comma between names instead of an extra at the start or end.
 * <https://compiler-explorer.com/z/Mz9Tv6TPf>
+
+---
+
+### Example 5
+
+Create a list of all numbers from 0 to 99. Make a copy of this list with only the even numbers.
+
+---
+
+```c++
+// create a list of all numbers from 0 to 99
+```
+
+```c++
+// create a vector of 100 elements with value 0
+std::vector<int> numbers(100);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// fill the vector with values starting from 0
+std::ranges::iota(numbers, 0);
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+// print to check it worked
+for (auto const& number : numbers)
+{
+    std::print("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+```text
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,...,99,
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+Note:
+
+* Calling the vector constructor that takes a single number as argument creates a vector with that many default initialized
+  values. For an integer the default value is zero.
+
+---
+
+```c++
+// make a copy of the list, but keep only even numbers
+```
+
+```c++
+// start with an empty vector
+std::vector<int> even_numbers{};
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// insert the elements into the empty vector
+std::ranges::copy_if(
+    numbers,
+    std::back_inserter(even_numbers),
+    [](int number) { return (number % 2) == 0; }
+);
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+// print to check it worked
+for (auto const& number : even_numbers)
+{
+    std::print("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+```text
+0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,...,98,
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+Note:
+
+* We cannot directly copy into the destination vector since it is empty to start with and therefore does not have space to store
+  numbers yet.
+* Instead we use std::back_inserter to automatically push_back elements into the vector.
+* std::back_inserter and variations can be found in the iterators library at <https://en.cppreference.com/w/cpp/iterator>.
+* <https://compiler-explorer.com/z/eh3Mx3v6G>
 
 ---
 
