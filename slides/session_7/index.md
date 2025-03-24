@@ -454,7 +454,7 @@ block-beta
   downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
 ```
 
-```c++ []
+```c++ [4-9]
 class __lambda_12345
 {
 public:
@@ -503,7 +503,7 @@ block-beta
   downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
 ```
 
-```c++ []
+```c++ [4-9]
 class __lambda_12345
 {
 public:
