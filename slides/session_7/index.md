@@ -538,7 +538,7 @@ Note:
 
 ---
 
-## Algorithms and Ranges
+## Algorithms
 
 <https://en.cppreference.com/w/cpp/algorithm>
 
@@ -556,6 +556,259 @@ The algorithms library defines functions for a variety of purposes that operate 
 
 ---
 
+### Example 1
+
+Given a list of students (name and student number), sort them by name.
+
+---
+
+```c++
+struct Student
+{
+    std::string name;
+    int student_number{};
+};
+```
+
+```c++
+std::vector<Student> students{
+    { "Mieke",   1 },
+    { "Joske",   2 },
+    { "Marieke", 3 },
+    { "Jefke",   4 },
+    { "Jantje",  5 }
+};
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// somehow sort the vector of students according to name
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+for (auto const& student : students)
+{
+    std::println("{}", student.name);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+```c++
+// option 1: call sort with a predicate
+```
+
+```c++
+std::ranges::sort(students,
+    [](Student const& first, Student const& second) {
+        return first.name < second.name;
+    }
+);
+```
+
+Note:
+
+* <https://compiler-explorer.com/z/od8ETv7rT>
+* To sort by id use first.student_number < second.student_number.
+
+---
+
+```c++
+// option 2: call sort with a projection
+```
+
+```c++
+std::ranges::sort(students, {}, &Student::name);
+```
+
+Note:
+
+* <https://compiler-explorer.com/z/WTd7W1h3q>
+* To sort by id use &Student::student_number.
+
+---
+
+### Example 2
+
+Given a list of students (name and student number), find the first student with student number greater than three and print his
+name.
+
+---
+
+```c++
+struct Student
+{
+    std::string name;
+    int student_number{};
+};
+```
+
+```c++
+std::vector<Student> students{
+    { "Mieke",   1 },
+    { "Joske",   2 },
+    { "Marieke", 3 },
+    { "Jefke",   4 },
+    { "Jantje",  5 }
+};
+```
+
+---
+
+```c++
+// find the first student with student number greater than 3
+auto const result = std::ranges::find_if(students,
+    [](Student const& student) {
+        return 3 < student.student_number;
+    }
+);
+```
+
+```c++
+// print the name
+if (result != std::end(students))
+{
+    std::println("{}", result->name);
+}
+else
+{
+    std::println("No student found!");
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```text
+Jefke
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* Find returns an iterator, a pointer to the element in the list.
+* Returns std::end(students) if no result is found, which points to one past the end of the list.
+* <https://compiler-explorer.com/z/c4c5joxec>
+
+---
+
+### Example 3
+
+Given a list of numbers, calculate the sum.
+
+---
+
+```c++
+std::vector<double> some_numbers{
+    3.14, 5.5, 2.12, 3.356, 7.887, 9.88, 2.1123, 3.25, 21.253
+};
+```
+
+```c++
+auto const sum = std::accumulate(
+    std::begin(some_numbers),       // start of the range
+    std::end(some_numbers),         // one past end of range
+    0.0,                            // initial value
+    std::plus<double>{}             // sum predicate
+);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+std::println("sum = {}", sum);
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+sum = 58.4983
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* Most numeric algorithms don't have a range variant.
+* Instead of a range they take a begin and end iterator as argument.
+
+---
+
+```c++
+// use STL sum predicate
+
+auto sum = std::plus<double>{};
+```
+
+```mermaid
+block-beta
+  downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
+```
+
+```c++
+// or write a lambda
+
+auto sum = [](double total, double value) {
+    return total + value;
+};
+```
+
+---
+
+### Example 4
+
+Given a list of students (name and student number), create a single string with all their names separated by a comma.
+
+---
+
+```c++
+struct Student
+{
+    std::string name;
+    int student_number{};
+};
+```
+
+```c++
+std::vector<Student> students{
+    { "Mieke",   1 },
+    { "Joske",   2 },
+    { "Marieke", 3 },
+    { "Jefke",   4 },
+    { "Jantje",  5 }
+};
+```
+
+---
+
+```c++
+auto const result = std::accumulate(
+    std::next(std::begin(students)), // start from second
+    std::end(students),              // go until the end
+    students[0].name,                // initial value
+    [](std::string sum, Student const& student) {
+        return std::move(sum) + ", " + student.name;
+    }
+);
+```
+
+```c++
+std::println("{}", result);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```text
+Mieke, Joske, Marieke, Jefke, Jantje
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+Note:
+
+* We assumed the list of students is not empty.
+* Instead of starting with an empty value and accumulating the entire list, we start with the first name as initial value and
+  accumulate the remainder of the list.
+* This makes it possible to only have a comma between names instead of an extra at the start or end.
+* <https://compiler-explorer.com/z/Mz9Tv6TPf>
+
+---
+
 ### Best practices
 
 ---
@@ -565,9 +818,14 @@ The algorithms library defines functions for a variety of purposes that operate 
 
 ---
 
-## Views
+## Ranges and Views
 
 <https://en.cppreference.com/w/cpp/ranges>
+
+---
+
+The ranges library is an extension and generalization of the algorithms library that makes it more powerful by making it
+composable.
 
 ---
 
