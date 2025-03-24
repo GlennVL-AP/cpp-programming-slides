@@ -246,6 +246,15 @@ Lambdas are translated to function objects behind the scene by the compiler!
 
 ---
 
+```c++
+[max](int value){ return value < max; }
+```
+
+```mermaid
+block-beta
+  downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
+```
+
 ```c++ []
 class __lambda_12345 {
 public:
@@ -260,10 +269,6 @@ public:
 private:
     int max_{};
 };
-```
-
-```c++
-[max](int value){ return value < max; }
 ```
 
 Note:
@@ -284,7 +289,12 @@ Note:
 }
 ```
 
-```c++
+```mermaid
+block-beta
+  downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
+```
+
+```c++ []
 class __lambda_12345
 {
 public:
@@ -386,11 +396,11 @@ std::println("{}", next_int()); // prints 2
 std::println("{}", next_int()); // prints 3
 ```
 
-How to convert this to a lambda?
+How to write this as a lambda?
 
 ---
 
-```c++ []
+```c++
 auto next_int = [current=0]{ return ++current; };
 ```
 
@@ -421,11 +431,38 @@ Note:
 
 ---
 
+```c++
+auto next_int = [current=0]{ return ++current; };
+```
+
+```mermaid
+block-beta
+  downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
+```
+
+```c++ []
+class __lambda_12345
+{
+public:
+    int operator()() const
+    {
+        // attempt to modify a member variable in a const
+        // member function
+        return ++current_;
+    }
+
+private:
+    int current_{0};
+};
+```
+
+---
+
 Lambda operator() is const by default. Member variables cannot be modified!
 
 ---
 
-```c++ []
+```c++
 auto next_int = [current=0] mutable { return ++current; };
 ```
 
@@ -435,11 +472,42 @@ std::println("{}", next_int()); // prints 2
 std::println("{}", next_int()); // prints 3
 ```
 
-Add the mutable keyword!
+Add the mutable keyword! 👍
 
 Note:
 
 * <https://compiler-explorer.com/z/8Mz8Y871M>
+
+---
+
+```c++
+auto next_int = [current=0] mutable { return ++current; };
+```
+
+```mermaid
+block-beta
+  downArrow<["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"]>(down)
+```
+
+```c++ []
+class __lambda_12345
+{
+public:
+    int operator()() // no longer const because of mutable
+    {
+        // it is allowed modify a member variable in a
+        // non-const member function
+        return ++current_;
+    }
+
+private:
+    int current_{0};
+};
+```
+
+Note:
+
+* The mutable keyword suppresses the const keyword on the function call operator.
 
 ---
 
