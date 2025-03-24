@@ -917,4 +917,31 @@ composable.
 
 ---
 
+### TODO
+
+```c++
+auto const even_numbers =
+    std::views::iota(1)
+  | std::views::filter([](int x){ return (x % 2) == 0; })
+  | std::views::take(100)
+  | std::ranges::to<std::vector>();
+```
+
+```c++
+for (auto const& number : even_numbers)
+{
+    std::print("{},", number);
+}
+```
+
+```text
+2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,...,200,
+```
+
+Note:
+
+* <https://compiler-explorer.com/z/KcjonfbYc>
+
+---
+
 ## Exercises
