@@ -1,4 +1,4 @@
 {
     "title": "Session 7: Algorithms and Lambdas",
-    "description": "Algorithms, Ranges, Views, Function Objects, Lambdas"
+    "description": "Function objects: overloading operator() to create functions with state. Lambdas: concise function objects. The capture list. Mutability. Algorithms, ranges and views."
 }
