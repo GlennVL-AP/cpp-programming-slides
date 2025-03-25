@@ -917,9 +917,139 @@ composable.
 
 ---
 
-### TODO
+### Example 6
+
+Given a list of student names and a list of student numbers, create a dictionary with numbers as keys and names as values.
+
+---
 
 ```c++
+std::vector<std::string> const student_names{
+    "Mieke",
+    "Joske",
+    "Marieke",
+    "Jefke",
+    "Jantje"
+};
+```
+
+```c++
+std::vector<int> const student_numbers{
+    1, 2, 3, 4, 5
+};
+```
+
+---
+
+```c++
+std::unordered_map<int, std::string> students{};
+```
+
+```c++
+for (auto const& [number, name]
+     : std::views::zip(student_numbers, student_names))
+{
+    students[number] = name;
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& [number, name] : students)
+{
+    std::println("{}:{}", number, name);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+5:Jantje
+4:Jefke
+3:Marieke
+2:Joske
+1:Mieke
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* Zip iterates over multiple containers at once.
+* It stops when the end of the shortest container is reached.
+* <https://compiler-explorer.com/z/7a35e1T1a>
+
+---
+
+### Example 7
+
+Extend the previous example to show only students whose name begins with an M.
+
+---
+
+```c++
+std::vector<std::string> const student_names{
+    "Mieke",
+    "Joske",
+    "Marieke",
+    "Jefke",
+    "Jantje"
+};
+```
+
+```c++
+std::vector<int> const student_numbers{
+    1, 2, 3, 4, 5
+};
+```
+
+---
+
+```c++
+std::unordered_map<int, std::string> students{};
+```
+
+```c++ [3-6]
+for (auto const& [number, name]
+     : std::views::zip(student_numbers, student_names)
+     | std::views::filter([](auto const& student) {
+           auto const& [_, name] = student;
+           return name.starts_with("M");
+       })
+    )
+{
+    students[number] = name;
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& [number, name] : students)
+{
+    std::println("{}:{}", number, name);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+3:Marieke
+1:Mieke
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* Use the pipeline symbol | to combine multiple views.
+* Use _ as placeholder for variables we don't need.
+* <https://compiler-explorer.com/z/sWThscz99>
+
+---
+
+### Example 8
+
+Create a list of the first 100 even numbers, using only standard algorithms and ranges. Store the result in a vector.
+
+---
+
+```c++ [1|2|3|4|5|1-5]
 auto const even_numbers =
     std::views::iota(1)
   | std::views::filter([](int x){ return (x % 2) == 0; })
@@ -933,13 +1063,19 @@ for (auto const& number : even_numbers)
     std::print("{},", number);
 }
 ```
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 ```text
 2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,...,200,
 ```
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
 
+* `std::views::iota(1)` generates an infinite sequence of numbers starting from 1.
+* `std::views::filter(...)` removes uneven numbers.
+* `std::views::take(100)` only takes the first one hundred items, making the sequence finite again.
+* `std::range::to<std::vector>()` stores the sequence in a vector.
 * <https://compiler-explorer.com/z/KcjonfbYc>
 
 ---
