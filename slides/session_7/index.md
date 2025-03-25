@@ -1080,4 +1080,38 @@ Note:
 
 ---
 
+### Example 9
+
+Something that modifies the original container.
+
+---
+
+TODO
+
+---
+
+### Example 10
+
+Something that modifies the original container.
+
+---
+
+TODO
+
+---
+
+### Best practices
+
+---
+
+* The ranges library is a WiP. [Check compiler support](https://en.cppreference.com/w/cpp/compiler_support).
+* Don't store a view. Use it immediately or store it in a container. <!-- .element: class="fragment" data-fragment-index="1" -->
+
+Note:
+
+* WiP = Work in Progress.
+* <https://en.cppreference.com/w/cpp/compiler_support>
+
+---
+
 ## Exercises
