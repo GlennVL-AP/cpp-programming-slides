@@ -695,6 +695,77 @@ Note:
 
 ### Example 3
 
+Given a list of numbers, remove the number 1 from the list.
+
+---
+
+```c++
+std::vector<int> numbers{1, 2, 1, 3, 1, 4, 1, 5 };
+```
+
+```c++
+std::ranges::remove(numbers, 1);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& number : numbers)
+{
+    std::println("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+2,3,4,5,1,4,1,5,
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Remove does not actually remove elements! <!-- .element: class="fragment" data-fragment-index="3" -->
+
+Note:
+
+* Elements to keep are moved to the front.
+* Back should be removed manually.
+* <https://compiler-explorer.com/z/afPrdhdz6>
+
+---
+
+```c++
+std::vector<int> numbers{1, 2, 1, 3, 1, 4, 1, 5 };
+```
+
+```c++
+auto const to_erase = std::ranges::remove(numbers, 1);
+numbers.erase(std::begin(to_erase), std::end(to_erase));
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& number : numbers)
+{
+    std::println("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+2,3,4,5,
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Remove-Erase idiom. <!-- .element: class="fragment" data-fragment-index="3" -->
+
+Note:
+
+* Call remove first. It tells which items to erase.
+* Then call erase to actually remove the items from the list.
+* <https://compiler-explorer.com/z/zTzY1ajjP>
+
+---
+
+### Example 4
+
 Given a list of numbers, calculate the sum.
 
 ---
@@ -753,7 +824,7 @@ auto sum = [](double total, double value) {
 
 ---
 
-### Example 4
+### Example 5
 
 Given a list of students (name and student number), create a single string with all their names separated by a comma.
 
@@ -810,7 +881,7 @@ Note:
 
 ---
 
-### Example 5
+### Example 6
 
 Create a list of all numbers from 0 to 99. Make a copy of this list with only the even numbers.
 
@@ -903,6 +974,12 @@ Note:
 
 * Don't reinvent the wheel, use the algorithms library!
 * Prefer algorithms in the std::ranges namespace! <!-- .element: class="fragment" data-fragment-index="1" -->
+* Remember removing items is a two step process! (erase + remove) <!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* The std::ranges version is safer because you can't accidentally use an std::begin and std::end that do not belong to the same
+  range.
 
 ---
 
@@ -917,7 +994,7 @@ composable.
 
 ---
 
-### Example 6
+### Example 7
 
 Given a list of student names and a list of student numbers, create a dictionary with numbers as keys and names as values.
 
@@ -942,17 +1019,10 @@ std::vector<int> const student_numbers{
 ---
 
 ```c++
-std::unordered_map<int, std::string> students{};
+auto const students =
+    std::views::zip(student_numbers, student_names))
+  | std::ranges::to<std::unordered_map>();
 ```
-
-```c++
-for (auto const& [number, name]
-     : std::views::zip(student_numbers, student_names))
-{
-    students[number] = name;
-}
-```
-<!-- .element: class="fragment" data-fragment-index="1" -->
 
 ```c++
 for (auto const& [number, name] : students)
@@ -960,7 +1030,7 @@ for (auto const& [number, name] : students)
     std::println("{}:{}", number, name);
 }
 ```
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 ```text
 5:Jantje
@@ -969,17 +1039,17 @@ for (auto const& [number, name] : students)
 2:Joske
 1:Mieke
 ```
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
 
 * Zip iterates over multiple containers at once.
 * It stops when the end of the shortest container is reached.
-* <https://compiler-explorer.com/z/7a35e1T1a>
+* <https://compiler-explorer.com/z/q5MsTh13z>
 
 ---
 
-### Example 7
+### Example 8
 
 Extend the previous example to show only students whose name begins with an M.
 
@@ -1003,23 +1073,15 @@ std::vector<int> const student_numbers{
 
 ---
 
-```c++
-std::unordered_map<int, std::string> students{};
-```
-
 ```c++ [3-6]
-for (auto const& [number, name]
-     : std::views::zip(student_numbers, student_names)
-     | std::views::filter([](auto const& student) {
-           auto const& [_, name] = student;
-           return name.starts_with("M");
-       })
-    )
-{
-    students[number] = name;
-}
+auto const students =
+    std::views::zip(student_numbers, student_names))
+  | std::views::filter([](auto const& student) {
+        auto const& [_, name] = student;
+        return name.starts_with("M");
+    })
+  | std::ranges::to<std::unordered_map>();
 ```
-<!-- .element: class="fragment" data-fragment-index="1" -->
 
 ```c++
 for (auto const& [number, name] : students)
@@ -1027,23 +1089,23 @@ for (auto const& [number, name] : students)
     std::println("{}:{}", number, name);
 }
 ```
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 ```text
 3:Marieke
 1:Mieke
 ```
-<!-- .element: class="fragment" data-fragment-index="2" -->
+<!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
 
 * Use the pipeline symbol | to combine multiple views.
 * Use _ as placeholder for variables we don't need.
-* <https://compiler-explorer.com/z/sWThscz99>
+* <https://compiler-explorer.com/z/bv1a9f45s>
 
 ---
 
-### Example 8
+### Example 9
 
 Create a list of the first 100 even numbers, using only standard algorithms and ranges. Store the result in a vector.
 
@@ -1076,27 +1138,163 @@ Note:
 * `std::views::filter(...)` removes uneven numbers.
 * `std::views::take(100)` only takes the first one hundred items, making the sequence finite again.
 * `std::range::to<std::vector>()` stores the sequence in a vector.
+* Views are lazily evaluated. In this case when the vector is created. At that point the sequence is no longer infinite.
 * <https://compiler-explorer.com/z/KcjonfbYc>
-
----
-
-### Example 9
-
-Something that modifies the original container.
-
----
-
-TODO
 
 ---
 
 ### Example 10
 
-Something that modifies the original container.
+Given three lists of strings. Append the strings in the second and third list to the strings in the first.
+
+```c++
+// given
+std::vector<std::string> l_1{"a", "b", "c"};
+std::vector<std::string> l_2{"d", "e", "f"};
+std::vector<std::string> l_3{"g", "h", "i"};
+```
+
+```c++
+// expected result
+l_1 == {"adg", "beh", "cfi"};
+l_2 // unchanged
+l_3 // unchanged
+```
 
 ---
 
-TODO
+```c++
+std::vector<std::string> l_1{"a", "b", "c"};
+std::vector<std::string> const l_2{"d", "e", "f"};
+std::vector<std::string> const l_3{"g", "h", "i"};
+```
+
+```c++
+for (auto&& [s_1, s_2, s_3] : std::views::zip(l_1, l_2, l_3))
+{
+    s_1 += s_2 + s_3;
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& str : l_1)
+{
+    std::println("{}", str);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+adg
+beh
+cfi
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* Views can be used to modify elements.
+* They cannot be used to add or remove elements!
+* <https://compiler-explorer.com/z/YPrjv8zsc>
+
+---
+
+### Example 11
+
+Given a list of items. Only start from the fourth element.
+
+---
+
+```c++
+std::vector<int> numbers{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+```
+
+```c++
+// drop the first three elements
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+for (auto const& number : numbers | std::views::drop(3))
+{
+    std::print("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```text
+4,5,6,7,8,9,10,
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// the items are not removed from the original list!
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+for (auto const& number : numbers)
+{
+    std::print("{},", number);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```text
+1,2,3,4,5,6,7,8,9,10,
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* std::views::drop does not affect the original.
+* <https://compiler-explorer.com/z/3Ernv1oxT>
+
+---
+
+### Properties of a view
+
+---
+
+* Views can be combined using the pipeline symbol.
+* Views can be used to modify items in a container. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Views cannot be used to add or remove elements. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Views are lazily evaluated. <!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+```c++ []
+std::vector<int> const numbers{1, 2, 3};
+
+auto view = numbers | std::views::transform([](int x) {
+    std::println("Transforming {}", x);
+    return x * 2;
+});
+
+std::println("Nothing has been printed yet!");
+
+for (auto const& x : view)
+{
+    std::println("Result = {}", x);
+}
+```
+
+```text
+Nothing has been printed yet!
+Transforming 1
+Result = 2
+Transforming 2
+Result = 4
+Transforming 3
+Result = 6
+```
+
+Lazy evaluation.
+
+Note:
+
+* <https://compiler-explorer.com/z/69r5q5jhv>
 
 ---
 
@@ -1105,11 +1303,13 @@ TODO
 ---
 
 * The ranges library is a WiP. [Check compiler support](https://en.cppreference.com/w/cpp/compiler_support).
-* Don't store a view. Use it immediately or store it in a container. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Don't store a view. Use it immediately or copy its elements into a container.
+  <!-- .element: class="fragment" data-fragment-index="1" -->
 
 Note:
 
 * WiP = Work in Progress.
+* Views reference the original container. If the container goes out of scope or changes the view refers to something that is no longer valid.
 * <https://en.cppreference.com/w/cpp/compiler_support>
 
 ---
