@@ -1258,9 +1258,9 @@ Note:
 ---
 
 * Views can be combined using the pipeline symbol.
-* Views can be used to modify items in a container. <!-- .element: class="fragment" data-fragment-index="1" -->
-* Views cannot be used to add or remove elements. <!-- .element: class="fragment" data-fragment-index="2" -->
-* Views are lazily evaluated. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Views are lazily evaluated. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Algorithms can be used to modify items in a view. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Algorithms and views cannot be used to add or remove elements. <!-- .element: class="fragment" data-fragment-index="3" -->
 
 ---
 
