@@ -40,6 +40,10 @@ TODO
 
 ---
 
+![Catch2 logo](./assets/catch2_logo.png)
+
+---
+
 TODO
 
 ---
