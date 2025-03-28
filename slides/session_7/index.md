@@ -1309,7 +1309,8 @@ Note:
 Note:
 
 * WiP = Work in Progress.
-* Views reference the original container. If the container goes out of scope or changes the view refers to something that is no longer valid.
+* Views reference the original container. If the container goes out of scope or changes the view refers to something that is no
+  longer valid.
 * <https://en.cppreference.com/w/cpp/compiler_support>
 
 ---
