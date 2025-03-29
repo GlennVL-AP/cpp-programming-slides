@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
     <link rel="stylesheet" href="/reveal.js/dist/theme/black.css">
     <link rel="stylesheet" href="/reveal.js/plugin/highlight/monokai.css">
-    <link rel="stylesheet" href="/public/mermaid_fixes.css">
-    <link rel="stylesheet" href="/public/print_slides.css">
+    <link rel="stylesheet" href="/public/slides_style.css">
 </head>
 <body>
     <div id="printPdfSection" class="hidden">
@@ -91,7 +90,10 @@
         var revealConfig = {
             hash: true,
             mermaid: {'theme': 'dark', 'themeVariables': { 'darkMode': true }},
-            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid]
+            plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid],
+            dependencies: [
+                { src: "/reveal.js-countdown/countdown.js" },
+            ]
         };
 
         if (new URLSearchParams(window.location.search).has("print-pdf")) {

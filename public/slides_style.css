@@ -1,3 +1,36 @@
+/*****************************************************************************/
+/* fix mermaid plugin conflicts                                              */
+/*****************************************************************************/
+
+.reveal .slides pre.code-wrapper:has(> code.mermaid) {
+    box-shadow: none !important;
+}
+.reveal .slides code.mermaid {
+    background: none !important;
+    max-height: 100vh;
+}
+.reveal .slides code.mermaid svg {
+    display: block;
+    margin: 0 auto;
+}
+.reveal .slides code.mermaid svg foreignObject > div:has(> span.nodeLabel) {
+    display: flex !important;
+    align-items: center;
+    height: 100%;
+}
+
+/*****************************************************************************/
+/* countdown plugin style                                                    */
+/*****************************************************************************/
+
+.reveal .slides countdown {
+    font-size: 2.5em;
+}
+
+/*****************************************************************************/
+/* print to pdf                                                              */
+/*****************************************************************************/
+
 #printPdfSection.hidden, #printPdfSection .hidden {
     display: none !important;
 }

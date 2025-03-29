@@ -17,6 +17,7 @@
         "ejs": "^3.1.10",
         "express": "^4.21.2",
         "reveal.js": "^5.1.0",
-        "reveal.js-mermaid-plugin": "^11.4.1"
+        "reveal.js-mermaid-plugin": "^11.4.1",
+        "reveal.js-countdown": "^1.1.0"
     }
 }
