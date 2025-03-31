@@ -478,7 +478,7 @@ We need a way to mark a definition as private to a translation unit.
 
 ---
 
-```c++ []
+```c++ [5,7]
 // first.cpp
 
 import std;
@@ -490,7 +490,7 @@ namespace {
 void hello_1() { hello_impl(); }
 ```
 
-```c++ []
+```c++ [5,7]
 // second.cpp
 
 import std;
@@ -535,11 +535,7 @@ Let's build further on this idea and add some improvements!
 
 ---
 
-TODO
-
-* global module fragment
-* private module fragment
-* module partitions
+Modules are a language feature to share declarations and definitions across translation units.
 
 ---
 
@@ -565,17 +561,146 @@ int main()
 }
 ```
 
+Note:
+
+* The export keyword makes the hello function available to translation units that import the module.
+
 ---
 
-```c++
-// a.cpp
+```c++ [5-10]
+export module helloworld;
+
+import std;
+
+// no export, so not available when imported
+// added to the module scope (not the global scope)
+void hello_impl()
+{
+    std::println("Hello, world!");
+}
+
+export void hello()
+{
+    hello_impl();
+}
+```
+
+Module scope.
+
+Note:
+
+* Definitions in a module that are not exported are added to the module scope.
+* They will only be available in the module itself (and its partitions).
+* Having multiple definitions with the same name in different modules is not a problem since they are not added to the global
+  scope!
+
+---
+
+```c++ [5-7,12]
+export module helloworld;
+
+import std;
+
+// in an unnamed namespace
+// added to the translation unit scope, not module scope
+namespace {
+    void hello_impl()
+    {
+        std::println("Hello, world!");
+    }
+}
+
+export void hello()
+{
+    hello_impl();
+}
+```
+
+Unnamed namespace.
+
+Note:
+
+* Unnamed namespaces can still be useful in modules.
+* Makes the definitions only available to the current translation unit (current source file).
+* Won't be available in module partitions (see later in the slides).
+
+---
+
+It is possible to add definitions to the global scope in modules.
+
+---
+
+```c++ [1-3]
+module;
+
+// anything defined here is added to the global scope
+
+export module helloworld;
+
+export void hello()
+{
+    std::println("Hello, world!");
+}
+```
+
+Global module fragment.
+
+---
+
+Only use the global module fragment to include headers of libraries that don't support modules yet.
+
+---
+
+It is possible to separate declarations and definitions in modules.
+
+---
+
+```c++ [3,6,8]
+export module helloworld;
+
+// export on declaration
+export void hello();
+
+module :private
+
+// definition in private fragment
+void hello()
+{
+    std::println("Hello, world!");
+}
+```
+
+Private module fragment.
+
+Note:
+
+* Lots of limitations.
+* Only primary module is allowed to have private section.
+* Know that it exists, you probably won't need it.
+* Useful to expose only declaration, so if the definition changes translations units that import the module don't need to be
+  recompiled.
+
+---
+
+A module can quickly become large!
+
+---
+
+Long source files negatively affect the readability of source code.
+
+---
+
+It is possible to split modules into multiple source files.
+
+---
+
+```c++ []
 export module a;
 
 export import :b;
 ```
 
-```c++
-// b.cpp
+```c++ []
 export module a:b;
 
 import std;
@@ -586,8 +711,7 @@ export void hello()
 }
 ```
 
-```c++
-// main.cpp
+```c++ []
 import a;
 
 int main()
@@ -595,6 +719,8 @@ int main()
     hello();
 }
 ```
+
+Module fragments.
 
 ---
 
