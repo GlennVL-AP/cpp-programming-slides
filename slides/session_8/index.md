@@ -7,15 +7,65 @@
 ```mermaid
 kanban
   column1[Namespaces]
-    task1[Namespaces]
-    task2[Anonymous namespace]
-    task3[Using keyword]
+    task1[Global scope]
+    task2[Namespaces]
+    task3[Anonymous namespace]
+    task4[Using keyword]
   column2[Modules]
-    task4[Modules]
-    task5[Module fragments]
+    task5[Modules]
+    task6[Module fragments]
   column3[Unit tests]
-    task6[Project structure]
-    task7[Catch2 test framework]
+    task7[Project structure]
+    task8[Catch2 test framework]
+```
+
+---
+
+So far we added most definitions to the global scope.
+
+---
+
+```c++ [3-7,9-10]
+import std;
+
+// function say_hello is defined in the global scope
+void say_hello()
+{
+    std::println("Hello, world!");
+}
+
+// variable my_global_var is defined in the global scope
+int my_global_var{5};
+
+int main()
+{
+    say_hello();
+}
+```
+
+`main.cpp` is a translation unit
+
+---
+
+```c++ []
+export module hello;
+
+import std;
+
+export void say_hello()
+{
+    std::println("Hello, world!");
+}
+```
+
+```c++ []
+// everything exported in module hello is made available
+import hello;
+
+int main()
+{
+    say_hello();
+}
 ```
 
 ---
@@ -310,6 +360,33 @@ Note:
 * Call a::f(double) or b::f(double)?
 * <https://compiler-explorer.com/z/cGqWzhW5M>
 
+--
+
+```c++
+namespace a {
+  void f(int)    { std::println("a::f(int)");    }
+  void f(double) { std::println("a::f(double)"); }
+}
+void f(int)      { std::println("f(int)");       }
+```
+
+```c++
+using namespace a;
+// I want to print f(int)
+```
+
+How to call `f(int)` in the global namespace?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) f(5)</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) ::f(5)</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">c) not possible</div>
+</div>
+
+Note:
+
+* <https://compiler-explorer.com/z/9zYvx74dc>
+
 ---
 
 ### Summary
@@ -358,6 +435,100 @@ Using directives.
 
 ---
 
+There's still a problem...
+
+---
+
+```c++ []
+// first.cpp
+
+import std;
+
+void hello_impl() { std::println("First!"); }
+void hello_1()    { hello_impl();           }
+```
+
+```c++ []
+// second.cpp
+
+import std;
+
+void hello_impl() { std::println("Second!"); }
+void hello_2()    { hello_impl();            }
+```
+
+Does this work?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) Yes</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) Compiler error</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">c) Linker error</div>
+</div>
+
+Note:
+
+* Two translations units.
+* Both have an implementation detail function with the same name and arguments `hello_impl`.
+* They live in the global scope.
+* So this is again a violation of the One Definition Rule.
+
+---
+
+We need a way to mark a definition as private to a translation unit.
+
+---
+
+```c++ []
+// first.cpp
+
+import std;
+
+namespace {
+    void hello_impl() { std::println("First!"); }
+}
+
+void hello_1() { hello_impl(); }
+```
+
+```c++ []
+// second.cpp
+
+import std;
+
+namespace {
+    void hello_impl() { std::println("Second!"); }
+}
+
+void hello_2() { hello_impl(); }
+```
+
+The unnamed or anonymous namespace.
+
+---
+
+### Best practices
+
+---
+
+* Prevent name collisions!
+* Don't write using namespace some_ns. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Use namespaces in larger projects. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Place reusable components in a namespace. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Place local definitions in an unnamed namespace. <!-- .element: class="fragment" data-fragment-index="4" -->
+
+Note:
+
+* Writing using namespace some_ns undoes what namespaces try to solve.
+* The larger the project, the larger the risk of name collisions.
+* Code that may be reused in other projects should be placed in a namespace.
+* Avoid placing definitions that are only needed in one translation unit in the global scope.
+
+---
+
+Let's build further on this idea and add some improvements!
+
+---
+
 ## Modules
 
 <https://en.cppreference.com/w/cpp/language/modules>
@@ -365,6 +536,65 @@ Using directives.
 ---
 
 TODO
+
+* global module fragment
+* private module fragment
+* module partitions
+
+---
+
+```c++
+// helloworld.cpp
+export module helloworld;
+
+import std;
+
+export void hello()
+{
+    std::println("Hello, world!");
+}
+```
+
+```c++
+// main.cpp
+import helloworld;
+
+int main()
+{
+    hello();
+}
+```
+
+---
+
+```c++
+// a.cpp
+export module a;
+
+export import :b;
+```
+
+```c++
+// b.cpp
+export module a:b;
+
+import std;
+
+export void hello()
+{
+    std::println("Hello, world!");
+}
+```
+
+```c++
+// main.cpp
+import a;
+
+int main()
+{
+    hello();
+}
+```
 
 ---
 
