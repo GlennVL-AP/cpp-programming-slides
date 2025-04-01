@@ -1,4 +1,4 @@
 {
     "title": "Session 8: Namespaces and Modules",
-    "description": "Preventing name collisions and ODR violations by using namespaces. The unnamed namespaces. Modules and module fragments. Global scope, translation unit scope and module scope."
+    "description": "Preventing name collisions and ODR violations by using namespaces. The unnamed namespace. Modules and module fragments. Global scope, translation unit scope and module scope."
 }
