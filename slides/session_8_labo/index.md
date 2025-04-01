@@ -7,11 +7,10 @@
 ```mermaid
 kanban
   column1[Unit tests]
-    task1[Project structure]
-    task2[Catch2 test framework]
+    task1[Catch2 test framework]
   column2[Exercises]
-    task3[Labo 8 Devcontainer]
-    task4[TODO]
+    task2[Labo 8 Devcontainer]
+    task3[Project structure]
 ```
 
 ---
@@ -24,7 +23,37 @@ kanban
 
 ---
 
-TODO
+```c++
+#include <catch.hpp>
+```
+
+```c++
+import fibonacci;
+```
+
+```c++
+TEST_CASE("compute fibonacci numbers", "[fibonacci][labo_7]")
+{
+    REQUIRE(fibonacci(3) == 2);
+    REQUIRE(fibonacci(4) == 3);
+    REQUIRE(fibonacci(5) == 5);
+    REQUIRE(fibonacci(6) == 8);
+    REQUIRE(fibonacci(7) == 13);
+    REQUIRE(fibonacci(8) == 21);
+    REQUIRE(fibonacci(9) == 34);
+}
+```
+
+---
+
+### Read the documentation
+
+* <https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md>
+* <https://github.com/catchorg/Catch2/blob/devel/docs/assertions.md>
+
+---
+
+### Testing in vscode
 
 ---
 
@@ -35,7 +64,7 @@ TODO
 
 ---
 
-## Exercises TODO
+## Exercises
 
 ---
 
