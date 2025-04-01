@@ -14,9 +14,6 @@ kanban
   column2[Modules]
     task5[Modules]
     task6[Module fragments]
-  column3[Unit tests]
-    task7[Project structure]
-    task8[Catch2 test framework]
 ```
 
 ---
@@ -397,12 +394,22 @@ Note:
 namespace a {
     void f();
 }
+```
 
+```c++
 namespace b::c {
     void f();
     void g();
 }
+```
 
+```c++
+namespace a { // extend namespace a
+    void g();
+}
+```
+
+```c++
 namespace d = b::c;
 ```
 
@@ -651,7 +658,16 @@ Only use the global module fragment to include headers of libraries that don't s
 
 ---
 
-It is possible to separate declarations and definitions in modules.
+Declarations and definitions can be separated in modules.
+
+Note:
+
+* Before modules:
+  * Declarations in header files.
+  * Definitions on source files.
+* Modules:
+  * Typically export on definition, no forward declaration.
+  * It is possible to export forward declaration and make definition private.
 
 ---
 
@@ -682,15 +698,19 @@ Note:
 
 ---
 
-A module can quickly become large!
+Large source files negatively affect the readability of source code.
 
 ---
 
-Long source files negatively affect the readability of source code.
+```c++ []
+export module
+```
+
+This source file has way too many lines of code. 🙁
 
 ---
 
-It is possible to split modules into multiple source files.
+Split modules into multiple source files. 👍
 
 ---
 
@@ -724,15 +744,22 @@ Module fragments.
 
 ---
 
-## Unit tests
+### Best practices
 
 ---
 
-![Catch2 logo](./assets/catch2_logo.png)
+* Prefer modules over header and source files.
+* Split modules in fragments. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Only use the global module fragment for headers. <!-- .element: class="fragment" data-fragment-index="2" -->
+* You probably won't need the private module fragment. <!-- .element: class="fragment" data-fragment-index="3" -->
 
----
+Note:
 
-TODO
+* Sometimes you have to include a header file of a library that does not support modules. The global module fragment is where
+  you write the include statement `#include <some_header>`.
+* The private module fragment has one specific use case: faster compilation speed. But comes at the cost of making definitions
+  private so the compiler has a harder time inlining code. Don't use the private module fragment unless you have a very good
+  reason.
 
 ---
 
