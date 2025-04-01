@@ -132,6 +132,10 @@ Tests depend on the library.
 
 ---
 
+Test code depends heavily on macros and often contains a lot of magic numbers. Clang-tidy is disabled for unit tests.
+
+---
+
 ### Exercises
 
 See digitap.
