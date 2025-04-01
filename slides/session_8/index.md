@@ -703,10 +703,137 @@ Large source files negatively affect the readability of source code.
 ---
 
 ```c++ []
-export module
+export module shapes;
+
+import std;
+
+namespace shapes {
+
+constexpr double two{2.0};
+constexpr double four{4.0};
+
+export class Shape
+{
+public:
+    Shape() = default;
+    virtual ~Shape() = default;
+
+    Shape(Shape const&) = delete;
+    Shape& operator=(Shape const&) = delete;
+    Shape(Shape&&) = delete;
+    Shape& operator=(Shape&&) = delete;
+
+    [[nodiscard]] virtual double area() const = 0;
+    [[nodiscard]] virtual double circumference() const = 0;
+};
+
+export class Radius
+{
+public:
+    constexpr Radius() = default;
+    constexpr explicit Radius(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Circle : public Shape
+{
+public:
+    constexpr Circle() = default;
+    explicit Circle(Radius radius) : radius_{radius} {}
+
+    [[nodiscard]] Radius const& radius() const { return radius_; }
+
+    [[nodiscard]] double area() const override { return std::numbers::pi * radius_.get() * radius_.get(); }
+    [[nodiscard]] double circumference() const override { return two * std::numbers::pi * radius_.get(); }
+
+private:
+    Radius radius_;
+};
+
+export class Side
+{
+public:
+    constexpr Side() = default;
+    constexpr explicit Side(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Square : public Shape
+{
+public:
+    explicit Square(Side side) : side_{side} {}
+
+    [[nodiscard]] Side const& side() const { return side_; }
+
+    [[nodiscard]] double area() const override { return side_.get() * side_.get(); }
+    [[nodiscard]] double circumference() const override { return four * side_.get(); }
+
+private:
+    Side side_;
+};
+
+export class Length
+{
+public:
+    constexpr Length() = default;
+    constexpr explicit Length(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Width
+{
+public:
+    constexpr Width() = default;
+    constexpr explicit Width(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Rectangle : public Shape
+{
+public:
+    explicit Rectangle(Length length, Width width) : length_{length}, width_{width} {}
+
+    [[nodiscard]] Length const& length() const { return length_; }
+    [[nodiscard]] Width const& width() const { return width_; }
+
+    [[nodiscard]] double area() const override { return length_.get() * width_.get(); }
+    [[nodiscard]] double circumference() const override { return two * (length_.get() + width_.get()); }
+
+private:
+    Length length_;
+    Width width_;
+};
+
+} // namespace shapes
 ```
 
-This source file has way too many lines of code. 🙁
+This module is getting large... 🙁
+
+Note:
+
+* Shapes module from labo 5.
+* This source file has way too many lines of code and all sorts of stuff.
+* Interfaces, specific shapes, strong types.
 
 ---
 
@@ -714,33 +841,246 @@ Split modules into multiple source files. 👍
 
 ---
 
-```c++ []
-export module a;
+```c++ [1-9|11-33|35-75|77-115|117-170|172-210]
+/////////////////////////////////////////////////////////
+// shapes.cpp
 
-export import :b;
-```
+export module shapes;
 
-```c++ []
-export module a:b;
+export import :interfaces;
+export import :circle;
+export import :square;
+export import :rectangle;
 
+/////////////////////////////////////////////////////////
+// shape_interface.cpp
+
+export module shapes:interfaces;
+
+namespace shapes {
+
+export class Shape
+{
+public:
+    Shape() = default;
+    virtual ~Shape() = default;
+
+    Shape(Shape const&) = delete;
+    Shape& operator=(Shape const&) = delete;
+    Shape(Shape&&) = delete;
+    Shape& operator=(Shape&&) = delete;
+
+    [[nodiscard]] virtual double area() const = 0;
+    [[nodiscard]] virtual double circumference() const = 0;
+};
+
+}
+
+/////////////////////////////////////////////////////////
+// circle.cpp
+
+export module shapes:circle;
+
+import :interfaces;
 import std;
 
-export void hello()
-{
-    std::println("Hello, world!");
-}
-```
+namespace shapes {
 
-```c++ []
-import a;
+export class Radius
+{
+public:
+    constexpr Radius() = default;
+    constexpr explicit Radius(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Circle : public Shape
+{
+public:
+    constexpr Circle() = default;
+    explicit Circle(Radius radius) : radius_{radius} {}
+
+    [[nodiscard]] Radius const& radius() const { return radius_; }
+
+    [[nodiscard]] double area() const override { return std::numbers::pi * radius_.get() * radius_.get(); }
+    [[nodiscard]] double circumference() const override { return two * std::numbers::pi * radius_.get(); }
+
+private:
+    static constexpr double two{2.0};
+
+    Radius radius_;
+};
+
+}
+
+/////////////////////////////////////////////////////////
+// square.cpp
+
+export module shapes:square;
+
+import :interfaces;
+
+namespace shapes {
+
+export class Side
+{
+public:
+    constexpr Side() = default;
+    constexpr explicit Side(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Square : public Shape
+{
+public:
+    explicit Square(Side side) : side_{side} {}
+
+    [[nodiscard]] Side const& side() const { return side_; }
+
+    [[nodiscard]] double area() const override { return side_.get() * side_.get(); }
+    [[nodiscard]] double circumference() const override { return four * side_.get(); }
+
+private:
+    static constexpr double four{4.0};
+
+    Side side_;
+};
+
+}
+
+/////////////////////////////////////////////////////////
+// rectangle.cpp
+
+export module shapes:rectangle;
+
+import :interfaces;
+
+namespace shapes {
+
+export class Length
+{
+public:
+    constexpr Length() = default;
+    constexpr explicit Length(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Width
+{
+public:
+    constexpr Width() = default;
+    constexpr explicit Width(double value) : value_{value} {}
+
+    [[nodiscard]] constexpr double get() const { return value_; }
+    [[nodiscard]] constexpr double& get() { return value_; }
+
+private:
+    double value_{};
+};
+
+export class Rectangle : public Shape
+{
+public:
+    explicit Rectangle(Length length, Width width) : length_{length}, width_{width} {}
+
+    [[nodiscard]] Length const& length() const { return length_; }
+    [[nodiscard]] Width const& width() const { return width_; }
+
+    [[nodiscard]] double area() const override { return length_.get() * width_.get(); }
+    [[nodiscard]] double circumference() const override { return two * (length_.get() + width_.get()); }
+
+private:
+    static constexpr double two{2.0};
+
+    Length length_;
+    Width width_;
+};
+
+}
+
+/////////////////////////////////////////////////////////
+// main.cpp
+
+import std;
+import shapes;
+
+namespace {
+
+double area(shapes::Shape const& shape)
+{
+    return shape.area();
+}
+
+double circumference(shapes::Shape const& shape)
+{
+    return shape.circumference();
+}
+
+} // namespace
 
 int main()
+try
 {
-    hello();
+    shapes::Circle const circle{shapes::Radius{1.0}};
+    shapes::Square const square{shapes::Side{1.0}};
+    shapes::Rectangle const rectangle{shapes::Length{1.0}, shapes::Width{1.0}};
+
+    std::println("circle area = {}", area(circle));
+    std::println("square area = {}", area(square));
+    std::println("rectangle area = {}", area(rectangle));
+    std::println("circle circumference = {}", circumference(circle));
+    std::println("square circumference = {}", circumference(square));
+    std::println("rectangle circumference = {}", circumference(rectangle));
+}
+catch (std::exception const& e)
+{
+    std::cerr << e.what() << '\n';
+    return 1;
 }
 ```
 
 Module fragments.
+
+Note:
+
+1. We want to split the shapes module into multiple fragments.
+   * The interface.
+   * A fragment for circle, one for square, and one for rectangle.
+   * `import :fragment` to make the fragment available in the shapes module.
+   * `export import :fragment` to make the fragment available to translation units that import the shapes module.
+2. Create the module fragment for the interface.
+   * `export module shapes:interfaces`.
+   * Add the shape interface.
+3. Create the module fragment for circle.
+   * `export module shapes:circle`.
+   * `import :interfaces` because circle inherits from the shape interface.
+   * Add the shape class and other related definitions.
+4. Create the module fragment for square.
+   * `export module shapes:square`.
+   * `import :interfaces` because square inherits from the shape interface.
+   * Add the square class and other related definitions.
+5. Create the module fragment for rectangle.
+   * `export module shapes:rectangle`.
+   * `import :interfaces` because rectangle inherits from the shape interface.
+   * Add the rectangle class and other related definitions.
+6. The source file where the shapes module is used.
+   * `import shapes` just like before.
+   * Everything that is exported in the module fragments is available for use.
 
 ---
 
