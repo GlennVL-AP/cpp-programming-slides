@@ -1,4 +1,4 @@
 {
-    "title": "Labo 8: TODO",
-    "description": "TODO"
+    "title": "Labo 8: Modules and Unit Testing",
+    "description": "How to use the labo 8 devcontainer. The Catch2 testing framework and how to run tests in vscode. Writing modules and unit tests. See digitap for exercise assignments."
 }
