@@ -6,10 +6,32 @@
 
 ```mermaid
 kanban
-  column1[Exercises]
-    task1[Labo 8 Devcontainer]
-    task2[TODO]
+  column1[Unit tests]
+    task1[Project structure]
+    task2[Catch2 test framework]
+  column2[Exercises]
+    task3[Labo 8 Devcontainer]
+    task4[TODO]
 ```
+
+---
+
+## Unit tests
+
+---
+
+![Catch2 logo](./assets/catch2_logo.png)
+
+---
+
+TODO
+
+---
+
+<video controls width="800">
+  <source src="./assets/vscode_unit_tests.mp4" type="video/mp4">
+  <img src="./assets/vscode_unit_tests.png" alt="vscode unit testing">
+</video>
 
 ---
 
