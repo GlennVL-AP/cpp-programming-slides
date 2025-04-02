@@ -7,15 +7,49 @@
 ```mermaid
 kanban
   column1[Unit tests]
-    task1[Catch2 test framework]
+    task1[Introduction]
+    task2[Catch2 test framework]
+    task3[Testing in vscode]
   column2[Exercises]
-    task2[Labo 8 Devcontainer]
-    task3[Project structure]
+    task4[Labo 8 Devcontainer]
+    task5[Project structure]
+    task6[Exercises]
 ```
 
 ---
 
 ## Unit tests
+
+---
+
+Unit testing is a form of software testing by which isolated source code is tested to validate expected behavior.
+
+---
+
+### Why?
+
+---
+
+![time to fix bugs vs time of detection](./assets/bug_cost.png)
+
+---
+
+Tests...
+
+* Catch bugs early before they become hard to find.
+* Pinpoint where to look for a bug. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Facilitate refactoring by preventing regressions. <!-- .element: class="fragment" data-fragment-index="2" -->
+* Encourage writing testable code, improving quality. <!-- .element: class="fragment" data-fragment-index="3" -->
+* Serve as documentation. <!-- .element: class="fragment" data-fragment-index="4" -->
+* Support implementing CI/CD pipelines. <!-- .element: class="fragment" data-fragment-index="5" -->
+
+---
+
+Testing is a small upfront investment that saves a lot of time in the long run.
+
+---
+
+### Testing in C++
 
 ---
 
@@ -120,7 +154,7 @@ Note:
 
 ```cmake
 cpprog_add_test(
-    TARGET test_ex_1        # test will be called text_ex_1
+    TARGET test_ex_1        # test will be called test_ex_1
     CXX_SOURCES             # unittest source files
     "my_module_1.test.cpp"
     DEPENDENCIES            # libraries on which it depends
