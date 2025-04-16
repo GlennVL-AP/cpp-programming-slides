@@ -13,10 +13,6 @@ kanban
 
 ---
 
-TODO
-
----
-
 ## Exercises
 
 ---

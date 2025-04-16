@@ -1,4 +1,4 @@
 {
-    "title": "Session 9: Template Meta-programming",
-    "description": "TODO"
+    "title": "Session 9: Templates and Concepts",
+    "description": "Meta-programming to avoid code duplication. Class and function templates. Non-type template arguments. Using auto for function arguments. Restricting template arguments using concepts."
 }
