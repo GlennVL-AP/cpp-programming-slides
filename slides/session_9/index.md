@@ -380,6 +380,7 @@ A compiler error!
 Note:
 
 * <https://compiler-explorer.com/z/vT4jeoMzq>
+* This has come a long way! These types of compiler errors used to be very long and not readable.
 
 ---
 
@@ -393,6 +394,272 @@ Can we do better?
 
 ## Concepts
 
+<https://en.cppreference.com/w/cpp/concepts>
+
 ---
 
 Concepts can be used to perform compile-time validation of template arguments.
+
+---
+
+```c++
+// long notation
+template <typename T>
+requires std::integral<T>
+T sum(T a, T b)
+{
+    return a + b;
+}
+```
+
+```c++
+// short notation
+template <std::integral T>
+T sum(T a, T b)
+{
+    return a + b;
+}
+```
+
+Make the sum function accept only integer types.
+
+---
+
+```c++
+// auto function arguments, the shortest notation
+auto sum(std::integral auto a, std::integral auto b)
+{
+    return a + b;
+}
+```
+
+a and by may have a different type, but are both integer-like.
+
+Note:
+
+* We cannot know the return type of sum! So we use auto.
+
+---
+
+```c++
+// auto function arguments, the shortest notation
+auto sum(std::integral auto a, std::integral auto b)
+{
+    return a + b;
+}
+```
+
+```c++
+sum(5, 3.14);
+```
+
+What if I call the function with a floating point?
+
+---
+
+```sh [7]
+<source>:10:5: error: no matching function for call to 'sum'
+   10 |     sum(5, 3.14);
+      |     ^~~
+<source>:3:6: note: candidate template ignored: constraints not satisfied [with a:auto = int, b:auto = double]
+    3 | auto sum(std::integral auto a, std::integral auto b)
+      |      ^
+<source>:3:32: note: because 'double' does not satisfy 'integral'
+    3 | auto sum(std::integral auto a, std::integral auto b)
+      |                                ^
+include/c++/14.2.0/concepts:107:24: note: because 'is_integral_v<double>' evaluated to false
+  107 |     concept integral = is_integral_v<_Tp>;
+      |                        ^
+1 error generated.
+Compiler returned: 1
+```
+
+The compiler tells exactly what's wrong!
+
+Note:
+
+* <https://compiler-explorer.com/z/x34rr8heo>
+
+---
+
+We can also define our own concepts!
+
+---
+
+Let's write a concept such that
+
+* `a` and `b` are allowed to be of different type
+* But `a+b` must be supported!
+
+---
+
+```c++
+template <typename T, typename U>
+concept Addable = requires(T a, U b)
+{
+    { a + b };
+};
+```
+
+```c++
+template <typename T, typename U>
+requires Addable<T, U>
+auto sum(T a, U b)
+{
+    return a + b;
+}
+```
+
+Note:
+
+* <https://compiler-explorer.com/z/4ff5zEjbn>
+
+---
+
+![quiz image](./assets/quiz.png)
+
+### Concepts
+
+--
+
+```c++
+template <typename T, int N>
+requires 0 < N
+class MyArray {};
+```
+
+```c++
+MyArray<int, 5> array{};
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) yes</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* Yes, N must be positive which is the case.
+
+--
+
+```c++
+template <std::floating_point T, std::same_as<T> U>
+class MyClass {};
+```
+
+```c++
+MyClass<int, int> obj{};
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) yes</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* T and U are the same.
+* But they are not floating points!
+
+--
+
+```c++
+template <typename T, typename U>
+requires std::same_as<T, U> || std::same_as<char, U>
+class MyClass {};
+```
+
+```c++
+MyClass<double, char> obj{};
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) yes</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* U is char, so it does not have to be the same type as T.
+
+--
+
+```c++
+template <typename T>
+concept NumberLike = requires(T a, T b)
+{
+    { a + b } -> std::same_as<T>;
+    { a - b } -> std::same_as<T>;
+    { a * b } -> std::same_as<T>;
+    { a / b } -> std::same_as<T>;
+};
+```
+
+```c++
+auto double_it(NumberLike auto x)
+{
+    return x + x;
+}
+```
+
+```c++
+double_it(5);
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) yes</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* Yes, int supports all required operators!
+
+--
+
+```c++
+void test(std::predicate auto pred)
+{
+    if (!pred()) { std::println("It wasn't true!"); }
+}
+```
+
+```c++
+test([]{ return false; });
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">a) yes</div>
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* A predicate is a function-like object that can be invoked without arguments and returns a boolean.
+* Yes, the lambda is indeed a predicate!
+
+---
+
+## Best practices
+
+---
+
+* Don't just add template arguments everywhere!
+* Add template arguments to avoid duplicate code! <!-- .element: class="fragment" data-fragment-index="1" -->
+* Add template arguments to make classes and functions reusable! <!-- .element: class="fragment" data-fragment-index="2" -->
+* Be expressive, restrict template arguments with concepts! <!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+## Exercises
