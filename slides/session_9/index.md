@@ -23,6 +23,10 @@ kanban
 
 ---
 
+The C++ standard library is full of templates.
+
+---
+
 ```c++
 std::vector<double> doubles{};
 std::vector<int> integers{};
@@ -38,8 +42,6 @@ std::unordered_map<std::string, int> students{};
 ```c++
 std::optional<Root> roots{};
 ```
-
-The C++ standard library is full of templates.
 
 Note:
 
@@ -151,6 +153,7 @@ Note:
 
 * Compiler instantiates template for requested types.
 * If class template is not used, no code is generated.
+* <https://cppinsights.io/s/a78b48ee>
 
 ---
 
@@ -173,40 +176,32 @@ Note:
 
 ---
 
-```c++ []
-class CircularBuffer
-{
-public:
-    [[nodiscard]] bool is_empty() const;
-    [[nodiscard]] bool is_full() const;
-    [[nodiscard]] int size() const;
+* Insert items at the end.
+* Remove items from the front.
+* Access any item.
+* Let the user decide the value type. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Let the user decide the capacity. <!-- .element: class="fragment" data-fragment-index="1" -->
 
-    void clear();
+---
 
-    void push_back(int const& value);
-    int pop_front();
-
-    [[nodiscard]] int operator[](int index) const;
-    [[nodiscard]] int& operator[](int index);
-
-private:
-    std::array<int, 1024> data_{};
-    int front_{};
-    int back_{};
-};
+```mermaid
+classDiagram
+  class CircularBuffer~T, N~ {
+    - std::array~T, N~ data
+    + is_empty() bool
+    + is_full() bool
+    + size() int
+    + clear() void
+    + push_back(T value) void
+    + pop_front() T
+    + operator[](int index) T
+  }
 ```
-
-How to make this generic?
-
-Note:
-
-* Let the user decide the type. Template parameter instead of int.
-* Let the user decide the capacitor. Template parameter instead of 1024.
 
 ---
 
 ```c++ []
-template <typename T, int Size>
+template <typename T, int N>
 class CircularBuffer
 {
 public:
@@ -223,13 +218,13 @@ public:
     [[nodiscard]] T& operator[](int index);
 
 private:
-    std::array<T, Size> data_{};
+    std::array<T, N> data_{};
     int front_{};
     int back_{};
 };
 ```
 
-Size is a Non-Type Template Parameter (NTTP).
+N is a Non-Type Template Parameter (NTTP).
 
 Note:
 
@@ -238,67 +233,166 @@ Note:
 
 ---
 
-<!-- .slide: data-visibility="hidden" -->
+How to implement the circular buffer?
 
-```c++ []
-template <typename T, int Size>
-class CircularBuffer
-{
-public:
-    [[nodiscard]] bool is_empty() const
-    {
-        return front_ == back_;
-    }
+---
 
-    [[nodiscard]] bool is_full() const
-    {
-        return (back_ + 1) % Size == front;
-    }
+![TDD zombies](./assets/zombies_tdd.png)
 
-    [[nodiscard]] int size() const
-    {
-        auto result = back - front;
-        if (result < 0) { result += capacity; }
-        return result;
-    }
+<https://blog.wingman-sw.com/tdd-guided-by-zombies>
 
-    void clear()
-    {
-        back_ = front_;
-    }
+Note:
 
-    void push_back(T const& value)
-    {
-        cpprog::expect([this]{ return !is_full(); }, "buffer is full");
+* Try this at home!
+* Blog post is a dynamic circular buffer in `c` tested with the `CppUTest` framework.
+* Our circular buffer is a static buffer in `c++` tested with the `Catch2` framework.
+* Follow the steps, but adjust them accordingly.
 
-        data_[back] = value;
-        back = (back + 1) % Size;
-    }
+---
 
-    T pop_front()
-    {
-        cpprog::expect([this]{ return !is_empty(); }, "buffer is empty");
+Let's write a sum function next.
 
-        auto const result = data_[front_];
-        front = (front + 1) % Size;
-        return result;
-    }
+---
 
-    [[nodiscard]] T operator[](int index) const
-    {
-        cpprog::expect([&, this]{ return 0 <= index && index < size(); }, "0 <= index < size()");
-        return data_[(front_ + index) % Size];
-    }
-
-    [[nodiscard]] T& operator[](int index)
-    {
-        cpprog::expect([&, this]{ return 0 <= index && index < size(); }, "0 <= index < size()");
-        return data_[(front_ + index) % Size];
-    }
-
-private:
-    std::array<T, Size> data_;
-    int front_{};
-    int back_{};
-};
+```c++
+int sum(int a, int b) { return a + b; }
 ```
+
+```c++
+// add sum for doubles?
+double sum(double a, double b) { return a + b; }
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// how about these?
+std::int8_t  sum(std::int8_t a,  std::int8_t b ) { return a + b; }
+std::int16_t sum(std::int16_t a, std::int16_t b) { return a + b; }
+std::int32_t sum(std::int32_t a, std::int32_t b) { return a + b; }
+std::int64_t sum(std::int64_t a, std::int64_t b) { return a + b; }
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+// even more?
+// std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t
+// float, unsigned, long, unsigned long, long double
+// ...
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+* Do I have to implement sum for every numeric type?
+* If I create a new numeric type... I want sum to work! <!-- .element: class="fragment" data-fragment-index="1" -->
+* How about strings? They also support addition! <!-- .element: class="fragment" data-fragment-index="2" -->
+
+---
+
+## Function Templates
+
+---
+
+```c++
+template <typename T>
+T sum(T a, T b)
+{
+    return a + b;
+}
+```
+
+```c++
+int sum_1 = sum(1, 2);
+double sum_2 = sum(3.14, 5.4);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+std::string hello{"Hello, "};
+std::string world{"world!"};
+std::string sum_3 = sum(hello, world);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+---
+
+We are allowed to specify the type.
+
+```c++
+int sum_1 = sum<int>(1, 2);
+double sum_2 = sum<double>(3.14, 5.4);
+```
+
+```c++
+std::string hello{"Hello, "};
+std::string world{"world!"};
+std::string sum_3 = sum<std::string>(hello, world);
+```
+
+But we don't have to!
+
+---
+
+Function template arguments are deduced by the compiler! 👍
+
+Note:
+
+* If the template argument can be deduced from the function arguments.
+
+---
+
+What if the type does not support addition?
+
+---
+
+```c++
+template <typename T>
+T sum(T a, T b)
+{
+    return a + b;
+}
+```
+
+```c++
+class NotAddable {};
+
+NotAddable a{};
+NotAddable b{};
+
+sum(a, b); // what happens?
+```
+
+---
+
+```sh []
+<source>:6:14: error: invalid operands to binary expression ('NotAddable' and 'NotAddable')
+    6 |     return a + b;
+      |            ~ ^ ~
+<source>:14:5: note: in instantiation of function template specialization 'sum<NotAddable>' requested here
+   14 |     sum(a, b);
+      |     ^
+1 error generated.
+Compiler returned: 1
+```
+
+A compiler error!
+
+Note:
+
+* <https://compiler-explorer.com/z/vT4jeoMzq>
+
+---
+
+> error: invalid operands to binary expression ('NotAddable' and 'NotAddable')
+
+---
+
+Can we do better?
+
+---
+
+## Concepts
+
+---
+
+Concepts can be used to perform compile-time validation of template arguments.
