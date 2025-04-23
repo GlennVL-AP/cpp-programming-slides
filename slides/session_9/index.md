@@ -341,6 +341,26 @@ Note:
 
 ---
 
+```c++
+template <typename T, int N>
+void print(CircularBuffer<T, N> const& data)
+{
+    for (int i = 0; i < data.size(); ++i)
+    {
+        std::print("{},", data[i]);
+    }
+    std::println();
+}
+```
+
+A function to print any circular buffer.
+
+---
+
+Back to the sum function...
+
+---
+
 What if the type does not support addition?
 
 ---
@@ -495,7 +515,7 @@ Let's write a concept such that
 
 ```c++
 template <typename T, typename U>
-concept Addable = requires(T a, U b)
+concept Addable = requires(T const& a, U const& b)
 {
     { a + b };
 };
@@ -504,7 +524,7 @@ concept Addable = requires(T a, U b)
 ```c++
 template <typename T, typename U>
 requires Addable<T, U>
-auto sum(T a, U b)
+auto sum(T const& a, U const& b)
 {
     return a + b;
 }
@@ -593,7 +613,7 @@ Note:
 
 ```c++
 template <typename T>
-concept NumberLike = requires(T a, T b)
+concept NumberLike = requires(T const& a, T const& b)
 {
     { a + b } -> std::same_as<T>;
     { a - b } -> std::same_as<T>;
@@ -603,7 +623,7 @@ concept NumberLike = requires(T a, T b)
 ```
 
 ```c++
-auto double_it(NumberLike auto x)
+auto double_it(NumberLike auto const& x)
 {
     return x + x;
 }
@@ -623,6 +643,43 @@ Does it compile?
 Note:
 
 * Yes, int supports all required operators!
+
+--
+
+```c++
+template <typename T>
+concept Printable = requires(T const& a, std::string const& b) {
+    T{b};
+    { a.print() } -> std::same_as<void>;
+};
+class MaybePrintable {
+public:
+    explicit MaybePrintable(std::string str) : str_{std::move(str)} {}
+    void print() { std::println("{}", str_); }
+private:
+    std::string str_;
+};
+```
+
+```c++
+void print(Printable auto const& printable) {
+    printable.print();
+}
+print(MaybePrintable{"hello"});
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) yes</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* MaybePrintable has a constructor that accepts a string, check!
+* MaybePrintable has a print member function that returns void, but it is not const, fail!
+* <https://compiler-explorer.com/z/Pboh5Kr68>
 
 --
 
@@ -658,7 +715,7 @@ Note:
 * Don't just add template arguments everywhere!
 * Add template arguments to avoid duplicate code! <!-- .element: class="fragment" data-fragment-index="1" -->
 * Add template arguments to make classes and functions reusable! <!-- .element: class="fragment" data-fragment-index="2" -->
-* Be expressive, restrict template arguments with concepts! <!-- .element: class="fragment" data-fragment-index="3" -->
+* Be expressive, use concepts to restrict template arguments! <!-- .element: class="fragment" data-fragment-index="3" -->
 
 ---
 
