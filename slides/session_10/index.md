@@ -305,7 +305,7 @@ The copy and swap idiom.
 ```c++ []
 // take rhs by value, this creates a COPY
 // (using the copy constructor)
-DynamicArray& operator=(DynamicArray rhs)
+DynamicArray& operator=(DynamicArray rhs) noexcept
 {
     // SWAP this with the copy, now we are the copy!
     swap(*this, rhs);
@@ -328,10 +328,12 @@ Copy and swap.
 
 Note:
 
-* <https://compiler-explorer.com/z/e979rah1P>
+* <https://compiler-explorer.com/z/ETznvxoPG>
 * Implementing swap in the private section as friend is called the hidden friend idiom.
 * It is a best practice to write `using std::swap` in the swap function and then call unqualified swap on members.
 * It is not strictly needed in our case, but it will find custom swap functions for member types that way.
+* Only swaps, which is noexcept, so the assignment operator can also be marked noexcept!
+* The by-value assignment operator also covers move assignment, so we don't need to default the move assignment operator.
 
 ---
 
@@ -355,12 +357,474 @@ We can now make copies of dynamic arrays!
   <!-- .element: class="fragment" data-fragment-index="1" -->
 * Implement the swap function as a hidden friend!
   <!-- .element: class="fragment" data-fragment-index="2" -->
-* Bring std::swap in scope and swap member-wise!
+* Make the swap function and assignment operator noexcept!
   <!-- .element: class="fragment" data-fragment-index="3" -->
+* Bring std::swap in scope and swap member-wise!
+  <!-- .element: class="fragment" data-fragment-index="4" -->
 
 ---
 
 ## Raw Pointers
+
+---
+
+```c++
+int* null_pointer = nullptr;
+```
+
+```c++
+*null_pointer = 5; // try to dereference null-pointer 🔥
+```
+
+Note:
+
+* Similar to references, pointers use `*` instead of `&`.
+* Unlike references, pointers can point to nothing.
+* Dereference a pointer using `*` to access the variable it points to.
+
+---
+
+```c++
+int i{5};
+```
+
+```c++
+int* pointer_to_i = &i;
+```
+
+```c++
+*pointer_to_i = 6; // i is now equal to 6
+```
+
+Note:
+
+* Similar to references, the original variable can be updated through a pointer.
+
+---
+
+```c++
+int i{5};
+```
+
+```c++
+int const* pointer_to_i = &i;
+```
+
+```c++
+*pointer_to_i = 6; // error, points to a constant
+```
+
+Note:
+
+* A pointer to a constant integer.
+* Use `&` to get the address of a variable.
+
+---
+
+```c++
+int i{5};
+int j{6};
+```
+
+```c++
+int const* pointer_to_i = &i;
+```
+
+```c++
+pointer_to_i = &j; // now points to j instead of i
+```
+
+---
+
+```c++
+int i{5};
+int j{6};
+```
+
+```c++
+int const* const pointer_to_i = &i;
+```
+
+```c++
+pointer_to_i = &j; // error, pointer is itself a constant
+```
+
+```c++
+*pointer_to_i = 6; // error, points to a constant
+```
+
+Note:
+
+* A constant pointer to a constant integer.
+* A constant pointer to a non-const integer is also possible. `int* const pointer;`
+
+---
+
+### Manual memory management
+
+---
+
+![don't try this at home](./assets/dont_try_this_at_home.png)
+
+Note:
+
+* Using raw pointers has lots of disadvantages.
+* Including:
+  * It is unclear who is the owner.
+  * It is easy to forget to free a resource.
+  * It is easy to accidentally free a resource multiple times.
+* Stick with smart pointers unless you have a really good reason not to!
+
+---
+
+```c++
+// ask for memory
+
+int* on_the_heap = new int;    // not initialized! ⚠️
+int* on_the_heap = new int{};  // default initialized
+int* on_the_heap = new int{5}; // initialized to 5
+```
+
+```c++
+// release memory
+
+delete on_the_heap;
+```
+
+Allocate a single value.
+
+---
+
+```c++
+// ask for memory
+
+int* on_the_heap = new int[3];   // not initialized! ⚠️
+int* on_the_heap = new int[3]{}; // default initialized
+```
+
+```c++
+// initialized to 1, 2, 3
+int* on_the_heap = new int[3]{1, 2, 3};
+```
+
+```c++
+// initialized to 1, 2, 0 (default value)
+int* on_the_heap = new int[3]{1, 2};
+```
+
+```c++
+// release memory
+
+delete[] on_the_heap;
+```
+
+Allocate an array of values.
+
+---
+
+```c++
+int main()
+{
+    int* ptr = new int{};
+
+    // exception occurs
+
+    delete ptr; // never called, oops!
+}
+```
+
+Don't forget to free the memory you allocate!
+
+---
+
+```c++
+int main()
+{
+    int* ptr = new int{};
+
+    delete[] ptr; // oops, wrong delete!
+}
+```
+
+```c++
+// syntax is the same (int*), easy to overlook that the
+// second one is an array!
+
+int* ptr = new int{};
+int* ptr = new int[10]{};
+```
+
+Use the correct delete operator!
+
+---
+
+```c++
+try
+{
+    int* ptr = new int[/*large number*/]{};
+}
+catch (std::bad_alloc const& e)
+{
+    // oops, out of memory
+}
+```
+
+Allocating on the heap can fail!
+
+Note:
+
+* Smart pointers have the same problem.
+* But what are you going to do anyway?
+
+---
+
+```c++ []
+int* func()
+{
+    return new int{};
+}
+
+int* ptr = func();
+// Should I call delete? I didn't call new.
+```
+
+```c++ []
+void func(int* ptr)
+{
+    // Am I the owner of ptr now? Should I call delete?
+}
+
+int* ptr = new int{};
+// I called new, but maybe I want to transfer ownership.
+func(ptr);
+```
+
+Who is responsible to free the memory?
+
+---
+
+#### Best practices
+
+---
+
+* Never use raw pointers to transfer ownership.
+* Only use raw pointers to refer to objects owned by someone else. <!-- .element: class="fragment" data-fragment-index="1" -->
+* Use smart pointers for ownership. <!-- .element: class="fragment" data-fragment-index="2" -->
+* If you have to use raw new and delete, do it in an RAII class. <!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+### Manual memory management for DynamicArray
+
+---
+
+DynamicArray without std::unique_ptr...
+
+---
+
+```c++ [12]
+template <typename T>
+class DynamicArray
+{
+public:
+    explicit DynamicArray(int capacity);
+
+    T const& operator[](int index) const;
+    T& operator[](int index);
+
+private:
+    int capacity_{};
+    T* data_{};
+};
+```
+
+---
+
+```c++ [18-23|8]
+template <typename T>
+class DynamicArray
+{
+public:
+    DynamicArray() = default;
+    explicit DynamicArray(int capacity)
+      : capacity_{capacity}, data_{make_array(capacity_)} {}
+    ~DynamicArray() { delete[] data_; }
+
+    // same as before
+    T const& operator[](int index) const;
+    T& operator[](int index);
+
+private:
+    int capacity_{};
+    T* data_{};
+
+    static T* make_array(int capacity)
+    {
+        cpprog::expect([&]{ return 0 <= capacity; }, "capacity can't be negative");
+        return (capacity == 0) ?
+            nullptr : new T[static_cast<std::size_t>(capacity)]{};
+    }
+};
+```
+
+Implementation!
+
+Note:
+
+* make_array function changed to use raw new.
+* Don't forget to call array delete in the destructor!
+* Index operators are the same is before.
+
+---
+
+We had to add a destructor!
+
+---
+
+So we also need to add
+
+* Copy constructor
+* Copy assignment operator
+* Move constructor
+* Move assignment operator
+
+---
+
+```c++
+DynamicArray(DynamicArray const& other)
+    : capacity_{other.capacity_}, data_{make_array(capacity_)}
+{
+    std::copy_n(other.data_, capacity_, data_);
+}
+```
+
+Copy constructor
+
+Note:
+
+* We can reuse the copy constructor from before!
+* Just remove the .get() calls.
+
+---
+
+```c++
+DynamicArray& operator=(DynamicArray rhs) noexcept
+{
+    swap(*this, rhs);
+    return *this;
+}
+```
+
+```c++
+friend void swap(DynamicArray& first, DynamicArray& second) noexcept
+{
+    using std::swap;
+    swap(first.capacity_, second.capacity_);
+    swap(first.data_, second.data_);
+}
+```
+
+Copy assignment operator
+
+Note:
+
+* Copy-and-swap again.
+* The previous copy assignment operator still works.
+* The previous swap function still works.
+
+---
+
+But we never implemented the move constructor and move assignment operator before! What are they supposed to do anyway?
+
+---
+
+```c++
+class Huge
+{
+public:
+    Huge() : many_integers_{new int[1'000'000'000]{}} {}
+    ~Huge() { delete[] many_integers_; }
+
+private:
+    int* many_integers_{};
+};
+```
+
+```c++
+Huge make_a_huge_object()
+{
+    return Huge{};
+}
+```
+
+```c++
+// Before rvalue references copy constructor would be called!
+// Copying a billion integers for nothing!
+// Make a shallow copy instead!
+Huge huge = make_a_huge();
+```
+
+Note:
+
+* Do we need to copy the integers?
+* No! The original object is an rvalue reference and goes out of scope immediately!
+* All we need to do is a shallow copy (set the pointer in the new object to point to the value of the temporary). And make the
+  temporary point nowhere to prevent double free.
+* Side note: Modern C++ is guaranteed Return Value Optimization. So in this specific situation the move would be optimized away
+  and the object would be constructed immediately in the huge variable.
+
+---
+
+```c++
+DynamicArray(DynamicArray&& other) noexcept
+{
+    swap(*this, other);
+}
+```
+
+Move constructor
+
+Note:
+
+* Default initialize our own members (capacity of zero and data nullptr).
+* Swap ourselves with the other object.
+* Now we have the contents of the other object and the other object is empty.
+* All move and swap operations should be noexcept.
+
+---
+
+```c++
+// We already have this one, it works just fine!
+
+// rhs initialized with an lvalue &rarr; copy constructor called
+// rhs initialized with an rvalue &rarr; move constructor called
+
+DynamicArray& operator=(DynamicArray rhs) noexcept
+{
+    swap(*this, rhs);
+    return *this;
+}
+```
+
+Move assignment operator
+
+Note:
+
+* <https://compiler-explorer.com/z/b9TeofdEG>
+* No need to add a new assignment operator.
+* The one we wrote for copy assignment works just fine!
+
+---
+
+#### Best practices
+
+---
+
+* Avoid raw new and delete!
+* Implement the move constructor by default constructing and swapping.
+  <!-- .element: class="fragment" data-fragment-index="1" -->
+* Mark the assignment operator, swap function, and move constructor noexcept.
+  <!-- .element: class="fragment" data-fragment-index="2" -->
 
 ---
 
