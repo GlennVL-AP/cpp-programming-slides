@@ -942,7 +942,13 @@ How to implement an iterator for CircularBuffer?
 
 ---
 
-Items are not stored contiguously in memory anymore once the buffer wrapped around. We need to implement an actual iterator!
+![wrapped circular buffer](./assets/circular_buffer_wrapped.png)
+
+Items are not stored contiguously in memory. We need to implement an actual iterator!
+
+Note:
+
+* It's not possible to reach head from tail by only using the increment operator.
 
 ---
 
@@ -950,36 +956,35 @@ Items are not stored contiguously in memory anymore once the buffer wrapped arou
 class Iterator
 {
 public:
-    Iterator(CircularBuffer const& buffer, int index)
+    Iterator(CircularBuffer& buffer, int index)
         : buffer_{buffer}, index_{index} {}
 
-    T& operator*() const {
-        return buffer_.get().data_[(buffer_.get().front_ + index_) % N];
-    }
-    T* operator->() const {
-        return &buffer_.get().data_[(buffer_.get().front_ + index_) % N];
-    }
+    T& operator*() const { return buffer_.get()[index_]; }
+    T* operator->() const { return &buffer_.get()[index_]; }
 
     Iterator& operator++() { ++index_; return *this; }
 
     bool operator!=(Iterator const& rhs) const {
-        return (&buffer_.get() == &rhs.buffer_.get()) && (index_ == rhs.index_);
+        return (&buffer_.get() != &rhs.buffer_.get())
+            || (index_ != rhs.index_);
     }
 
 private:
-    std::reference_wrapper<CircularBuffer const> buffer_;
-    int index_;
+    std::reference_wrapper<CircularBuffer> buffer_{};
+    int index_{};
 };
 
-Iterator begin() const { return Iterator{*this, 0}; }
-Iterator end() const { return Iterator{*this, N}; }
+Iterator begin() { return Iterator{*this, 0}; }
+Iterator end() { return Iterator{*this, N}; }
 ```
 
 A bit harder to implement...
 
 Note:
 
-* Disclaimer: code not tested!
+* Disclaimer: Consider pseudocode, not tested!
+* Assumes CircularBuffer has an index operator.
+* Code inside public section of CircularBuffer class.
 
 ---
 
