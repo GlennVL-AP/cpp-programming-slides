@@ -832,4 +832,165 @@ Note:
 
 ---
 
+```c++
+DynamicArray<int> integers{20};
+```
+
+```c++
+// set all 20 values to 42
+std::ranges::fill(integers, 42);
+```
+
+```c++
+// iterate over the array
+for (auto const& value : integers)
+{
+    std::print("{},", value);
+}
+```
+
+I want my own container to work with STL algorithms!
+
+Note:
+
+* This does not work yet.
+* We'll have to write some code.
+
+---
+
+All algorithms expect a range, bounded by a begin iterator and an end iterator.
+
+---
+
+```c++
+// roughly how all STL algorithms work
+
+for (Iterator it = range.begin(); it != range.end(); ++it)
+{
+    // do something with the value, accessed by *it
+}
+```
+
+* The begin iterator points to the first element.
+* The end iterator points past the last element.
+* Increment and compare must be supported.
+* End much be reachable from begin in a finite number of steps.
+
+---
+
+```c++
+class ForwardIterator
+{
+public:
+    ForwardIterator(/*...*/);
+
+    ValueType& operator*() const;  // dereference
+    ValueType* operator->() const; // dereference
+
+    ForwardIterator& operator++(); // increment
+
+    bool operator!=(ForwardIterator const&) const; // compare
+
+private:
+    /*...*/
+};
+```
+
+The interface of a forward iterator class.
+
+Note:
+
+* Forward because only operator++ is supported.
+* There's many other types such as bidirectional (++, --) and random access (++, --, []).
+
+---
+
+How to implement an iterator for DynamicArray?
+
+---
+
+```c++
+template <typename T>
+class DynamicArray
+{
+public:
+    // return a pointer to the first element
+    T* begin() const { return data_.get(); }
+
+    // return a pointer to one past the last element
+    T* end() const { return data_.get() + capacity_; }
+
+    // ...
+};
+```
+
+Piece of cake!
+
+---
+
+Wait, does that actually work?
+
+* Begin iterator points to first element? Check! <!-- .element: class="fragment" data-fragment-index="1" -->
+* End iterator points one past last element? Check! <!-- .element: class="fragment" data-fragment-index="2" -->
+* Pointer can be incremented? Check! <!-- .element: class="fragment" data-fragment-index="3" -->
+* End is reachable from begin? Check! <!-- .element: class="fragment" data-fragment-index="4" -->
+* Pointers can be compared? Check! <!-- .element: class="fragment" data-fragment-index="5" -->
+
+---
+
+How to implement an iterator for CircularBuffer?
+
+---
+
+Items are not stored contiguously in memory anymore once the buffer wrapped around. We need to implement an actual iterator!
+
+---
+
+```c++ []
+class Iterator
+{
+public:
+    Iterator(CircularBuffer const& buffer, int index)
+        : buffer_{buffer}, index_{index} {}
+
+    T& operator*() const {
+        return buffer_.get().data_[(buffer_.get().front_ + index_) % N];
+    }
+    T* operator->() const {
+        return &buffer_.get().data_[(buffer_.get().front_ + index_) % N];
+    }
+
+    Iterator& operator++() { ++index_; return *this; }
+
+    bool operator!=(Iterator const& rhs) const {
+        return (&buffer_.get() == &rhs.buffer_.get()) && (index_ == rhs.index_);
+    }
+
+private:
+    std::reference_wrapper<CircularBuffer const> buffer_;
+    int index_;
+};
+
+Iterator begin() const { return Iterator{*this, 0}; }
+Iterator end() const { return Iterator{*this, N}; }
+```
+
+A bit harder to implement...
+
+Note:
+
+* Disclaimer: code not tested!
+
+---
+
+### Best practices
+
+---
+
+* Make custom containers work with STL algorithms!
+* If container memory is sparse, implement iterators! <!-- .element: class="fragment" data-fragment-index="1" -->
+* If container memory is contiguous, pointers will do! <!-- .element: class="fragment" data-fragment-index="2" -->
+
+---
+
 ## Exercises
