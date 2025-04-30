@@ -1,4 +1,4 @@
 {
     "title": "Session 10: Pointers and Iterators",
-    "description": "TODO"
+    "description": "Smart pointers and raw pointers. Manual memory management and the ownership problem. Making custom containers work with STL algorithms using iterators. Dynamic array as an example."
 }
