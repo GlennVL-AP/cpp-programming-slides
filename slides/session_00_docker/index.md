@@ -8,7 +8,7 @@ Crash course docker and development containers.
 
 ---
 
-I work on many projects. Each of them have their own tool requirements. Some even use the same tool, but a different version.
+I work on many projects, each with its own tool requirements. Some even use the same tool, but a different version.
 
 ---
 

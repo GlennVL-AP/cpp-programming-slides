@@ -160,13 +160,13 @@ public:
 
     T const& operator[](int index) const
     {
-        cpprog::expect([&, this]{ return (0 <= index) && (index < capacity_;) }, "0 <= index < capacity");
+        cpprog::expect([&, this]{ return (0 <= index) && (index < capacity_); }, "0 <= index < capacity");
         return data_[index];
     }
 
     T& operator[](int index)
     {
-        cpprog::expect([&, this]{ return (0 <= index) && (index < capacity_;) }, "0 <= index < capacity");
+        cpprog::expect([&, this]{ return (0 <= index) && (index < capacity_); }, "0 <= index < capacity");
         return data_[index];
     }
 
@@ -915,10 +915,10 @@ class DynamicArray
 {
 public:
     // return a pointer to the first element
-    T* begin() const { return data_.get(); }
+    T* begin() const { return &data_[0]; }
 
     // return a pointer to one past the last element
-    T* end() const { return data_.get() + capacity_; }
+    T* end() const { return &data_[capacity_]; }
 
     // ...
 };
