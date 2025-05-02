@@ -38,3 +38,5 @@ Jantje
 vcpkg
 NTTP
 nullptr
+Ritchie
+malloc
