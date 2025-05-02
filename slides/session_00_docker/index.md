@@ -12,13 +12,13 @@ I work on many projects, each with its own tool requirements. Some even use the 
 
 ---
 
-I have to figure out which tools I need. Download and install them. And use the right version for the right project. This is
-hard! ☹️
+I have to figure out which tools I need, download and install them, and make sure I use the correct version for each project.
+This is hard! ☹️
 
 ---
 
-* I don't want to figure out which tools I need. The project should provide a list.
-* I don't want to install the tools system wide to avoid conflicts with other versions for other projects.
+* I don't want to figure out which tools I need &mdash; the project should provide a list.
+* I don't want to install the tools system-wide, to avoid version conflicts with other projects.
 
 ---
 
@@ -28,16 +28,16 @@ hard! ☹️
 
 Create a virtual machine for each project?
 
-(virtualbox, vmware, ...)
+(e.g. virtualbox, vmware, ...)
 
 ---
 
-Several gigabytes in size, so not possible to add to version control (for example git repository).
+Virtual machines are several gigabytes in size, so they can't be added to version control (e.g. a git repository).
 
 ---
 
-* I don't want to figure out which tools I need. The project should provide a list. ⛔️
-* I don't want to install the tools system wide to avoid conflicts with other versions for other projects. ✅
+* I don't want to figure out which tools I need &mdash; the project should provide a list. ⛔️
+* I don't want to install the tools system-wide to avoid version conflicts. ✅
 
 ---
 
@@ -53,7 +53,7 @@ Note:
 
 ---
 
-Build virtual machines from a text file with the required tools.
+Build virtual machines from a text file that lists the required tools.
 
 ---
 
@@ -74,12 +74,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 ---
 
-Dockerfile can be added to version control!
+A Dockerfile can be added to version control!
 
 ---
 
-* I don't want to figure out which tools I need. The project should provide a list. ✅
-* I don't want to install the tools system wide to avoid conflicts with other versions for other projects. ✅
+* I don't want to figure out which tools I need &mdash; the project should provide a list. ✅
+* I don't want to install the tools system-wide, to avoid version conflicts. ✅
 
 ---
 
@@ -88,7 +88,7 @@ But I'm still not happy...
 ---
 
 * I don't want to manually build and run the docker container.
-* I don't want to manually set up my IDE for remote development.
+* I don't want to manually configure my IDE for remote development.
 
 ---
 
@@ -106,12 +106,12 @@ Note:
 
 Note:
 
-* Picture borrowed from <https://xebia.com>
+* Image credit: <https://xebia.com>
 
 ---
 
-Add devcontainer.json file in .devcontainer directory to project. IDE will pick this up automatically, build the devcontainer
-and connect to it.
+Add a devcontainer.json file inside a .devcontainer directory to project. Your IDE will automatically detect it, build the
+development container, and connect to it.
 
 ---
 
@@ -138,15 +138,14 @@ and connect to it.
 
 Note:
 
-* Text file, so can be added to version control
-* Can use Dockerfile or an existing image name
-* Can configure IDE settings
-* Can provide list of IDE extensions
+* It's a text file, so it can be version controller.
+* You can use a Dockerfile or reference an existing image.
+* You can configure IDE settings and specify extensions.
 
 ---
 
-* I don't want to manually build and run the docker container. ✅
-* I don't want to manually set up my IDE for remote development. ✅
+* I don't want to manually build and run the Docker container. ✅
+* I don't want to manually configure my IDE for remote development. ✅
 
 ---
 
@@ -154,7 +153,7 @@ Now I'm happy! 😁
 
 ---
 
-## Crash course development containers
+## Crash course: Development containers
 
 ---
 
@@ -168,13 +167,13 @@ Now I'm happy! 😁
 
 Note:
 
-* The project directory is the directory that contains the .devcontainer directory
+* The project directory should contain the .devcontainer folder.
 
 ---
 
-#### Step 2: vscode will ask to install the Dev Containers extension, accept
+#### Step 2: VSCode will prompt you to install the Dev Containers extension &mdash; accept
 
-(unless the extension is already installed)
+(Unless it's already installed.)
 
 ---
 
@@ -183,11 +182,11 @@ Note:
   <img src="./assets/vscode_open_devcontainer.png" alt="vscode open in devcontainer">
 </video>
 
-#### Step 3: vscode will ask to reopen the project in a devcontainer, accept
+#### Step 3: VSCode will ask if you want to reopen the project in a devcontainer &mdash; accept
 
 Note:
 
-* This will take a while, the docker container has to be created and started
+* This might take a while, as Docker has to build and start the container.
 
 ---
 
@@ -239,7 +238,7 @@ Note:
 ```
 <!--- cSpell:enable --->
 
-Example devcontainer.json using Dockerfile
+Example using Dockerfile
 
 ---
 
@@ -254,7 +253,7 @@ Example devcontainer.json using Dockerfile
 ```
 <!--- cSpell:enable --->
 
-Example devcontainer.json using existing image
+Example using an existing image
 
 ---
 
@@ -262,7 +261,7 @@ For a full reference of the devcontainer.json file, see <https://containers.dev/
 
 ---
 
-## Crash course docker
+## Crash course: Docker
 
 ---
 
@@ -272,7 +271,7 @@ For a full reference of the devcontainer.json file, see <https://containers.dev/
 
 ---
 
-Using development containers will leave a bunch of docker containers on your system that can take up quite a bit of disk space.
+Using development containers can leave behind Docker containers and images that take up disk space.
 
 ---
 
@@ -294,7 +293,7 @@ docker system prune -af
 
 ---
 
-Want to learn how to use docker without development containers?
+Want to learn how to use Docker outside of development containers?
 
 ---
 
