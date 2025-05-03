@@ -128,11 +128,11 @@ Cfront: Translate C++ to C
 
 ---
 
+<!-- .slide: data-background-image="./assets/first_iso_meeting.jpg" data-background-opacity=".5" -->
+
 ### Standardization
 
 #### 1989 - 1998
-
-![First ISO meeting](./assets/first_iso_meeting.jpg)
 
 ---
 
@@ -155,9 +155,9 @@ Minor fixes
 
 ---
 
-### ISO WG21 - Standard C++ Foundation
-
 ![ISO WG21](./assets/foundation_directors.png)
+
+### ISO WG21 - Standard C++ Foundation
 
 ---
 
@@ -296,6 +296,8 @@ int main()
 
 ## C++ Core Guidelines
 
+<https://isocpp.github.io/CppCoreGuidelines/>
+
 Note:
 
 * Compiler checks if code is valid
@@ -304,7 +306,7 @@ Note:
 
 ---
 
-### Help people use modern C++ effectively
+Help people use modern C++ effectively.
 
 ---
 
@@ -312,8 +314,6 @@ Note:
 * Herb Sutter
 
 ---
-
-<https://isocpp.github.io/CppCoreGuidelines/>
 
 * Lots of rules... 🙁
 * Use tool to check compliance! 👍
