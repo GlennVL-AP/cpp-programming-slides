@@ -40,3 +40,6 @@ NTTP
 nullptr
 Ritchie
 malloc
+scanf
+errno
+Bundy
