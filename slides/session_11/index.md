@@ -346,20 +346,67 @@ Note:
 ```c
 #define TO_STRING_HELPER(x) #x
 #define TO_STRING(x) TO_STRING_HELPER(x)
+```
 
+```c
 #define MAX_STRLEN 19
-char name[MAX_STRLEN + 1] = {0};
+```
 
+```c
+char name[MAX_STRLEN + 1] = {0};
+```
+
+```c
 scanf("%" TO_STRING(MAX_STRLEN) "s", name);
 ```
 
-![Al Bundy with finger gun to head](./assets/al_bundy_gun.jpg)
-<!-- .element: class="fragment" data-fragment-index="1" -->
+Macro magic to avoid hard-coded values.
 
 Note:
 
 * <https://compiler-explorer.com/z/7MrasfsaW>
 * Preprocessor magic needed to somewhat remove hardcoded values.
+* Generate the format string using macro magic.
+* Still need to remember to allocate space for the zero terminator.
+* #x converts an expression to a string.
+
+```c
+// prints literally MAX_STRLEN
+#define TO_STRING(x) #x
+printf(TO_STRING(MAX_STRLEN));
+```
+
+```c
+// prints the value of MAX_STRLEN
+#define TO_STRING_HELPER(x) #x
+#define TO_STRING(x) TO_STRING_HELPER(x)
+printf(TO_STRING(MAX_STRLEN));
+```
+
+---
+
+<div style="display: flex; justify-content: space-evenly; align-items: center;">
+
+<div style="padding-right: 45px;">
+
+![Peter Griffin meme about macros](./assets/peter_griffin_gears.jpg)
+
+</div>
+
+<div>
+
+![Al Bundy meme about c strings](./assets/al_bundy_gun.jpg)
+
+</div>
+
+</div>
+
+Welcome to the C programming language.
+
+Note:
+
+* Safe versions of scan and string functions were standardized in C11.
+* But not a single standard library implementation actually has them.
 
 ---
 
