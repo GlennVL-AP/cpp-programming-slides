@@ -6,8 +6,14 @@
 
 ```mermaid
 kanban
-  column1[TODO]
-    task1[TODO]
+  column1[Introduction]
+    task1[Hello, world!]
+    task2[History]
+    task3[Why C?]
+  column2[C Basics]
+    task1[C vs C++]
+    task2[Standard input and output]
+    task3[C Strings]
 ```
 
 ---
@@ -71,14 +77,10 @@ Note:
 
 C is a medium-level procedural language.
 
----
+Note:
 
-|                         | C                    | C++                               |
-|:------------------------|:---------------------|:----------------------------------|
-| **Paradigm**            | Procedural           | Procedural, OOP, functional, meta |
-| **Resource Management** | Manual (malloc/free) | Automatic (RAII, smart pointers)  |
-| **Error Handling**      | Return code, errno   | Exceptions, std::expected         |
-| **Standard Library**    | Minimal              | Rich (STL)                        |
+* There is an almost direct mapping between C and assembly.
+* The only programming paradigm C supports is procedural (writing functions).
 
 ---
 
@@ -90,6 +92,7 @@ Mostly legacy code.
 
 Note:
 
+* C is still everywhere!
 * Hardware vendors often still only supply a C library.
 
 ---
@@ -118,18 +121,354 @@ And the Linux kernel.
 
 ---
 
-## Hello, ${name}
+## C vs C++
+
+---
+
+C++
+
+```c++
+char   a_char   {'a'};
+int    an_int   {-1};
+double a_double {3.14};
+bool   a_bool   {false};
+```
+
+C
+
+```c
+char   a_char   = 'a';
+int    an_int   = -1;
+double a_double = 3.14;
+```
+
+```c
+#include <stdbool.h>
+bool a_bool = false;
+// bool is not a native type in c! it is an alias for int
+```
+
+### Built-in types
+
+Note:
+
+* In C bool and the boolean constants true and false are defined as integers.
+* They are only available if the stdbool header is included.
+
+---
+
+C++
+
+```c++
+import std;
+```
+
+```c++
+std::array an_array{1, 2, 3, 4, 5};
+auto length = an_array.size();
+```
+
+c
+
+```c
+int an_array[] = {1, 2, 3, 4, 5};
+int length     = sizeof(an_array) / sizeof(an_array[0]);
+```
+
+### Fixed sized arrays
+
+Note:
+
+* To calculate the length of an array in C, we divide the size of the entire array by the size of the first element.
+* The `sizeof` operator returns the number of bytes a variable occupies in memory.
+* `sizeof(an_array) = 20 bytes` (5 integer that are 4 bytes each)
+* `sizeof(an_array[0]) = 4 bytes` (the first element is an integer, so its size is 4 bytes)
+* `sizeof(an_array) / sizeof(an_array[0]) = 20 bytes / 4 bytes = 5`
+
+---
+
+C++
+
+```c++
+import std;
+```
+
+```c++
+std::vector a_dynamic_array{1, 2, 3, 4, 5};
+```
+
+C
+
+```c
+#include <stdlib.h>
+```
+
+```c
+int* a_dynamic_array = malloc(5 * sizeof(int));
+```
+
+```c
+// use array
+// but keep in mind that malloc does not initialize memory!
+```
+
+```c
+free(a_dynamic_array);
+```
+
+### Dynamically sized array
+
+Note:
+
+* In C we have to manage memory manually.
+* `malloc` allocates the requested amount of space on the heap.
+* We want enough room for 5 integers, so we pass `5 * sizeof(int)`.
+* Malloc does not initialize memory!
+* We initialize manually.
+* Don't forget to `free` the array again when we no longer need it!
+
+---
+
+C++
+
+```c++
+void my_func(); // does not take any arguments
+```
+
+C
+
+```c
+void my_func(); // takes any number of arguments
+```
+
+```c
+void my_func(void); // does not take any arguments
+```
+
+### Functions with no arguments
+
+---
+
+C++
+
+```c++
+import std;
+```
+
+```c++
+// span has items and size
+void my_func(std::span<int> int_array);
+```
+
+```c++
+std::array an_array{1, 2, 3, 4, 5};
+my_func(an_array);
+```
+
+C
+
+```c
+// size info lost, need to add extra argument
+void my_func(int int_array[], int size);
+```
+
+```c
+int an_array[] = {1, 2, 3, 4, 5};
+int length = sizeof(an_array) / sizeof(an_array[0]);
+my_func(an_array, length);
+```
+
+### Array as function argument
+
+Note:
+
+* In C an array function argument is just a pointer, it only knows the address of the first item.
+* So it is necessary to manually pass the length of the array as a function argument.
+
+---
+
+C++
+
+```c++
+import std;
+```
+
+```c++
+std::string a_string{"Hello"};
+auto length = a_string.size();
+```
+
+C
+
+```c
+#include <string.h>
+```
+
+```c
+char a_string[] = "Hello";
+int length = strlen(a_string);
+```
+
+### Strings
+
+Note:
+
+* C has no string, type only char arrays!
+* C documentation about strings: <https://en.cppreference.com/w/c/string/byte>.
 
 ---
 
 ```c []
+int strlen(char str[])
+{
+    int result = 0;
+    for (; str[result] != '\0'; ++result) {}
+    return result;
+}
+```
+
+```c
+// '\0' is automagically added at the end
+char a_string[] = "Hello";
+```
+
+How does strlen work?
+
+Note:
+
+* It assumes the last character is `'\0'` to mark the end.
+* We have to somehow indicate where the string ends.
+* This is done by adding an extra character at the end of the string with value 0.
+* There is nothing in the language that can enforce this.
+
+---
+
+```c
+// OK, '\0' automatically added to string literals
+char str[] = "test";
+int len = strlen(str);
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c
+// OK, zero-terminated string
+char str[] = {'t', 'e', 's', 't', '\0'};
+int len = strlen(str);
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c
+// ERROR, loop will continue past string, buffer overflow
+char str[] = {'t', 'e', 's', 't'};
+int len = strlen(str);
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+You are responsible for the zero terminator!
+
+Note:
+
+* <https://compiler-explorer.com/z/3n4b9jKnW>
+* <https://compiler-explorer.com/z/hxMjG1q7r>
+* <https://compiler-explorer.com/z/ME58EYh5z>
+
+---
+
+![Al Bundy meme about c strings](./assets/al_bundy_gun.jpg)
+
+C has a lot of string helper functions. Some add the zero terminator automatically, some don't.
+
+Note:
+
+* Safe versions of string functions were standardized in C11.
+* But not a single standard library implementation actually has them.
+
+---
+
+C++
+
+```c++
+namespace {
+
+void implementation_detail();
+
+}
+```
+
+C
+
+```c
+static void implementation_detail(void);
+```
+
+### Translation unit scope
+
+Note:
+
+* In C++ we can use unnamed namespaces.
+* In C we mark the function as static.
+* The result is the same, the function is only available in the current translation unit.
+
+---
+
+C++
+
+```c++
+class MyType {
+public:
+    MyType();  // runs when object is created
+    ~MyType(); // runs when object goes out of scope
+private:
+    int data_{};
+};
+```
+
+C
+
+```c
+typedef struct {
+    int data;
+} MyType;
+```
+
+```c
+void MyType_Init(MyType* self);    // call manually
+void MyType_Destroy(MyType* self); // call manually
+```
+
+### Data collections
+
+---
+
+## Hello, ${name}
+
+Standard input and output.
+
+---
+
+C++
+
+```c++
+import std;
+```
+
+```c++
+int main()
+{
+    std::println("Hello, {}!", "Jefke");
+}
+```
+
+C
+
+```c
 #include <stdio.h>
 ```
 
-```c []
+```c
 int main(void)
 {
-    printf("Hello, %s!\n", "Glenn");
+    printf("Hello, %s!\n", "Jefke");
 }
 ```
 
@@ -138,6 +477,11 @@ Hard coded.
 Note:
 
 * <https://compiler-explorer.com/z/dW48bn7x1>
+* printf uses format specifiers
+  * `%s` for strings
+  * `%d` for integers
+  * `%f` for floating points
+  * ...
 
 ---
 
@@ -146,7 +490,7 @@ Note:
 ```
 
 ```c []
-void say_hello(char name[])
+static void say_hello(char name[])
 {
     printf("Hello, %s\n", name);
 }
@@ -168,72 +512,11 @@ Note:
 ---
 
 ```c []
-void say_hello(char name[])
-{
-    printf("Hello, %s\n", name);
-}
-```
-
-```c
-say_hello("Jefke");
-```
-
-* No string type, just a char array.
-* We don't know the length up front.
-* Char array must be zero-terminated.
-
-Note:
-
-* We have to somehow indicate where the string ends.
-* This is done by adding an extra character at the end of the string with value 0.
-* There is nothing in the language that can enforce this.
-
----
-
-```c []
-int string_length(char str[])
-{
-    int result = 0;
-    for (; str[result] != '\0'; ++result) {}
-    return result;
-}
-```
-
-```c
-// OK, '\0' automatically added to string literals
-char str[] = "test";
-int len = string_length(str);
-```
-<!-- .element: class="fragment" data-fragment-index="1" -->
-
-```c
-// OK, zero-terminated string
-char str[] = {'t', 'e', 's', 't', '\0'};
-int len = string_length(str);
-```
-<!-- .element: class="fragment" data-fragment-index="2" -->
-
-```c
-// ERROR, loop will continue past string, buffer overflow
-char str[] = {'t', 'e', 's', 't'};
-int len = string_length(str);
-```
-<!-- .element: class="fragment" data-fragment-index="3" -->
-
-Note:
-
-* <https://compiler-explorer.com/z/3n4b9jKnW>
-* <https://compiler-explorer.com/z/hxMjG1q7r>
-* <https://compiler-explorer.com/z/ME58EYh5z>
-
----
-
-```c []
 #include <stdio.h>
 ```
 
 ```c []
-void say_hello(char name[])
+static void say_hello(char name[])
 {
     printf("Hello, %s\n", name);
 }
@@ -274,48 +557,6 @@ WRITE of size 29 at 0x7a9f50e09034 thread T0
     #4 0x7e9f53229d8f  (/lib/x86_64-linux-gnu/libc.so.6+0x29d8f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
     #5 0x7e9f53229e3f in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29e3f) (BuildId: 490fef8403240c91833978d494d39e537409b92e)
     #6 0x0000004012e4 in _start (/app/output.s+0x4012e4) (BuildId: bbf5ee4c0b6b681c145125f55fd9f627856f2e76)
-
-Address 0x7a9f50e09034 is located in stack of thread T0 at offset 52 in frame
-    #0 0x0000004010cf in main /app/example.c:9
-
-  This frame has 2 object(s):
-    [32, 52) 'name' (line 11) <== Memory access at offset 52 overflows this variable
-    [96, 125) 'simulate_user_input' (line 10)
-HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
-      (longjmp and C++ exceptions *are* supported)
-SUMMARY: AddressSanitizer: stack-buffer-overflow /app/example.c:12 in main
-Shadow bytes around the buggy address:
-  0x7a9f50e08d80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e08e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e08e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e08f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e08f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-=>0x7a9f50e09000: f1 f1 f1 f1 00 00[04]f2 f2 f2 f2 f2 00 00 00 05
-  0x7a9f50e09080: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e09100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e09180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e09200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  0x7a9f50e09280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-Shadow byte legend (one shadow byte represents 8 application bytes):
-  Addressable:           00
-  Partially addressable: 01 02 03 04 05 06 07
-  Heap left redzone:       fa
-  Freed heap region:       fd
-  Stack left redzone:      f1
-  Stack mid redzone:       f2
-  Stack right redzone:     f3
-  Stack after return:      f5
-  Stack use after scope:   f8
-  Global redzone:          f9
-  Global init order:       f6
-  Poisoned by user:        f7
-  Container overflow:      fc
-  Array cookie:            ac
-  Intra object redzone:    bb
-  ASan internal:           fe
-  Left alloca redzone:     ca
-  Right alloca redzone:    cb
-==1==ABORTING
 ```
 <!--- cSpell:enable --->
 <!-- markdownlint-enable line-length -->
@@ -343,24 +584,15 @@ Note:
 
 ---
 
+![Peter Griffin meme about macros](./assets/peter_griffin_gears.jpg)
+
 ```c
 #define TO_STRING_HELPER(x) #x
 #define TO_STRING(x) TO_STRING_HELPER(x)
-```
-
-```c
 #define MAX_STRLEN 19
-```
-
-```c
 char name[MAX_STRLEN + 1] = {0};
-```
-
-```c
 scanf("%" TO_STRING(MAX_STRLEN) "s", name);
 ```
-
-Macro magic to avoid hard-coded values.
 
 Note:
 
@@ -385,37 +617,12 @@ printf(TO_STRING(MAX_STRLEN));
 
 ---
 
-<div style="display: flex; justify-content: space-evenly; align-items: center;">
-
-<div style="padding-right: 45px;">
-
-![Peter Griffin meme about macros](./assets/peter_griffin_gears.jpg)
-
-</div>
-
-<div>
-
-![Al Bundy meme about c strings](./assets/al_bundy_gun.jpg)
-
-</div>
-
-</div>
-
-Welcome to the C programming language.
-
-Note:
-
-* Safe versions of scan and string functions were standardized in C11.
-* But not a single standard library implementation actually has them.
-
----
-
 ```c []
 #include <stdio.h>
 ```
 
 ```c []
-void say_hello(char name[], int age)
+static void say_hello(char name[], int age)
 {
     printf("Hello %s, you are %d years old.\n", name, age);
 }
@@ -459,4 +666,64 @@ Note:
 
 ---
 
-TODO
+## Source and header files
+
+How to split code in multiple translation units?
+
+---
+
+```c
+// hello.h
+
+void say_hello(har name[], int age);
+```
+
+```c
+// hello.c
+
+#include <stdio.h>
+
+void say_hello(char name[], int age)
+{
+    printf("Hello %s, you are %d years old.\n", name, age);
+}
+```
+
+Declarations in hello.h, definitions in hello.c.
+
+---
+
+```c
+// main.c
+```
+
+```c
+#include "hello.h"
+```
+
+```c
+int main(void)
+{
+    char name[20] = {0};
+    int age = 0;
+    scanf("%19s %d", name, &age);
+    say_hello(name, age);
+}
+```
+
+Include header and use function.
+
+---
+
+## Summary
+
+---
+
+* C is a small procedural language.
+* It does not have strings. <!-- .element: class="fragment" data-fragment-index="1" -->
+* It does not have automatic memory management. <!-- .element: class="fragment" data-fragment-index="2" -->
+* The language may be small, but it is easy to make mistakes! <!-- .element: class="fragment" data-fragment-index="3" -->
+
+---
+
+## Exercises

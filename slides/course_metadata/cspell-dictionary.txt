@@ -43,3 +43,5 @@ malloc
 scanf
 errno
 Bundy
+stdbool
+stdlib
