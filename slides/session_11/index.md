@@ -252,6 +252,38 @@ void my_func(void); // does not take any arguments
 C++
 
 ```c++
+void func(int arg);
+void func(double arg);
+```
+
+```c++
+func(5);
+func(3.14);
+```
+
+C
+
+```c
+void func_int(int arg);
+void func_double(int arg);
+```
+
+```c
+func_int(5);
+func_double(3.14);
+```
+
+### No function overloading in C
+
+Note:
+
+* C does not support function overloading!
+
+---
+
+C++
+
+```c++
 import std;
 ```
 
