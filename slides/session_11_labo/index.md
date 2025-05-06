@@ -40,6 +40,6 @@ cpprog_add_executable(
 
 ---
 
-### Exercises
+## No Exercises
 
-See digitap.
+Time to work on the project. 🙂

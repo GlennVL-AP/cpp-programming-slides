@@ -726,4 +726,6 @@ Include header and use function.
 
 ---
 
-## Exercises
+## No Exercises
+
+Time to work on the project. 🙂
