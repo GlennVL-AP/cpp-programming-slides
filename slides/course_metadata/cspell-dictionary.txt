@@ -45,3 +45,4 @@ errno
 Bundy
 stdbool
 stdlib
+clangd
