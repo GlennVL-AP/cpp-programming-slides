@@ -707,7 +707,12 @@ How to split code in multiple translation units?
 ```c
 // hello.h
 
+#ifndef HELLO_H
+#define HELLO_H
+
 void say_hello(har name[], int age);
+
+#endif
 ```
 
 ```c
@@ -722,6 +727,16 @@ void say_hello(char name[], int age)
 ```
 
 Declarations in hello.h, definitions in hello.c.
+
+Note:
+
+* Header file has include guards to prevent multiple definitions if the header file is included multiple times.
+* Header files being included multiple times is very common. For example a utility header that could be included in every header
+  file in a project. Any source file including multiple project header files would then transitively include the utility header
+  file multiple times.
+* First time the header is included HELLO_H is not yet define, so ifndef evaluates to true and the code inside the ifndef and
+  endif is evaluated by the preprocessor, setting HELLO_H to defined. The next time HELLO_H is already define, so ifndef
+  evaluates to false and the code between ifndef and endif is not evaluated by the preprocessor.
 
 ---
 
