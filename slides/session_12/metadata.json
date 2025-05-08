@@ -1,0 +1,4 @@
+{
+    "title": "Session 12: C and ASM code in C++",
+    "description": "Naming mangling. Creating C++ functions that can be used in C code. How to make C header files compatible with C++. Inline assembly."
+}
