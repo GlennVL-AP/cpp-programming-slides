@@ -428,9 +428,139 @@ Note:
 
 ## Mixing Assembly and C++
 
+Note:
+
+* <https://en.cppreference.com/w/c/language/asm>
+* <https://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html>
+
 ---
 
-TODO
+```c++
+import std;
+```
+
+```c++
+int main()
+{
+    int x{5};
+    int y{6};
+
+    auto sum = x + y; // How to calculate sum in assembly?
+
+    std::println("{} + {} = {}", x, y, sum);
+}
+```
+
+```text
+5 + 6 = 10
+```
+
+--
+
+```c++
+import std;
+```
+
+```c++
+int main()
+{
+    int x{5};
+    int y{6};
+
+    int sum{};
+```
+
+```c++
+    __asm__(
+        "addl %%ebx,%%eax"  // add instruction
+        : "=a" (sum)        // store result in sum variable
+        : "a" (x), "b" (y)  // pass x and y variables
+    );
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+    std::println("{} + {} = {}", x, y, sum);
+}
+```
+
+```text
+5 + 6 = 10
+```
+
+Note:
+
+* <https://compiler-explorer.com/z/Pbb6z4xhK>
+
+--
+
+```c++
+__asm__(
+    "addl %%ebx,%%eax"
+    : "=a" (sum)
+    : "a" (x), "b" (y)
+);
+```
+
+```c++
+// eax += ebx
+addl %%ebx,%%eax
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+// read the eax register and store the result in sum
+: "=a" (sum)
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+// load the value of x in the eax register
+// load the value of y in the ebx register
+: "a" (x), "b" (y)
+```
+<!-- .element: class="fragment" data-fragment-index="3" -->
+
+--
+
+```c++
+__asm__(
+    "addl %%ebx,%%eax"
+    : "=a" (sum)
+    : "a" (x), "b" (y)
+);
+```
+
+```mermaid
+block-beta
+  columns 3
+  name1["r"]:1
+  reg1["any register"]:2
+  name2["a"]:1
+  reg2["eax, ax, al"]:2
+  name3["b"]:1
+  reg3["ebx, bx, bl"]:2
+  name4["c"]:1
+  reg4["ecx, cx, cl"]:2
+  name5["d"]:1
+  reg5["edx, dx, dl"]:2
+  name6["S"]:1
+  reg6["esi, si"]:2
+  name7["D"]:1
+  reg7["edi, di"]:2
+```
+
+* General purpose registers: eax, ebx, ecx, edx
+* Function argument registers: esi, edi
+
+---
+
+### Best practices
+
+---
+
+* It is possible to use assembly code in C++.
+* Don't unless you have a very good reason to.
 
 ---
 
