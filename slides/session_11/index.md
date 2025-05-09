@@ -718,6 +718,7 @@ void say_hello(har name[], int age);
 ```c
 // hello.c
 
+#include "hello.h"
 #include <stdio.h>
 
 void say_hello(char name[], int age)
