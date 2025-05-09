@@ -46,4 +46,7 @@ Bundy
 stdbool
 stdlib
 clangd
+ifdef
 ifndef
+__cplusplus
+_Z3sumii

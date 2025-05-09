@@ -217,7 +217,216 @@ Note:
 
 ---
 
-## Inline Assembly
+Let's try to mix C and C++ code.
+
+---
+
+### Use case
+
+Using a C library in a C++ project.
+
+--
+
+sum.h
+
+```c
+#ifndef SUM_H
+#define SUM_H
+
+int sum(int a, int b);
+
+#endif
+```
+
+sum.c
+
+```c
+#include "sum.h"
+
+int sum(int a, int b)
+{
+    return a + b;
+}
+```
+
+A fancy C math library to calculate sums.
+
+--
+
+main.cpp
+
+```c++
+#include "sum.h"
+
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+A C++ application that uses the C math library.
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) yes</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* There will be a linker error.
+
+--
+
+```c++
+#include "sum.h"
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+```mermaid
+block-beta
+  downArrow<["preprocessor"]>(down)
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c++
+int sum(int a, int b);
+int main()
+{
+    return sum(5, 6);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```mermaid
+block-beta
+  downArrow<["name mangling"]>(down)
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+```c++
+int _Z3sumii(int a, int b);
+int main()
+{
+    return _Z3sumii(5, 6);
+}
+```
+<!-- .element: class="fragment" data-fragment-index="2" -->
+
+Note:
+
+* The preprocessor replaced the include directive with the contents of the sum.h file.
+* The names in the C++ part of the project are mangled.
+* The names in the C part of the project are not mangled.
+
+--
+
+sum.c
+
+```c
+int sum(int a, int b) // definition of sum
+{
+    return a + b;
+}
+```
+
+main.cpp
+
+```c++
+int main()
+{
+    return _Z3sumii(5, 6); // trying to use sum
+}
+```
+
+Linker error! Cannot resolve symbol `_Z3sumii`.
+
+Note:
+
+* We try to call a function named `_Z3sumii`.
+* But the function is actually called `sum`.
+* So the linker cannot find the definition!
+
+--
+
+Solution: Tell C++ to not mangle C symbol names!
+
+--
+
+main.cpp
+
+```c++
+extern "C" {
+#include "sum.h"
+}
+```
+
+```c++
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+Prevent name mangling for symbols in sum.h.
+
+--
+
+Adding **extern "C"** around each include of a C header is a bit annoying.
+
+--
+
+sum.h
+
+```c
+#ifndef SUM_H
+#define SUM_H
+```
+
+```c
+#ifdef __cplusplus
+extern "C" {
+#endif
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c
+int sum(int a, int b);
+```
+
+```c
+#ifdef __cplusplus
+}
+#endif
+```
+<!-- .element: class="fragment" data-fragment-index="1" -->
+
+```c
+#endif
+```
+
+If possible, solve it in the C header.
+
+Note:
+
+* Make C libraries compatible with C++!
+* Automatically wrap the declarations in the C header in extern "C" if the C++ programming language is detected.
+
+---
+
+### Best practices
+
+---
+
+* Make your C libraries compatible with C++!
+
+---
+
+## Mixing Assembly and C++
 
 ---
 
