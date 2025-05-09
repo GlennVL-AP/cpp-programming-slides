@@ -733,6 +733,178 @@ block-beta
 
 ---
 
+## Memory mapped devices as objects
+
+Note:
+
+* Illustration only! Will not be asked on the exam.
+
+---
+
+STM32F303 uart as an example.
+
+---
+
+* Lookup uart device addresses in data sheet.
+* Lookup uart register layout in reference manual.
+
+Note:
+
+* <https://www.st.com/resource/en/datasheet/stm32f303re.pdf>
+* <https://www.st.com/resource/en/reference_manual/rm0316-stm32f303xbcde-stm32f303x68-stm32f328x8-stm32f358xc-stm32f398xe-advanced-armbased-mcus-stmicroelectronics.pdf>
+
+---
+
+Let's implement the STM32F303 uart in modern C++.
+
+--
+
+```c++
+template <std::integral T>
+using DeviceRegister = T volatile;
+```
+
+```c++
+using Reg32 = DeviceRegister<std::uint32_t>;
+using Reg16 = DeviceRegister<std::uint16_t>;
+using Reg8  = DeviceRegister<std::uint8_t>;
+```
+
+* Volatile is required for device registers.
+* Registers come in different sizes.
+
+Note:
+
+* Some helper types to work with registers.
+
+--
+
+<!--- cSpell:disable --->
+```c++ [4-14]
+class Uart final
+{
+private:
+    Reg32 cr1_;
+    Reg32 cr2_;
+    Reg32 cr3_;
+    Reg32 brr_;
+    Reg32 gtpr_;
+    Reg32 rtor_;
+    Reg32 rqr_;
+    Reg32 isr_;
+    Reg32 icr_;
+    Reg32 rdr_;
+    Reg32 tdr_;
+};
+```
+<!--- cSpell:enable --->
+
+* Add registers as private members.
+* Do not add any other members!
+
+Note:
+
+* The layout of the uart class must be exactly the same as the register layout in the reference manual.
+
+--
+
+```c++
+class Uart final
+{
+public:
+    void send_bytes(std::span<char> bytes);
+
+private:
+    // ...
+};
+```
+
+Implement device functionality as member functions.
+
+Note:
+
+* Add all functionality you want from the device.
+
+--
+
+```c++ [4-9]
+class Uart final
+{
+public:
+    Uart() = delete;
+    ~Uart() = delete;
+    Uart(Uart const&) = delete;
+    Uart& operator=(Uart const&) = delete;
+    Uart(Uart&&) = delete;
+    Uart& operator=(Uart&&) = delete;
+
+    // ...
+
+private:
+    // ...
+};
+```
+
+* Disable copy and move. They make no sense.
+* Disable constructor and destructor.
+* Devices are always alive.
+
+Note:
+
+* We built a class that is impossible create, indestructible, and impossible to copy.
+
+--
+
+```c++ [4-16]
+class Uart final
+{
+public:
+    enum class Device: std::uintptr_t
+    {
+        uart_1 = 0x40013800, // address of uart 1
+        uart_2 = 0x40004400, // address of uart 2
+        uart_3 = 0x40004800  // address of uart 3
+    };
+
+    static Uart& get(Device device)
+    {
+        return *std::start_lifetime_as<Uart>(
+            std::to_underlying(device)
+        );
+    }
+
+    // ...
+
+private:
+    // ...
+};
+```
+
+* No constructors/destructors, device is always alive.
+* Convert device address to class instance instead.
+
+Note:
+
+* The objects already exist in memory. We just need a little trick to access them in C++.
+
+--
+
+```c++
+auto& uart_1 = Uart::get(Uart::Device::uart_1);
+```
+
+```c++
+uart_1.send_bytes("hello");
+```
+
+Easy to use and type safe!
+
+---
+
+Almost entirely eliminates the need for inline assembly and it is type safe!
+
+---
+
 ## No Exercises
 
 Time to work on the project. 🙂

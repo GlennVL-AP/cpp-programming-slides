@@ -51,3 +51,5 @@ ifndef
 __cplusplus
 _Z3sumii
 addl
+uart
+uintptr_t
