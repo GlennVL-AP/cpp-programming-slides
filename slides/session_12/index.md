@@ -221,7 +221,7 @@ Let's try to mix C and C++ code.
 
 ---
 
-### Use case
+### Use case 1
 
 Using a C library in a C++ project.
 
@@ -415,6 +415,175 @@ Note:
 
 * Make C libraries compatible with C++!
 * Automatically wrap the declarations in the C header in extern "C" if the C++ programming language is detected.
+
+---
+
+### Use case 2
+
+Implementing a C function in C++.
+
+--
+
+library.h
+
+```c
+#ifndef LIBRARY_H
+#define LIBRARY_H
+```
+
+```c
+#ifdef __cplusplus
+extern "C" {
+#endif
+```
+
+```c
+void log(char msg[]);
+int sum(int a, int b);
+```
+
+```c
+#ifdef __cplusplus
+}
+#endif
+```
+
+```c
+#endif
+```
+
+--
+
+library.c
+
+```c
+#include "library.h"
+```
+
+```c
+// void log(char msg[]) not implemented
+```
+
+```c
+int sum(int a, int b)
+{
+    log("calculating sum");
+    return a + b;
+}
+```
+
+--
+
+main.cpp
+
+```c++
+#include "library.h"
+```
+
+```c++
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+Linker error! Cannot resolve symbol `log`.
+
+Note:
+
+* The library does not provide an implementation for the log function.
+* So we have to write one ourselves!
+
+--
+
+```c++
+#include "library.h"
+```
+
+```c++
+import std;
+```
+
+```c++
+void log(char msg[])
+{
+    std::println("[log] {}", msg);
+}
+```
+
+```c++
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+Does it compile?
+
+<div style="display: flex; justify-content: space-evenly;">
+    <div class="fragment semi-fade-out shrink" data-fragment-index="1">a) yes</div>
+    <div class="fragment highlight-current-blue grow" data-fragment-index="1">b) no</div>
+</div>
+
+Note:
+
+* There will be a linker error.
+
+--
+
+library.c
+
+```c
+int sum(int a, int b)
+{
+    log("calculating sum"); // trying to call sum
+    return a + b;
+}
+```
+
+main.cpp
+
+```c++
+void log(char msg[]) // definition, name mangled to _Z3logPc
+{
+    std::println("[log] {}", msg);
+}
+```
+
+Linker error! Cannot resolve symbol `sum`.
+
+Note:
+
+* Mangled name is `_Z3logPc`.
+* `Pc` because pointer to char.
+
+--
+
+main.cpp
+
+```c++
+#include "library.h"
+```
+
+```c++
+import std;
+```
+
+```c++
+extern "C" void log(char msg[])
+{
+    std::println("[log] {}", msg);
+}
+```
+
+```c++
+int main()
+{
+    return sum(5, 6);
+}
+```
+
+Solution: Tell C++ to not mangle C symbol names!
 
 ---
 
