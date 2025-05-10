@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title><%= slide_deck_title %></title>
+<% if (favicon) { %>
+    <link rel="icon" href="<%= favicon %>">
+<% } %>
     <link rel="stylesheet" href="/reveal.js/dist/reset.css">
     <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
     <link rel="stylesheet" href="/reveal.js/dist/theme/black.css">

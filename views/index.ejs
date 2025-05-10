@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= course.title_raw %></title>
+<% if (favicon) { %>
+    <link rel="icon" href="<%= favicon %>">
+<% } %>
     <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
@@ -54,7 +57,11 @@
                 </li>
 <% } %>
             </ul>
+<% if (course_logo) { %>
+            <img class="background-image" src="<%= course_logo %>" alt="Course Logo">
+<% } else { %>
             <img class="background-image" src="/course-logo" alt="Course Logo">
+<% } %>
         </div>
     </main>
     <footer class="footer">

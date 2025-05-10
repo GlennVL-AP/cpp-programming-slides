@@ -88,7 +88,7 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 
     res.render(
         "slide_deck",
-        { slide_deck_title: metadata.title, slide_deck_content_markdown: markdownContent },
+        { slide_deck_title: metadata.title, slide_deck_content_markdown: markdownContent, favicon: null },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -124,7 +124,7 @@ app.get('/', (req, res, next) => {
 
     res.render(
         "index",
-        { course: courseInfo, slide_decks: slideDecksMetadata },
+        { course: courseInfo, slide_decks: slideDecksMetadata, favicon: null, course_logo: null },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -142,7 +142,9 @@ app.use((req, res, next) => {
         status: 404,
         short_message: "Page Not Found",
         full_message: "Oops! The page you're looking for does not exist.",
-        url: req.originalUrl
+        url: req.originalUrl,
+        favicon: null,
+        course_logo: null
     });
 });
 
@@ -151,7 +153,9 @@ app.use((err, req, res, next) => {
         status: err.status || 500,
         short_message: "Internal Server Error",
         full_message: err.message || "Internal Server Error",
-        url: req.originalUrl
+        url: req.originalUrl,
+        favicon: null,
+        course_logo: null
     });
 });
 
