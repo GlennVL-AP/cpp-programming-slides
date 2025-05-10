@@ -1,0 +1,48 @@
+name: Deploy to github pages
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Build static website
+        run: npm run build
+  deploy-to-pages:
+    needs: build
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Build static website
+        run: npm run build
+      - name: Configure github pages
+        uses: actions/configure-pages@v5
+      - name: Upload to github pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./out"
+      - name: Deploy to github pages
+        id: deployment
+        uses: actions/deploy-pages@v4
