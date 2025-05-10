@@ -13,6 +13,7 @@
         ".gitignore",
         "package-lock.json",
         "*.svg",
-        "*.drawio"
+        "*.drawio",
+        "out"
     ]
 }

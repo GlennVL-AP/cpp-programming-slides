@@ -5,6 +5,7 @@ import js from "@eslint/js";
 export default defineConfig([
     {
         files: ["**/*.js"],
+        ignores: [ "out/**" ],
         languageOptions: {
             sourceType: "commonjs",
             globals: globals.node
