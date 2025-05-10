@@ -3,6 +3,8 @@ const path = require("path");
 const ejs = require("ejs");
 const fse = require("fs-extra");
 
+const BASE_URL = process.env.BASE_URL || "";
+
 const OUTPUT_DIR = path.join(__dirname, "out");
 const SLIDES_DIR = path.join(__dirname, "slides");
 const PUBLIC_DIR = path.join(__dirname, "public");
@@ -14,7 +16,7 @@ const REVEAL_DIRS = [
 ];
 
 const readJson = filePath => {
-    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    return JSON.parse(fs.readFileSync(filePath, "utf-8").replace("<%= base_url %>", BASE_URL));
 };
 
 const wrapNoBreak = (text, noBreakWords) => {
@@ -51,12 +53,13 @@ const renderSlideDeckPage = (dirent, favIcon) => {
 
     const markdownPath = path.join(SLIDES_DIR, name, "index.md");
     let markdownContent = fs.readFileSync(markdownPath, "utf-8");
-    markdownContent = markdownContent.replace(/\.\/assets\//g, `/slides/${name}/assets/`);
+    markdownContent = markdownContent.replace(/\.\/assets\//g, `${BASE_URL}/slides/${name}/assets/`);
 
     const slideHtml = renderTemplate(path.join(__dirname, "views", "slide_deck.ejs"), {
         slide_deck_title: metadata.title,
         slide_deck_content_markdown: markdownContent,
-        favicon: `/public/${favIcon}`
+        favicon: `/public/${favIcon}`,
+        base_url: BASE_URL
     });
 
     const outSlideDir = path.join(OUTPUT_DIR, "slides", name);
@@ -80,7 +83,8 @@ const renderHomePage = (courseMetadata, decks, favIcon, bgLogo) => {
         },
         slide_decks: decks,
         favicon: `/public/${favIcon}`,
-        course_logo: `/public/${bgLogo}`
+        course_logo: `/public/${bgLogo}`,
+        base_url: BASE_URL
     });
 
     fs.writeFileSync(path.join(OUTPUT_DIR, "index.html"), indexHtml);
@@ -93,7 +97,8 @@ const renderErrorNotFoundPage = (favIcon, bgLogo) => {
         full_message: "Oops! The page you're looking for does not exist.",
         favicon: `/public/${favIcon}`,
         course_logo: `/public/${bgLogo}`,
-        url: null
+        url: null,
+        base_url: BASE_URL
     });
 
     fs.writeFileSync(path.join(OUTPUT_DIR, "404.html"), pageNotFound);
@@ -106,7 +111,8 @@ const renderServerErrorPage = (favIcon, bgLogo) => {
         full_message: "Something went wrong on our side.",
         favicon: `/public/${favIcon}`,
         course_logo: `/public/${bgLogo}`,
-        url: null
+        url: null,
+        base_url: BASE_URL
     });
 
     fs.writeFileSync(path.join(OUTPUT_DIR, "500.html"), serverError);

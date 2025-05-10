@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= course.title_raw %></title>
 <% if (favicon) { %>
-    <link rel="icon" href="<%= favicon %>">
+    <link rel="icon" href="<%= base_url %><%= favicon %>">
 <% } %>
-    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="<%= base_url %>/public/style.css">
 </head>
 <body>
     <header class="header">
@@ -32,25 +32,25 @@
                     </svg>
                 </button>
                 <button id="togglePdf" class="display-button link">
-                    <img src="/public/pdf_icon.png" alt="Toggle print to pdf">
+                    <img src="<%= base_url %>/public/pdf_icon.png" alt="Toggle print to pdf">
                 </button>
             </div>
             <ul>
 <% if (slide_decks.length > 0) { %>
     <% slide_decks.forEach(function(slide_deck) { %>
                 <li>
-                    <a href="<%= slide_deck.location %>" class="link slide-link">
+                    <a href="<%= base_url %><%= slide_deck.location %>" class="link slide-link">
                         <div class="slide-title"><%- slide_deck.title %></div>
                         <div class="slide-description"><%- slide_deck.description %></div>
                     </a>
-                    <a href="<%= slide_deck.location %>?print-pdf" class="print-to-pdf display-button link hidden">
-                        <img src="/public/pdf_icon.png" alt="Print to pdf">
+                    <a href="<%= base_url %><%= slide_deck.location %>?print-pdf" class="print-to-pdf display-button link hidden">
+                        <img src="<%= base_url %>/public/pdf_icon.png" alt="Print to pdf">
                     </a>
                 </li>
     <% }); %>
 <% } else { %>
                 <li >
-                    <a href="/" class="link slide-link">
+                    <a href="<%= base_url %>" class="link slide-link">
                         <div class="slide-title">No slides available!</div>
                         <div class="slide-description">Please be patient while the slides are being created. 😉</div>
                     </a>
@@ -58,9 +58,9 @@
 <% } %>
             </ul>
 <% if (course_logo) { %>
-            <img class="background-image" src="<%= course_logo %>" alt="Course Logo">
+            <img class="background-image" src="<%= base_url %><%= course_logo %>" alt="Course Logo">
 <% } else { %>
-            <img class="background-image" src="/course-logo" alt="Course Logo">
+            <img class="background-image" src="<%= base_url %>/course-logo" alt="Course Logo">
 <% } %>
         </div>
     </main>
@@ -72,7 +72,7 @@
             <span class="ejs-logo">&lt;%= EJS %&gt;</span>
         </a>
         <a href="https://revealjs.com/" target="_blank">
-            <img src="/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo">
+            <img src="<%= base_url %>/public/reveal_js_logo.svg" alt="Powered by Reveal.js" class="reveal-logo">
         </a>
     </footer>
     <script>
