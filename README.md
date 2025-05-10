@@ -8,7 +8,7 @@ The slides can be rendered in the browser using the `reveal.js` node package.
 2. In `git bash` execute the following command
 
    ```bash
-   git clone https://gitlab.apstudent.be/cpp-programming/cpp-programming-slides.git
+   git clone git@github.com:GlennVL-AP/cpp-programming-slides.git
    ```
 
 3. Open the `cpp-programming-slides` directory with vscode
