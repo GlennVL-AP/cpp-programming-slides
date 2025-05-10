@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= status %> - <%= short_message %></title>
 <% if (favicon) { %>
-    <link rel="icon" href="<%= favicon %>">
+    <link rel="icon" href="<%= base_url %><%= favicon %>">
 <% } %>
-    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="<%= base_url %>/public/style.css">
 </head>
 <body>
     <header class="header"><h1><%= status %> - <%= short_message %></h1></header>
@@ -32,11 +32,11 @@
             </script>
 <% } %>
             <p><%= full_message %></p>
-            <a href="/" class="link home-link">Go Home</a>
+            <a href="<%= base_url %>/" class="link home-link">Go Home</a>
 <% if (course_logo) { %>
-            <img class="background-image" src="<%= course_logo %>" alt="Course Logo">
+            <img class="background-image" src="<%= base_url %><%= course_logo %>" alt="Course Logo">
 <% } else { %>
-            <img class="background-image" src="/course-logo" alt="Course Logo">
+            <img class="background-image" src="<%= base_url %>/course-logo" alt="Course Logo">
 <% } %>
         </section>
     </main>

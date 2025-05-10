@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title><%= slide_deck_title %></title>
 <% if (favicon) { %>
-    <link rel="icon" href="<%= favicon %>">
+    <link rel="icon" href="<%= base_url %><%= favicon %>">
 <% } %>
-    <link rel="stylesheet" href="/reveal.js/dist/reset.css">
-    <link rel="stylesheet" href="/reveal.js/dist/reveal.css">
-    <link rel="stylesheet" href="/reveal.js/dist/theme/black.css">
-    <link rel="stylesheet" href="/reveal.js/plugin/highlight/monokai.css">
-    <link rel="stylesheet" href="/public/slides_style.css">
+    <link rel="stylesheet" href="<%= base_url %>/reveal.js/dist/reset.css">
+    <link rel="stylesheet" href="<%= base_url %>/reveal.js/dist/reveal.css">
+    <link rel="stylesheet" href="<%= base_url %>/reveal.js/dist/theme/black.css">
+    <link rel="stylesheet" href="<%= base_url %>/reveal.js/plugin/highlight/monokai.css">
+    <link rel="stylesheet" href="<%= base_url %>/public/slides_style.css">
 </head>
 <body>
     <div id="printPdfSection" class="hidden">
         <div class="print-pdf-buttons">
             <button id="printPdfPrintBtn" class="print-pdf-button print-pdf-img-button">
-                <img src="/public/printer_icon.png" alt="Print PDF">
+                <img src="<%= base_url %>/public/printer_icon.png" alt="Print PDF">
             </button>
             <button id="printPdfConfigBtn" class="print-pdf-button print-pdf-img-button">
-                <img src="/public/settings_icon.png" alt="PDF options">
+                <img src="<%= base_url %>/public/settings_icon.png" alt="PDF options">
             </button>
             <button id="printPdfHelpBtn" class="print-pdf-button print-pdf-img-button">
                 <span>?</span>
@@ -78,11 +78,11 @@
             </section>
         </div>
     </div>
-    <script src="/reveal.js/dist/reveal.js"></script>
-    <script src="/reveal.js/plugin/notes/notes.js"></script>
-    <script src="/reveal.js/plugin/markdown/markdown.js"></script>
-    <script src="/reveal.js/plugin/highlight/highlight.js"></script>
-    <script src="/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.js"></script>
+    <script src="<%= base_url %>/reveal.js/dist/reveal.js"></script>
+    <script src="<%= base_url %>/reveal.js/plugin/notes/notes.js"></script>
+    <script src="<%= base_url %>/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="<%= base_url %>/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="<%= base_url %>/reveal.js-mermaid-plugin/plugin/mermaid/mermaid.js"></script>
     <script>
         const pdfConfigKey = "print-pdf-config";
         const defaultConfig = { showNotes: true, pdfSeparateFragments: false, slideNumber: false };
@@ -95,7 +95,7 @@
             mermaid: {'theme': 'dark', 'themeVariables': { 'darkMode': true }},
             plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMermaid],
             dependencies: [
-                { src: "/reveal.js-countdown/countdown.js" },
+                { src: "<%= base_url %>/reveal.js-countdown/countdown.js" },
             ]
         };
 

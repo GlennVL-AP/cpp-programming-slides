@@ -12,7 +12,7 @@ const slideMetadataPath = slideDeck => path.join(slidesPath, slideDeck, "metadat
 const slideAssetPath = (slideDeck, asset) => path.join(slidesPath, slideDeck, "assets", asset);
 const courseMetadataPath = path.join(slidesPath, "course_metadata");
 const courseMetadataFile = path.join(courseMetadataPath, "metadata.json");
-const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataFile, { encoding: "utf-8" }));
+const courseMetadata = () => JSON.parse(fs.readFileSync(courseMetadataFile, { encoding: "utf-8" }).replace("<%= base_url %>", ""));
 const courseFavIconPath = () => {
     const metadata = courseMetadata();
     return metadata.favIcon ? path.join(courseMetadataPath, metadata.favIcon) : null;
@@ -88,7 +88,7 @@ app.get('/slides/:slide_deck', (req, res, next) => {
 
     res.render(
         "slide_deck",
-        { slide_deck_title: metadata.title, slide_deck_content_markdown: markdownContent, favicon: null },
+        { slide_deck_title: metadata.title, slide_deck_content_markdown: markdownContent, favicon: null, base_url: "" },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -124,7 +124,7 @@ app.get('/', (req, res, next) => {
 
     res.render(
         "index",
-        { course: courseInfo, slide_decks: slideDecksMetadata, favicon: null, course_logo: null },
+        { course: courseInfo, slide_decks: slideDecksMetadata, favicon: null, course_logo: null, base_url: "" },
         (err, str) => {
             if (err) return next(err);
             res.send(str);
@@ -144,7 +144,8 @@ app.use((req, res, next) => {
         full_message: "Oops! The page you're looking for does not exist.",
         url: req.originalUrl,
         favicon: null,
-        course_logo: null
+        course_logo: null,
+        base_url: ""
     });
 });
 
@@ -155,7 +156,8 @@ app.use((err, req, res, next) => {
         full_message: err.message || "Internal Server Error",
         url: req.originalUrl,
         favicon: null,
-        course_logo: null
+        course_logo: null,
+        base_url: ""
     });
 });
 
