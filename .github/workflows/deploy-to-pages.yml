@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   build:
+    name: Build static website
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -16,6 +17,7 @@ jobs:
       - name: Build static website
         run: npm run build
   deploy-to-pages:
+    name: Deploy to github pages
     needs: build
     permissions:
       contents: write

@@ -1,7 +1,14 @@
 name: Validate slides markdown
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   markdown-lint:
+    name: Lint markdown
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -13,6 +20,7 @@ jobs:
       - name: Run markdown linter
         run: npx markdownlint-cli2 .
   spell-check:
+    name: Run spell checker
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
